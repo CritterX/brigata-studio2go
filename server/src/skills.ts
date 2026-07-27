@@ -122,8 +122,11 @@ export function resolveSkills(enabled: unknown): ResolvedSkills {
   const promptSections: string[] = []
   for (const skill of SKILL_CATALOG) {
     if (!ids.has(skill.id)) continue
+    // An unavailable skill has no backing tools, so injecting its prompt tells the
+    // agent to use something it does not have. Skip prompt AND tools together.
+    if (!skill.available) continue
     promptSections.push(skill.prompt)
-    if (skill.available) for (const t of skill.tools) tools.add(t)
+    for (const t of skill.tools) tools.add(t)
   }
   return { tools: [...tools], promptSections }
 }
