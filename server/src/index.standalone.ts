@@ -1,12 +1,12 @@
 // =============================================================================
-// Brigata Studio — STANDALONE / self-host entrypoint
+// Brigata Studio - STANDALONE / self-host entrypoint
 // =============================================================================
 // This is the composition root for the single-tenant, self-hosted build. It
 // wires ONLY the core runtime: auth (password login), workspaces, channels,
 // messages, documents, agents (in-process SDK), skills, memory, tasks, and the
-// websocket. It deliberately omits every cloud-only subsystem — Pro/VPS
+// websocket. It deliberately omits every cloud-only subsystem - Pro/VPS
 // provisioning, Stripe billing, GitHub sync, Discord/Matrix connectors, bridge
-// dispatch, health polling, and the platform abuse monitor — none of which are
+// dispatch, health polling, and the platform abuse monitor - none of which are
 // imported here, so their source is never pulled into this build. That is what
 // lets the public "Studio to Go" package ship without any of the cloud moat.
 //
@@ -38,6 +38,8 @@ import { preferences } from './preferences.js'
 import { attachments } from './attachments.js'
 import { adminConsole } from './admin-console.js'
 import { activity } from './activity.js'
+import { push } from './push.js'
+import { notificationPrefs } from './notification-prefs.js'
 import { attachWebsocket } from './realtime.js'
 import { MODELS, DEFAULT_MODEL } from './models.js'
 import { isStandalone } from './standalone.js'
@@ -54,7 +56,7 @@ import {
 const PORT = Number(process.env.PORT ?? 3030)
 const BIND_HOST = process.env.BIND_HOST ?? '127.0.0.1'
 
-// Fail fast and loud if someone runs this entrypoint without the flag — every
+// Fail fast and loud if someone runs this entrypoint without the flag - every
 // call site still guards on isStandalone(), but the whole point of this binary
 // is self-host mode, so an unset flag is almost certainly a misconfiguration.
 if (!isStandalone()) {
@@ -114,6 +116,8 @@ app.use('/api/workspaces', tasksRouter)
 app.use('/api/workspaces', agentSecretsRouter)
 app.use('/api/workspaces', activity)
 app.use('/api/preferences', preferences)
+app.use('/api/push', push)
+app.use('/api/notification-prefs', notificationPrefs)
 app.use('/api/workspaces', attachments)
 app.use('/api/admin', adminConsole)
 
@@ -129,14 +133,14 @@ if (existsSync(APP_DIST)) {
     res.sendFile(fileURLToPath(new URL('../../app/dist/index.html', import.meta.url)))
   })
 } else {
-  console.warn(`[standalone] frontend build not found at ${APP_DIST} — API only. Run the app build.`)
+  console.warn(`[standalone] frontend build not found at ${APP_DIST} - API only. Run the app build.`)
 }
 
 const server = createServer(app)
 attachWebsocket(server)
 
 // First-boot seed: with no existing workspace, create the single admin + one
-// workspace (with #common channel) + one Standard in-process agent. Idempotent —
+// workspace (with #common channel) + one Standard in-process agent. Idempotent -
 // a no-op once a workspace exists, so restarts never duplicate anything. Reuses
 // the exact helpers the cloud sign-in path uses.
 async function seedStandaloneIfEmpty(): Promise<void> {

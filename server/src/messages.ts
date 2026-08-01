@@ -95,7 +95,7 @@ messages.get('/:workspaceId/unread', async (req, res) => {
     const n = Number(r.unread)
     if (n > 0) unread[r.channel_id] = n
   }
-  // Per-channel unseen @mention counts (distinct from plain unread — a mention is
+  // Per-channel unseen @mention counts (distinct from plain unread - a mention is
   // a direct address and gets a stronger badge in the UI).
   const mentions = await unseenMentionCounts(workspaceId, req.user.id)
   res.json({ ok: true, unread, mentions })
@@ -119,6 +119,22 @@ messages.post('/:workspaceId/channels/:channelId/seen', async (req, res) => {
   )
   // Opening the channel clears any pending @mentions for this user there.
   await markMentionsSeen(channelId, req.user.id)
+  res.json({ ok: true })
+})
+
+// /reset - non-destructive session reset. Sets a context boundary so agents
+// assemble their turn history only from messages after this point; the visible
+// chat is left untouched.
+messages.post('/:workspaceId/channels/:channelId/reset-context', async (req, res) => {
+  if (!req.user) return res.status(401).json({ ok: false })
+  const { workspaceId, channelId } = req.params
+  if (!(await userInWorkspace(req.user.id, workspaceId))) {
+    return res.status(403).json({ ok: false })
+  }
+  if (!(await channelInWorkspace(channelId, workspaceId))) {
+    return res.status(404).json({ ok: false })
+  }
+  await db.query(`UPDATE channels SET context_reset_at = now() WHERE id = $1`, [channelId])
   res.json({ ok: true })
 })
 
@@ -210,7 +226,7 @@ messages.post('/:workspaceId/channels/:channelId/messages', async (req, res) => 
   const senderName = memberRows[0]?.display_name?.trim() || req.user.name
 
   // Record @mentions of human members so they get surfaced/notified. Resolved
-  // against this workspace's members (not agents — agents are handled separately).
+  // against this workspace's members (not agents - agents are handled separately).
   const humanMentions = await recordHumanMentions({
     workspaceId, channelId, messageId, body, senderUserId: req.user.id,
   })

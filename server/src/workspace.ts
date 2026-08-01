@@ -20,7 +20,7 @@ async function userEntitled(userId: string): Promise<boolean> {
 
 // Free path: the owner gets exactly one agent. No agent is seeded at sign-in
 // anymore, so we CREATE the single picked agent here (using the SERVER-canonical
-// template soul — a free user names their one agent but can't author a custom
+// template soul - a free user names their one agent but can't author a custom
 // soul). Previewed channels are still created (rooms aren't gated; only agent
 // count is). If the user picked nothing, fall back to a default Concierge.
 async function applyFreeOnboarding(
@@ -85,13 +85,13 @@ async function applyFreeOnboarding(
   }
 }
 
-const CONCIERGE_SOUL = `# Concierge — Soul
+const CONCIERGE_SOUL = `# Concierge - Soul
 
 ## Who I Am
-A general-purpose helper. I cover a lot of ground — looking things up, summarizing, drafting, planning, debugging small problems.
+A general-purpose helper. I cover a lot of ground - looking things up, summarizing, drafting, planning, debugging small problems.
 
 ## How I Show Up
-- Warm and direct — I sound like a real colleague, not a help-desk script
+- Warm and direct - I sound like a real colleague, not a help-desk script
 - Honest about what I don't know
 - Quick replies for quick questions; depth when it's warranted
 - I ask one clarifying question if it'll save us going in the wrong direction; otherwise I take a swing
@@ -104,15 +104,15 @@ I don't make things up. I cite sources when I look things up online. I keep resp
 
 const WELCOME_DOC = `# Welcome to Brigata Studio
 
-This is your workspace — your own AI crew. A few quick things to know:
+This is your workspace - your own AI crew. A few quick things to know:
 
 ## What's here
-- **Channels** — chat surfaces. You start with **#common**, where all your agents can hear you. Add more channels for specific projects; each channel keeps its own documents. Hover any channel name to rename or delete it.
-- **Documents** — markdown notes and runbooks that live inside a channel. Checkbox state persists. Agents can read and edit the documents in the channels they're in.
-- **Settings** — manage agents (create new ones with templates, edit their SOULs, change models), workspace settings, and integrations.
+- **Channels** - chat surfaces. You start with **#common**, where all your agents can hear you. Add more channels for specific projects; each channel keeps its own documents. Hover any channel name to rename or delete it.
+- **Documents** - markdown notes and runbooks that live inside a channel. Checkbox state persists. Agents can read and edit the documents in the channels they're in.
+- **Settings** - manage agents (create new ones with templates, edit their SOULs, change models), workspace settings, and integrations.
 
 ## Your crew
-Your agents live in **#common** by default. Say hi — they're comfortable with research, writing, planning, and debugging. Edit any agent's SOUL in Settings to change its personality.
+Your agents live in **#common** by default. Say hi - they're comfortable with research, writing, planning, and debugging. Edit any agent's SOUL in Settings to change its personality.
 
 ## Get more done
 - Type \`@AgentName\` to address a specific agent when multiple are in a channel
@@ -130,7 +130,7 @@ Connect your Discord server to mirror messages between this workspace and Discor
 Settings → General → Download workspace export. Markdown for individual docs, JSON for the whole workspace. Take it with you any time.
 
 ## Outgrowing Standard
-Your agents currently run on Brigata's shared backend — fast, simple, plenty for most work. **Pro tier** gives an agent its own dedicated VPS, so the agent itself gets shell access — it can build and run web applications, schedule tasks, automate browsers, manage files, and use integrations. The platform provisions all of it; you don't touch a server. Ask any of your agents about it when you're curious.
+Your agents currently run on Brigata's shared backend - fast, simple, plenty for most work. **Pro tier** gives an agent its own dedicated VPS, so the agent itself gets shell access - it can build and run web applications, schedule tasks, automate browsers, manage files, and use integrations. The platform provisions all of it; you don't touch a server. Ask any of your agents about it when you're curious.
 
 Have fun. Build something.
 `
@@ -139,48 +139,48 @@ Have fun. Build something.
 // public-safe snapshot of what's shipped + where we're headed, and (2) a worked
 // example of document management (named folder, pinned, agent-readable).
 // DELIBERATELY sanitized: no internal roadmap notes, no dates-as-promises, no
-// competitively-sensitive items — a subscriber-facing snapshot, never a mirror
+// competitively-sensitive items - a subscriber-facing snapshot, never a mirror
 // of the internal tracker.
-const ROADMAP_DOC_TITLE = "Brigata — What We're Building"
-const ROADMAP_DOC = `# Brigata — What We're Building
+const ROADMAP_DOC_TITLE = "Brigata - What We're Building"
+const ROADMAP_DOC = `# Brigata - What We're Building
 
 A snapshot of where Brigata is, kept here as a real document so you can see how
 documents work. It lives in the **Brigata** folder, it's pinned, and your agents
 can read it (or update it) just like any other doc. Move it, edit it, or delete
-it — it's yours.
+it - it's yours.
 
 > This is a point-in-time snapshot from when your workspace was created. It won't
 > auto-update. Ask one of your agents to refresh it any time you're curious
 > what's new.
 
 ## Recently shipped
-- **Your own AI crew** — multiple agents per workspace, each with its own
+- **Your own AI crew** - multiple agents per workspace, each with its own
   personality (SOUL), model, and templates to start from.
-- **Channels + per-channel documents** — organize work into channels; each keeps
+- **Channels + per-channel documents** - organize work into channels; each keeps
   its own markdown docs that agents can read and edit.
-- **Group chat that flows** — address agents with @name, reply to specific
+- **Group chat that flows** - address agents with @name, reply to specific
   messages, and react.
-- **Web search, fetch, and live citations** — agents pull current information.
-- **Integrations** — mirror conversations to Discord and Matrix; two-way sync
+- **Web search, fetch, and live citations** - agents pull current information.
+- **Integrations** - mirror conversations to Discord and Matrix; two-way sync
   your docs with GitHub.
-- **Usage visibility** — see your token usage and cost in Settings → Usage.
-- **Your data is yours** — download a full export of your workspace any time
+- **Usage visibility** - see your token usage and cost in Settings → Usage.
+- **Your data is yours** - download a full export of your workspace any time
   (Settings → General).
-- **Pro tier** — give an agent its own dedicated server: it can build and run web
+- **Pro tier** - give an agent its own dedicated server: it can build and run web
   apps, schedule tasks, automate browsers, and manage files. We provision and
   manage it; you never open a terminal.
 
 ## On the way
-- Voice input — talk to your crew instead of typing.
+- Voice input - talk to your crew instead of typing.
 - A UI for managing agent skills and long-term memory.
 - Richer notifications so you never miss what your agents did while you were away.
 - More integrations and connectors.
 
 ## How this doc works (the example part)
-- It's filed under the **Brigata** folder — create your own folders to group docs.
+- It's filed under the **Brigata** folder - create your own folders to group docs.
 - It's **pinned**, so it stays at the top of this channel's document list.
 - Try asking an agent in this channel to "summarize this doc" or "add a section to
-  the Brigata roadmap doc" — agents can read and write the docs in their channels.
+  the Brigata roadmap doc" - agents can read and write the docs in their channels.
 
 Thanks for being here early.
 `
@@ -210,7 +210,7 @@ export async function ensureWorkspaceForUser(
     [workspaceId, userId],
   )
 
-  // 2. #common channel. Agents are NOT seeded here anymore — the onboarding
+  // 2. #common channel. Agents are NOT seeded here anymore - the onboarding
   // wizard (or the idea-engine funnel) is the sole agent creator, so a user who
   // picks their own crew doesn't also inherit a redundant default agent. The
   // skip / abandon paths seed a single fallback agent (see ensureFallbackAgent).
@@ -234,7 +234,7 @@ export async function ensureWorkspaceForUser(
   await ensureBrigataFolder(workspaceId, userId)
 }
 
-// Seed the pinned "Brigata — What We're Building" doc into a workspace's #common
+// Seed the pinned "Brigata - What We're Building" doc into a workspace's #common
 // channel under the "Brigata" folder. Idempotent (no-op if it already exists),
 // so it's safe to call on every workspace create AND from the existing-workspace
 // backfill. Looks up #common itself so callers don't have to thread the id.
@@ -250,7 +250,7 @@ export async function ensureBrigataFolder(
     [workspaceId],
   )
   const channelId = ch[0]?.id
-  if (!channelId) return // workspace has no channels at all — nothing to attach it to
+  if (!channelId) return // workspace has no channels at all - nothing to attach it to
 
   const { rows: exists } = await db.query(
     `SELECT 1 FROM documents WHERE workspace_id = $1 AND folder = 'Brigata' AND title = $2 LIMIT 1`,
@@ -265,7 +265,7 @@ export async function ensureBrigataFolder(
   )
 }
 
-// Seed a single generalist agent ("Concierge") into a workspace that has none —
+// Seed a single generalist agent ("Concierge") into a workspace that has none -
 // the safety net for users who skip or abandon the onboarding wizard so nobody
 // ever lands in an empty studio. Idempotent: no-op if any agent already exists.
 // Returns the agent id (existing or newly created), or null if the workspace is
@@ -301,18 +301,18 @@ export async function ensureFallbackAgent(
   )
 
   const welcome = [
-    `Hi ${firstName} 👋 — I'm Concierge, your first agent.`,
+    `Hi ${firstName} 👋 - I'm Concierge, your first agent.`,
     ``,
-    `You can chat with me right here. I'll help with looking things up, drafting, planning, debugging — pretty much whatever you throw at me.`,
+    `You can chat with me right here. I'll help with looking things up, drafting, planning, debugging - pretty much whatever you throw at me.`,
     ``,
     `A few quick ideas to start:`,
     `- Ask me to draft an outline for something you're working on`,
     `- Have me research a topic and summarize what I find`,
     `- Tell me about a project and I'll help break it into steps`,
     ``,
-    `Want to customize me or add more agents to your crew? Head to Settings — I won't be offended. There's also a Welcome doc pinned in this channel's Documents if you want the full tour.`,
+    `Want to customize me or add more agents to your crew? Head to Settings - I won't be offended. There's also a Welcome doc pinned in this channel's Documents if you want the full tour.`,
     ``,
-    `_(I'm a Standard agent — I read & write your documents, search the web, and fetch pages. Need an agent that can build and run web applications, schedule tasks, or operate browsers on its own VPS? Ask me about Pro.)_`,
+    `_(I'm a Standard agent - I read & write your documents, search the web, and fetch pages. Need an agent that can build and run web applications, schedule tasks, or operate browsers on its own VPS? Ask me about Pro.)_`,
   ].join('\n')
   await db.query(
     `INSERT INTO messages (channel_id, sender_kind, sender_agent_id, body, source)
@@ -366,14 +366,14 @@ const PERSONA_EXTRA_AGENTS: Record<Persona, { name: string; avatar: string; soul
   'curious-newcomer': [],
   'productivity-user': [{
     name: 'Scribe', avatar: '✍️',
-    soul: `# Scribe — Soul
+    soul: `# Scribe - Soul
 
 ## Who I Am
 Drafts, edits, polishes. Emails, docs, posts, summaries. I match your voice when I see enough of it; otherwise I ask.
 
 ## How I Show Up
 - Light touch on tone, heavy hand on structure
-- Show, don't tell — examples beat adjectives
+- Show, don't tell - examples beat adjectives
 - Always offer a second version when the first might miss
 
 ## What I Care About
@@ -385,7 +385,7 @@ I'll suggest cuts before additions. I won't pad a paragraph to look thorough.`,
   'builder': [
     {
       name: 'Coder', avatar: '⌨️',
-      soul: `# Coder — Soul
+      soul: `# Coder - Soul
 
 ## Who I Am
 I write and review code. Comfortable across mainstream languages and stacks. Read before I write.
@@ -403,7 +403,7 @@ I run tests if they exist. I don't pretend to know APIs I haven't checked.`,
     },
     {
       name: 'Sysadmin', avatar: '🛠️',
-      soul: `# Sysadmin — Soul
+      soul: `# Sysadmin - Soul
 
 ## Who I Am
 Linux, networking, deploys, ops. The person who reads logs first and asks questions second.
@@ -638,7 +638,7 @@ workspaces.post('/onboarding', async (req, res) => {
   }
 
   // Guarantee the studio is never empty. Each branch above is *supposed* to end
-  // with at least one agent, but it swallows its own errors — so a thrown seed
+  // with at least one agent, but it swallows its own errors - so a thrown seed
   // would otherwise leave a completed-onboarding user (profile is set, wizard
   // won't re-show) stranded in an agentless studio. ensureFallbackAgent is
   // idempotent: a no-op when any agent already exists, a Concierge when none do.
@@ -681,7 +681,7 @@ workspaces.get('/', async (req, res) => {
 })
 
 // Create a new shared workspace. Owner is the caller. Seeded with a single
-// #general channel — no onboarding wizard, no persona-derived agents (that's
+// #general channel - no onboarding wizard, no persona-derived agents (that's
 // personal-workspace material). Agents/docs are added per-workspace later by
 // the owner.
 workspaces.post('/', async (req, res) => {
@@ -692,7 +692,7 @@ workspaces.post('/', async (req, res) => {
 
   // Create-cap gate. Ownership count = personal workspace (1) + created shared
   // ones. Free can JOIN shared workspaces by invite (ungated elsewhere) but can't
-  // CREATE them — they're already at their cap of 1 (the personal). Standard caps
+  // CREATE them - they're already at their cap of 1 (the personal). Standard caps
   // at 3 total owned (personal + 2 shared). Joining never counts here.
   const entitled = await userEntitled(req.user.id)
   const cap = entitled ? 3 : 1
@@ -752,7 +752,7 @@ workspaces.delete('/:workspaceId', async (req, res) => {
     return res.status(400).json({
       ok: false,
       code: 'last_workspace',
-      error: "You can't delete your only workspace — create another first, or reset this one instead.",
+      error: "You can't delete your only workspace - create another first, or reset this one instead.",
     })
   }
 
@@ -849,7 +849,7 @@ workspaces.delete('/:workspaceId/members/:userId', async (req, res) => {
 })
 
 // Create a shareable invite for a workspace. Returns the token (and the
-// caller can build a URL from it). Optional email tag for tracking — we
+// caller can build a URL from it). Optional email tag for tracking - we
 // don't currently send the email automatically; the inviter pastes the
 // link wherever they like.
 workspaces.post('/:workspaceId/invites', async (req, res) => {
@@ -955,7 +955,7 @@ workspaces.get('/:workspaceId/channels', async (req, res) => {
   res.json({ ok: true, channels })
 })
 
-// Agents that have access to a given room (channel_agents membership) — drives
+// Agents that have access to a given room (channel_agents membership) - drives
 // the room-scoped Brigade list in the shell sidebar.
 workspaces.get('/:workspaceId/channels/:channelId/agents', async (req, res) => {
   if (!req.user) return res.status(401).json({ ok: false })
@@ -966,12 +966,46 @@ workspaces.get('/:workspaceId/channels/:channelId/agents', async (req, res) => {
   if (member.length === 0) return res.status(403).json({ ok: false })
 
   const { rows: agents } = await db.query(
-    `SELECT a.id, a.name, a.avatar, a.hosting
+    `SELECT a.id, a.name, a.avatar, a.hosting,
+            (m.agent_id IS NOT NULL) AS muted
        FROM channel_agents ca
        JOIN agents a ON a.id = ca.agent_id
+       LEFT JOIN channel_agent_mutes m ON m.agent_id = a.id AND m.channel_id = $1
       WHERE ca.channel_id = $1 AND a.workspace_id = $2
       ORDER BY a.name ASC`,
     [req.params.channelId, req.params.workspaceId],
   )
   res.json({ ok: true, agents })
+})
+
+// Mute / unmute an agent in a room. A lightweight, reversible in-room control any
+// member can toggle; muted agents are filtered from every responder path for this
+// channel (see agents.ts maybeRespondAsAgents).
+workspaces.post('/:workspaceId/channels/:channelId/agents/:agentId/mute', async (req, res) => {
+  if (!req.user) return res.status(401).json({ ok: false })
+  const { workspaceId, channelId, agentId } = req.params
+  const { rows: member } = await db.query(
+    `SELECT 1 FROM workspace_members WHERE workspace_id = $1 AND user_id = $2`,
+    [workspaceId, req.user.id],
+  )
+  if (member.length === 0) return res.status(403).json({ ok: false })
+  const { rows: ok } = await db.query(
+    `SELECT 1 FROM channels c, agents a
+      WHERE c.id = $1 AND c.workspace_id = $3 AND a.id = $2 AND a.workspace_id = $3`,
+    [channelId, agentId, workspaceId],
+  )
+  if (ok.length === 0) return res.status(404).json({ ok: false, error: 'channel or agent not found' })
+  const muted = req.body?.muted !== false // default true; pass {muted:false} to unmute
+  if (muted) {
+    await db.query(
+      `INSERT INTO channel_agent_mutes (channel_id, agent_id) VALUES ($1, $2) ON CONFLICT DO NOTHING`,
+      [channelId, agentId],
+    )
+  } else {
+    await db.query(
+      `DELETE FROM channel_agent_mutes WHERE channel_id = $1 AND agent_id = $2`,
+      [channelId, agentId],
+    )
+  }
+  res.json({ ok: true, muted })
 })

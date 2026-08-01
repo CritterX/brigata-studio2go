@@ -1,6 +1,7 @@
 import Anthropic from '@anthropic-ai/sdk'
 import { db } from './db.js'
 import { broadcastToChannel } from './realtime.js'
+import { sendChannelPush } from './push.js'
 import { tools as appTools, executeTool, type AgentToolContext } from './agent-tools.js'
 import { loadAttachmentsForMessages, readAttachmentBytes } from './attachments.js'
 import { forwardOutbound, forwardTyping } from './bridges.js'
@@ -31,7 +32,7 @@ import {
 } from './demo.js'
 import { isStandalone } from './standalone.js'
 
-// Anthropic-hosted server tools — executed by Anthropic's infra, no local handler needed.
+// Anthropic-hosted server tools - executed by Anthropic's infra, no local handler needed.
 // Results are folded into the conversation automatically; the model uses them and replies.
 const serverTools = [
   { type: 'web_search_20250305', name: 'web_search', max_uses: 5 },
@@ -57,6 +58,7 @@ interface AgentRow {
   external_token: string | null
   external_tls_cert: string | null
   enabled_skills: unknown
+  web_enabled: boolean
 }
 
 // Match @mentions. Names are typically single words; we match \w+ which covers
@@ -85,7 +87,7 @@ async function loadAgentsForChannel(channelId: string): Promise<AgentRow[]> {
   const { rows } = await db.query<AgentRow>(
     `SELECT a.id, a.workspace_id, a.name, a.avatar, a.model,
             a.soul_md, a.mission_md, a.identity_md, a.instructions,
-            a.hosting, a.external_url, a.external_token, a.external_tls_cert, a.enabled_skills
+            a.hosting, a.external_url, a.external_token, a.external_tls_cert, a.enabled_skills, a.web_enabled
      FROM channel_agents ca
      JOIN agents a ON a.id = ca.agent_id
      WHERE ca.channel_id = $1`,
@@ -100,7 +102,7 @@ async function loadWorkspaceAgentsForChannel(channelId: string): Promise<AgentRo
   const { rows } = await db.query<AgentRow>(
     `SELECT a.id, a.workspace_id, a.name, a.avatar, a.model,
             a.soul_md, a.mission_md, a.identity_md, a.instructions,
-            a.hosting, a.external_url, a.external_token, a.external_tls_cert, a.enabled_skills
+            a.hosting, a.external_url, a.external_token, a.external_tls_cert, a.enabled_skills, a.web_enabled
      FROM agents a
      JOIN channels c ON c.workspace_id = a.workspace_id
      WHERE c.id = $1`,
@@ -117,6 +119,7 @@ async function loadRecentHistory(channelId: string, limit = 30): Promise<Channel
      LEFT JOIN users u ON u.id = m.sender_user_id
      LEFT JOIN agents a ON a.id = m.sender_agent_id
      WHERE m.channel_id = $1
+       AND m.created_at > COALESCE((SELECT context_reset_at FROM channels WHERE id = $1), '-infinity'::timestamptz)
      ORDER BY m.created_at DESC
      LIMIT $2`,
     [channelId, limit],
@@ -175,10 +178,10 @@ function buildSystemPrompt(
       `You are conversing in a channel-based chat. Keep responses concise unless asked for depth.`,
       `Other speakers in the channel may be humans or other agents; their names are prefixed in the transcript.`,
       `Reply directly with your message text. Do not preface with your own name.`,
-      `Use the document tools whenever a runbook, checklist, or notes-style document is relevant to the conversation. Documents can be organized into folders — list_documents returns each doc's folder, and create_document/edit_document accept a folder argument so you can keep things tidy.`,
+      `Use the document tools whenever a runbook, checklist, or notes-style document is relevant to the conversation. Documents can be organized into folders - list_documents returns each doc's folder, and create_document/edit_document accept a folder argument so you can keep things tidy.`,
       `When editing a document, preserve the exact text of unchanged task-list items so their checkbox state is retained. For large or growing documents, use append_to_document to add content instead of resending the whole body with edit_document.`,
       `Use web_search to look up current information you don't have, and web_fetch to read specific pages. Cite the source when you do.`,
-      `You CAN delegate to other agents, RIGHT NOW, with no setup: when the user asks you to hand off / pass / assign work to another agent, immediately call the hand_off_task tool (recipient's exact name + a clear title and details). There is NO permission step, approval, or Settings toggle — you already have this capability fully enabled. NEVER claim you need permission, NEVER ask the user to grant or enable anything, and NEVER tell the user to message the other agent themselves. Just call hand_off_task. The recipient works it asynchronously and replies in this channel.`,
+      `You CAN delegate to other agents, RIGHT NOW, with no setup: when the user asks you to hand off / pass / assign work to another agent, immediately call the hand_off_task tool (recipient's exact name + a clear title and details). There is NO permission step, approval, or Settings toggle - you already have this capability fully enabled. NEVER claim you need permission, NEVER ask the user to grant or enable anything, and NEVER tell the user to message the other agent themselves. Just call hand_off_task. The recipient works it asynchronously and replies in this channel.`,
     ].join(' '),
   )
   const isPro = agent.hosting === 'pro_droplet'
@@ -186,12 +189,12 @@ function buildSystemPrompt(
     [
       `# Tier (when asked about Pro)`,
       isPro
-        ? `You are a **Pro** agent. You run on a dedicated VPS the platform provisioned for you. You have shell access on that VPS — so you can build and run web applications, schedule tasks, automate browsers, manage files, and use integrations (Gmail, Calendar, Discord, ...), in addition to the Standard tools (document read/write, web search, web fetch). You run 24/7 in the background.`
-        : `You are a **Standard** agent. You run on Brigata's shared backend with these tools: read/write workspace documents, web search (with citations), web fetch, conversation memory. You do NOT have shell access on a VPS — that's a Pro tier capability.`,
+        ? `You are a **Pro** agent. You run on a dedicated VPS the platform provisioned for you. You have shell access on that VPS - so you can build and run web applications, schedule tasks, automate browsers, manage files, and use integrations (Gmail, Calendar, Discord, ...), in addition to the Standard tools (document read/write, web search, web fetch). You run 24/7 in the background.`
+        : `You are a **Standard** agent. You run on Brigata's shared backend with these tools: read/write workspace documents, web search (with citations), web fetch, conversation memory. You do NOT have shell access on a VPS - that's a Pro tier capability.`,
       ``,
-      `For context when answering: **Pro** agents (not the subscriber, the agent itself) get shell access on a dedicated VPS that the platform provisions in seconds. The subscriber never opens a terminal, configures a server, or installs anything — they click a toggle in Settings → Agents → Hosting and their Pro agent comes online. With shell access, a Pro agent can: build and run web applications, schedule tasks via cron, automate browsers, manage files, use integrations, and operate 24/7 in the background.`,
+      `For context when answering: **Pro** agents (not the subscriber, the agent itself) get shell access on a dedicated VPS that the platform provisions in seconds. The subscriber never opens a terminal, configures a server, or installs anything - they click a toggle in Settings → Agents → Hosting and their Pro agent comes online. With shell access, a Pro agent can: build and run web applications, schedule tasks via cron, automate browsers, manage files, use integrations, and operate 24/7 in the background.`,
       ``,
-      `When the user asks about Pro, be conversational and brief. Be specific that it's the *agent* that gets shell access (so it can do things like spin up a web app), not the subscriber. If you compare features, prefer a short bulleted list. Only use a markdown table if there's room — keep tables compact, no more than 2 columns ("Standard" and "Pro"), and use terse cells (3–4 words). Always emphasize that launching Pro is one click; no technical skills required. Do not pitch Pro unless asked.`,
+      `When the user asks about Pro, be conversational and brief. Be specific that it's the *agent* that gets shell access (so it can do things like spin up a web app), not the subscriber. If you compare features, prefer a short bulleted list. Only use a markdown table if there's room - keep tables compact, no more than 2 columns ("Standard" and "Pro"), and use terse cells (3-4 words). Always emphasize that launching Pro is one click; no technical skills required. Do not pitch Pro unless asked.`,
     ].join('\n'),
   )
 
@@ -277,13 +280,13 @@ async function postAgentErrorNotice(
 ): Promise<void> {
   // Make the error visible to the user as a regular agent message so they don't
   // sit confused next to a cleared typing indicator. Keep it short and friendly.
-  // `plain` posts the message verbatim — for actionable notices (e.g. "connect
+  // `plain` posts the message verbatim - for actionable notices (e.g. "connect
   // Claude") where the generic "I hit a snag, try again" wrapper would mislead
   // the user into pointlessly retrying instead of taking the stated action.
-  const trimmed = errorMessage.length > 200 ? errorMessage.slice(0, 200) + '…' : errorMessage
+  const trimmed = errorMessage.length > 200 ? errorMessage.slice(0, 200) + '...' : errorMessage
   const body = opts.plain
     ? errorMessage
-    : `_(I hit a snag and couldn't finish that turn. Try again or rephrase. — error: ${trimmed})_`
+    : `_(I hit a snag and couldn't finish that turn. Try again or rephrase. - error: ${trimmed})_`
   const { rows } = await db.query(
     `INSERT INTO messages (channel_id, sender_kind, sender_agent_id, body, source)
      VALUES ($1, 'agent', $2, $3, 'native')
@@ -318,7 +321,7 @@ async function postAgentErrorNotice(
 //   - an explicit @mention always summons the named agent(s)
 //   - auto + SHARED workspace (2+ human members) → mention-only: assume the humans
 //     are having a discussion; an agent joins only when @mentioned OR directly
-//     replied-to (reply icon) — both are explicit address. It catches up via the
+//     replied-to (reply icon) - both are explicit address. It catches up via the
 //     recent history it's handed. Stops agents barging into human↔human talk.
 //   - auto + solo workspace (1 human) → ambient (the one agent answers, or for
 //     multiple the last agent speaker / first)
@@ -347,7 +350,7 @@ async function selectResponders(
   // auto mode: a SHARED workspace (2+ human members) defaults to strict
   // mention-only. We gate on MEMBERSHIP, not recent activity, so the rule is
   // predictable regardless of who happened to speak recently. (workspace_members
-  // are humans — agents aren't members.) Mentions were already handled above, so
+  // are humans - agents aren't members.) Mentions were already handled above, so
   // here a non-mention message in a shared workspace gets no responder.
   const { rows: memRows } = await db.query<{ n: string }>(
     `SELECT COUNT(*)::text AS n FROM workspace_members wm
@@ -358,7 +361,7 @@ async function selectResponders(
   const humanMembers = Number(memRows[0]?.n ?? '0')
   if (humanMembers >= 2) {
     // A direct reply (the reply icon) to an agent's own message always summons
-    // that agent — it's an explicit address, just like an @mention. Look it up
+    // that agent - it's an explicit address, just like an @mention. Look it up
     // workspace-wide so a reply works even if the agent isn't a channel member.
     if (last.reply_to_id) {
       const { rows: parent } = await db.query<{ sender_agent_id: string | null }>(
@@ -389,7 +392,7 @@ export async function maybeRespondAsAgents(channelId: string): Promise<void> {
   const agents = await loadAgentsForChannel(channelId)
   const workspaceAgents = await loadWorkspaceAgentsForChannel(channelId)
   // A mention can summon a non-member workspace agent, so we proceed as long as
-  // the workspace has any agent at all — not just channel members.
+  // the workspace has any agent at all - not just channel members.
   if (workspaceAgents.length === 0) return
 
   const ctx = await loadChannelContext(channelId)
@@ -415,7 +418,17 @@ export async function maybeRespondAsAgents(channelId: string): Promise<void> {
   }
   const ctxWithRole = { ...ctx, requesterRole }
 
-  const responders = await selectResponders(agents, workspaceAgents, last, channelId)
+  let responders = await selectResponders(agents, workspaceAgents, last, channelId)
+  // Per-room mute: an agent muted in this channel stays present (still listed) but
+  // won't respond here until unmuted. Applies to every responder path.
+  const { rows: mutedRows } = await db.query<{ agent_id: string }>(
+    `SELECT agent_id FROM channel_agent_mutes WHERE channel_id = $1`,
+    [channelId],
+  )
+  if (mutedRows.length > 0) {
+    const mutedIds = new Set(mutedRows.map(r => r.agent_id))
+    responders = responders.filter(a => !mutedIds.has(a.id))
+  }
   if (responders.length === 0) return
 
   for (const agent of responders) {
@@ -432,7 +445,7 @@ export async function maybeRespondAsAgents(channelId: string): Promise<void> {
       })
       forwardTyping(channelId, false)
     }
-    // Self-host has no external bridge / Pro droplets — always run in-process
+    // Self-host has no external bridge / Pro droplets - always run in-process
     // (SDK) so a stray hosting='pro_droplet' agent can't attempt external
     // dispatch to a server that doesn't exist.
     if (!isStandalone() && (agent.hosting === 'pro_droplet' || agent.hosting === 'external')) {
@@ -440,8 +453,8 @@ export async function maybeRespondAsAgents(channelId: string): Promise<void> {
       // /agent-webhook/messages endpoint, which cancels this timer. If no reply
       // ever arrives (bridge accepted the turn but died mid-flight), the timer
       // fires so the user isn't stuck staring at a "thinking" indicator forever.
-      // NOTE: this timer is NOT cleared on dispatch-ack — only on a real reply
-      // or on dispatch failure — which was the bug that left the dots spinning.
+      // NOTE: this timer is NOT cleared on dispatch-ack - only on a real reply
+      // or on dispatch failure - which was the bug that left the dots spinning.
       //
       // Long turns are normal now that agents run shell commands / install
       // packages, so a fixed deadline produced false "offline" alarms while the
@@ -473,8 +486,8 @@ export async function maybeRespondAsAgents(channelId: string): Promise<void> {
           channelId,
           agent,
           alive
-            ? `${agent.name} is taking unusually long on this one — it may be stuck on a task. Try again, or check its server.`
-            : `${agent.name} didn't respond and its server looks offline — try again shortly.`,
+            ? `${agent.name} is taking unusually long on this one - it may be stuck on a task. Try again, or check its server.`
+            : `${agent.name} didn't respond and its server looks offline - try again shortly.`,
           { plain: true },
         ).catch(() => {})
       }
@@ -483,7 +496,7 @@ export async function maybeRespondAsAgents(channelId: string): Promise<void> {
         .catch(async e => {
           // The dispatch itself failed (bridge unreachable / refused the turn).
           // Cancel the safety timer and notify immediately rather than waiting
-          // out the full 90s — sendToExternalAgent has already marked it offline.
+          // out the full 90s - sendToExternalAgent has already marked it offline.
           cancelReplyTimeout(channelId, agent.id)
           const msg = (e as Error)?.message ?? String(e)
           console.error(`[external ${agent.name}] dispatch failed:`, msg)
@@ -492,7 +505,7 @@ export async function maybeRespondAsAgents(channelId: string): Promise<void> {
           await postAgentErrorNotice(
             channelId,
             agent,
-            `${agent.name} is offline right now — I couldn't reach its server. Try again shortly.`,
+            `${agent.name} is offline right now - I couldn't reach its server. Try again shortly.`,
             { plain: true },
           ).catch(() => {})
         })
@@ -503,7 +516,7 @@ export async function maybeRespondAsAgents(channelId: string): Promise<void> {
             await postAgentErrorNotice(
               channelId,
               agent,
-              `${agent.name} is at capacity right now — a lot of agents are working at once. Try again in a moment.`,
+              `${agent.name} is at capacity right now - a lot of agents are working at once. Try again in a moment.`,
               { plain: true },
             ).catch(() => {})
             return
@@ -616,13 +629,13 @@ async function respondAsAgentViaSDK(
           const r = await executeTool('list_documents', {}, toolCtx)
           return { content: [{ type: 'text' as const, text: r.content }], isError: r.is_error }
         }),
-      tool('read_document', 'Read a document into YOUR context for reasoning/summarizing. NOT for when the user just wants to see the document — use focus_document for that.',
+      tool('read_document', 'Read a document into YOUR context for reasoning/summarizing. NOT for when the user just wants to see the document - use focus_document for that.',
         { document_id: z.string() },
         async (args) => {
           const r = await executeTool('read_document', args, toolCtx)
           return { content: [{ type: 'text' as const, text: r.content }], isError: r.is_error }
         }),
-      tool('focus_document', 'Open a document in the user\'s UI when they say "open/show/pull up/bring up" a document. Returns only confirmation — do NOT paste the body into chat.',
+      tool('focus_document', 'Open a document in the user\'s UI when they say "open/show/pull up/bring up" a document. Returns only confirmation - do NOT paste the body into chat.',
         { document_id: z.string() },
         async (args) => {
           const r = await executeTool('focus_document', args, toolCtx)
@@ -658,14 +671,14 @@ async function respondAsAgentViaSDK(
   // Build the prompt. Standard tier doesn't pass binary attachments down to the
   // SDK directly yet (no fleet-level multimodal plumbing); the user-visible
   // body of the message is included, and image/pdf attachments are referenced
-  // as `[attachment: …]` so the model knows they exist. Text attachments are
+  // as `[attachment: ...]` so the model knows they exist. Text attachments are
   // inlined.
   const attsByMsg = await loadAttachmentsForMessages(history.map(h => h.id))
   const lines: string[] = []
   lines.push(`# Conversation in #${ctx.channelName}`)
   for (const m of history) {
     const isSelf = m.sender_kind === 'agent' && m.agent_name === agent.name
-    const speaker = isSelf ? `[YOU — ${agent.name}]` : (m.sender_kind === 'agent' ? `[${m.agent_name ?? 'agent'}]` : `[${m.user_name ?? 'user'}]`)
+    const speaker = isSelf ? `[YOU - ${agent.name}]` : (m.sender_kind === 'agent' ? `[${m.agent_name ?? 'agent'}]` : `[${m.user_name ?? 'user'}]`)
     let line = `${speaker}: ${m.body}`
     for (const a of attsByMsg.get(m.id) ?? []) {
       if (a.kind === 'text') {
@@ -674,12 +687,12 @@ async function respondAsAgentViaSDK(
           line += `\n\n<attachment filename="${a.filename}" mime="${a.mime_type}">\n${buf.toString('utf8').slice(0, 200_000)}\n</attachment>`
         } catch { /* skip on read error */ }
       } else {
-        line += `\n[attachment: ${a.filename} (${a.mime_type}) — binary content not inlined for Standard tier]`
+        line += `\n[attachment: ${a.filename} (${a.mime_type}) - binary content not inlined for Standard tier]`
       }
     }
     lines.push(line)
   }
-  lines.push('', `# Now`, `Provide your next response as ${agent.name}. Reply directly with your message text — do not preface with your own name. Be concise unless asked for depth. Use Brigata document tools (mcp__brigata__*) for any workspace-document work; use built-in WebSearch/WebFetch for web lookups (cite sources).`)
+  lines.push('', `# Now`, `Provide your next response as ${agent.name}. Reply directly with your message text - do not preface with your own name. Be concise unless asked for depth. Use Brigata document tools (mcp__brigata__*) for any workspace-document work; use built-in WebSearch/WebFetch for web lookups (cite sources).`)
   const prompt = opts.promptOverride ?? lines.join('\n')
 
   // Route by credential prefix: OAuth subscription tokens go in CLAUDE_CODE_OAUTH_TOKEN,
@@ -693,7 +706,7 @@ async function respondAsAgentViaSDK(
     sdkEnv.ANTHROPIC_API_KEY = credential
     delete sdkEnv.CLAUDE_CODE_OAUTH_TOKEN
   }
-  // Inject the agent's stored secrets as env vars — encrypted at rest, decrypted
+  // Inject the agent's stored secrets as env vars - encrypted at rest, decrypted
   // only here at turn time, never in the chat transcript. (Set after the credential
   // so a secret can't clobber the Anthropic token slots.)
   {
@@ -707,7 +720,12 @@ async function respondAsAgentViaSDK(
   // No skills enabled => identical to the previous hardcoded list. Demo turns
   // override this with a fixed docs+web allowlist regardless of enabled skills.
   const { tools: skillTools } = resolveSkills(agent.enabled_skills)
-  const allowedTools = opts.toolOverride ? [...opts.toolOverride] : skillTools
+  let allowedTools = opts.toolOverride ? [...opts.toolOverride] : skillTools
+  // Per-agent web-access opt-out: when the owner disables web access, drop the
+  // web tools so the agent no longer reads untrusted internet content.
+  if (agent.web_enabled === false) {
+    allowedTools = allowedTools.filter(t => t !== 'WebSearch' && t !== 'WebFetch')
+  }
 
   const turnModel = opts.modelOverride || agent.model || DEFAULT_MODEL
   const turnStart = Date.now()
@@ -777,6 +795,9 @@ async function respondAsAgentViaSDK(
     model: agent.model,
   }
   broadcastToChannel(channelId, { type: 'message', message: msg })
+  // Push the agent's reply to members' devices (mobile + browser) so the async
+  // crew reaches you while the app is closed. Best-effort; never blocks the reply.
+  void sendChannelPush(channelId, { title: agent.name, body: finalText, data: { channelId } })
   void recordAgentTurn(agent.id, 'ok')
   // Task-dispatch seam: advance the Task lifecycle with the result. Awaited so a
   // failure here surfaces to the dispatcher's try/catch (→ markFailed).
@@ -847,7 +868,7 @@ async function recordAgentTurn(
 }
 
 // ---- Agent Inbox: dispatch a queued Task to its recipient agent ----
-// MVP: Standard (in-workspace) agents only — runs the recipient on the SAME SDK
+// MVP: Standard (in-workspace) agents only - runs the recipient on the SAME SDK
 // engine as chat (via the promptOverride/onComplete seam), advancing the Task
 // lifecycle and posting the result into the task's channel. Pro/bridge delivery
 // is a fast-follow. Call fire-and-forget after createTask.
@@ -864,7 +885,7 @@ export async function dispatchTask(taskId: string): Promise<void> {
 
   const { rows: arows } = await db.query<AgentRow>(
     `SELECT a.id, a.workspace_id, a.name, a.avatar, a.model, a.soul_md, a.mission_md, a.identity_md, a.instructions,
-            a.hosting, a.external_url, a.external_token, a.external_tls_cert, a.enabled_skills
+            a.hosting, a.external_url, a.external_token, a.external_tls_cert, a.enabled_skills, a.web_enabled
      FROM agents a WHERE a.id = $1`, [task.to_agent_id])
   const agent = arows[0]
   if (!agent) { await markFailed(task.id, 'recipient agent not found'); return }
@@ -879,11 +900,11 @@ export async function dispatchTask(taskId: string): Promise<void> {
     task.body_md || '(no further detail provided)',
     ``,
     `# Now`,
-    `Complete this task as ${agent.name}. Do the work — use Brigata document tools (mcp__brigata__*) for any workspace docs, and WebSearch/WebFetch for web lookups (cite sources). Reply with your result: a concise summary of what you did and any output.`,
+    `Complete this task as ${agent.name}. Do the work - use Brigata document tools (mcp__brigata__*) for any workspace docs, and WebSearch/WebFetch for web lookups (cite sources). Reply with your result: a concise summary of what you did and any output.`,
   ].join('\n')
 
   // Pro / external agents: deliver via the bridge. The turn runs on the agent's
-  // own VM; its reply comes back to /agent-webhook/messages with ?task_id=…, which
+  // own VM; its reply comes back to /agent-webhook/messages with ?task_id=..., which
   // completes the task. (Completion is async; the lifecycle shows "working" until.)
   if (agent.hosting === 'pro_droplet' || agent.hosting === 'external') {
     if (!agent.external_url || !agent.external_token) {
@@ -896,7 +917,7 @@ export async function dispatchTask(taskId: string): Promise<void> {
         agent, task.channel_id, ctx,
         [{ sender_kind: 'user', sender_name: 'Tasks', body: taskPrompt, created_at: new Date().toISOString() }],
         task.id, // trigger_message_id
-        task.id, // taskId → reply_url ?task_id=… → webhook completes the task
+        task.id, // taskId → reply_url ?task_id=... → webhook completes the task
       )
     } catch (e) {
       await markFailed(task.id, (e as Error)?.message?.slice(0, 500) || 'bridge dispatch failed')
@@ -937,7 +958,7 @@ async function respondAsAgent(
 ): Promise<void> {
   // Multi-tenant credential resolution for Standard-tier dispatch:
   //   1. Workspace owner's user-level Anthropic credential (BYO).
-  //   2. STUDIO_CLAUDE_OAUTH_TOKEN ONLY when the owner is an admin user — this
+  //   2. STUDIO_CLAUDE_OAUTH_TOKEN ONLY when the owner is an admin user - this
   //      keeps the operator's own agents working without an explicit token
   //      while preventing free rides for external accounts.
   //   3. If neither: surface a visible "owner must connect Claude" error
@@ -950,7 +971,7 @@ async function respondAsAgent(
   )
   const owner = ownerRows[0]
   // Comp'd beta users run the full Pro experience (agent's real model + full
-  // tools, uncapped) on the platform-funded studio token — same path as admins —
+  // tools, uncapped) on the platform-funded studio token - same path as admins -
   // so they never fall into the constrained 8-message demo. Public/non-comp users
   // still require their own credential or get the demo/connect wall below.
   const credential =
@@ -979,7 +1000,7 @@ async function respondAsAgent(
             await postAgentErrorNotice(
               channelId,
               agent,
-              `**Your free demo's used up** — connect your Claude to keep your crew working. Your costs and data stay yours.\n\nOpen **Settings → Connect Claude** and paste either an OAuth token (\`sk-ant-oat01-…\`, from \`claude setup-token\`) or an Anthropic API key (\`sk-ant-api03-…\`).`,
+              `**Your free demo's used up** - connect your Claude to keep your crew working. Your costs and data stay yours.\n\nOpen **Settings → Connect Claude** and paste either an OAuth token (\`sk-ant-oat01-...\`, from \`claude setup-token\`) or an Anthropic API key (\`sk-ant-api03-...\`).`,
               { plain: true },
             )
           }
@@ -996,7 +1017,7 @@ async function respondAsAgent(
       await postAgentErrorNotice(
         channelId,
         agent,
-        `**Your free demo's used up** — connect your Claude to keep your crew working. Your costs and data stay yours.\n\nOpen **Settings → Connect Claude** and paste either an OAuth token (\`sk-ant-oat01-…\`, from \`claude setup-token\`) or an Anthropic API key (\`sk-ant-api03-…\`).`,
+        `**Your free demo's used up** - connect your Claude to keep your crew working. Your costs and data stay yours.\n\nOpen **Settings → Connect Claude** and paste either an OAuth token (\`sk-ant-oat01-...\`, from \`claude setup-token\`) or an Anthropic API key (\`sk-ant-api03-...\`).`,
         { plain: true },
       )
       await recordAgentTurn(agent.id, 'error', 'Demo allotment used up')
@@ -1007,7 +1028,7 @@ async function respondAsAgent(
   await postAgentErrorNotice(
     channelId,
     agent,
-    `**${agent.name} can't respond yet** — the workspace owner needs to connect a Claude account first.\n\nOpen **Settings → Connect Claude** and paste either an OAuth token (\`sk-ant-oat01-…\`, from \`claude setup-token\`) or an Anthropic API key (\`sk-ant-api03-…\`). Once it's connected, just send your message again.`,
+    `**${agent.name} can't respond yet** - the workspace owner needs to connect a Claude account first.\n\nOpen **Settings → Connect Claude** and paste either an OAuth token (\`sk-ant-oat01-...\`, from \`claude setup-token\`) or an Anthropic API key (\`sk-ant-api03-...\`). Once it's connected, just send your message again.`,
     { plain: true },
   )
   await recordAgentTurn(agent.id, 'error', 'No Claude account connected')
@@ -1108,5 +1129,6 @@ async function respondAsAgent(
     model: agent.model,
   }
   broadcastToChannel(channelId, { type: 'message', message: msg })
+  void sendChannelPush(channelId, { title: agent.name, body: finalText, data: { channelId } })
   void forwardOutbound(channelId, finalText, 'native', agent.name)
 }

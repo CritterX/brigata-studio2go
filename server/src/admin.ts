@@ -26,7 +26,7 @@ export const admin = Router()
 // facts the health poller scraped from the bridge's /health (migration 026).
 // Returns null for in-process (Standard) agents, which have no bridge. public_ip
 // is privacy-gated: included only when the caller is the workspace owner/admin
-// (and the bridge actually reported one) — never leaked to ordinary members.
+// (and the bridge actually reported one) - never leaked to ordinary members.
 interface AgentRuntimeRow {
   status: string
   hosting: string | null
@@ -62,7 +62,7 @@ const RUNTIME_COLS =
 // Templates are static PNGs under the client's public/. Custom uploads are
 // stored server-side and served back via a versioned URL so a re-upload
 // cache-busts. agent.avatar holds either an emoji, a /avatars/templates/* path,
-// or one of these /api/.../avatar?v=… URLs.
+// or one of these /api/.../avatar?v=... URLs.
 const AVATAR_DIR = process.env.AVATAR_STORAGE_DIR
   ? path.resolve(process.env.AVATAR_STORAGE_DIR)
   : path.resolve(process.cwd(), 'uploads', 'avatars')
@@ -132,7 +132,7 @@ async function checkAgentQuota(
     return {
       ok: false,
       error:
-        'The free plan includes 1 agent. Upgrade to Standard to add more — or re-role your existing agent from its settings.',
+        'The free plan includes 1 agent. Upgrade to Standard to add more - or re-role your existing agent from its settings.',
     }
   }
   return { ok: true }
@@ -312,13 +312,13 @@ admin.delete('/:workspaceId/channels/:channelId', async (req, res) => {
 
 admin.get('/:workspaceId/agents', async (req, res) => {
   if (!req.user) return res.status(401).json({ ok: false })
-  // Members can list agents — needed for the brigade dock + @-mention.
+  // Members can list agents - needed for the brigade dock + @-mention.
   if (!(await userInWorkspace(req.user.id, req.params.workspaceId))) {
     return res.status(403).json({ ok: false })
   }
   // Safety net: agents are no longer seeded at sign-in (the onboarding wizard
   // is the sole creator). If onboarding seeding ever failed or was bypassed,
-  // the owner would land on an empty studio — guarantee one fallback agent.
+  // the owner would land on an empty studio - guarantee one fallback agent.
   // Owner-only + idempotent (no-op if any agent exists).
   const { rows: ownRows } = await db.query<{ owner_user_id: string }>(
     `SELECT owner_user_id FROM workspaces WHERE id = $1`,
@@ -363,7 +363,7 @@ admin.get('/:workspaceId/agents/:agentId', async (req, res) => {
   }
   const { rows } = await db.query(
     `SELECT id, name, avatar, model, soul_md, mission_md, identity_md, instructions, status, created_at,
-            hosting, external_url, external_token, enabled_skills, safety_profile, ${RUNTIME_COLS}
+            hosting, external_url, external_token, enabled_skills, safety_profile, web_enabled, ${RUNTIME_COLS}
      FROM agents WHERE id = $1 AND workspace_id = $2`,
     [req.params.agentId, req.params.workspaceId],
   )
@@ -384,7 +384,7 @@ admin.get('/:workspaceId/agents/:agentId', async (req, res) => {
   const runtime = buildAgentRuntime(rows[0] as unknown as AgentRuntimeRow, expectedRev, canSeeIp)
 
   // external_url exposes the bridge VPS IP and external_token is its bearer
-  // secret — both are infra credentials, not member-facing. Members can read an
+  // secret - both are infra credentials, not member-facing. Members can read an
   // agent's persona/skills, but only the owner/admin gets the hosting endpoint
   // and token. (The brigade card renders external_url, so without this any member
   // could read every Pro/BYOVPS agent's IP.)
@@ -447,7 +447,7 @@ admin.post('/:workspaceId/agents', async (req, res) => {
     [agentId, req.params.workspaceId],
   )
 
-  // Create a per-agent channel (slugged from the agent's name) — the agent's
+  // Create a per-agent channel (slugged from the agent's name) - the agent's
   // own dedicated space. Only this agent is in it by default.
   const slug = name.toLowerCase().replace(/[^a-z0-9-]+/g, '-').replace(/^-|-$/g, '').slice(0, 40)
   if (slug) {
@@ -537,7 +537,7 @@ admin.patch('/:workspaceId/agents/:agentId', async (req, res) => {
 
   // Custom-soul authoring (editing soul/mission/identity to arbitrary text) is a
   // Standard-tier capability. Free owners can still rename, swap avatar/model,
-  // and re-role via the canonical-preset endpoint below — they just can't write
+  // and re-role via the canonical-preset endpoint below - they just can't write
   // a bespoke soul here.
   const soulFields = ['soul_md', 'mission_md', 'identity_md'] as const
   const writingCustomSoul = soulFields.some(
@@ -602,7 +602,7 @@ admin.patch('/:workspaceId/agents/:agentId', async (req, res) => {
   // provision time; the per-turn dispatch doesn't re-send it. So a persona edit
   // here is saved + versioned but won't change live behavior until the bridge is
   // redeployed. Signal that to the UI so it can prompt "Redeploy to apply"
-  // (in-process Standard agents reload from the DB each turn — no redeploy needed).
+  // (in-process Standard agents reload from the DB each turn - no redeploy needed).
   // 'managed' (pro_droplet) → one-click POST .../redeploy-pro re-bakes the soul.
   // 'self' (external/BYOVPS) → no server-side redeploy; user updates the soul on
   // their own bridge. null → nothing to do (Standard, or no persona change).
@@ -680,8 +680,25 @@ admin.put('/:workspaceId/agents/:agentId/safety', async (req, res) => {
   res.json({ ok: true, agent: { id: rows[0].id, safety_profile: rows[0].safety_profile } })
 })
 
-// Re-role: swap an agent into a canonical preset (coach/researcher/coder/…).
-// Available to all tiers — this is how a free user makes their one agent useful
+// Web access opt-out - disable WebSearch/WebFetch (removes the untrusted-internet
+// attack surface). Enforced in agents.ts when the agent's tool set is built.
+admin.put('/:workspaceId/agents/:agentId/web-access', async (req, res) => {
+  if (!req.user) return res.status(401).json({ ok: false })
+  if (!(await userOwnsOrAdmins(req.user.id, req.params.workspaceId))) {
+    return res.status(403).json({ ok: false })
+  }
+  const enabled = req.body?.web_enabled === true
+  const { rows } = await db.query(
+    `UPDATE agents SET web_enabled = $1 WHERE id = $2 AND workspace_id = $3 RETURNING id, web_enabled`,
+    [enabled, req.params.agentId, req.params.workspaceId],
+  )
+  if (!rows[0]) return res.status(404).json({ ok: false })
+  broadcastToAll({ type: 'agents_updated', workspaceId: req.params.workspaceId })
+  res.json({ ok: true, agent: { id: rows[0].id, web_enabled: rows[0].web_enabled } })
+})
+
+// Re-role: swap an agent into a canonical preset (coach/researcher/coder/...).
+// Available to all tiers - this is how a free user makes their one agent useful
 // without authoring a custom soul. The soul text is taken from the SERVER-side
 // template, never from the client, so the preset path can't be used to smuggle
 // in custom souls past the free-tier gate.
@@ -763,7 +780,7 @@ admin.post(
   },
 )
 
-// Serve a previously uploaded avatar. Immutable cache — the URL is versioned.
+// Serve a previously uploaded avatar. Immutable cache - the URL is versioned.
 admin.get('/:workspaceId/agents/:agentId/avatar', async (req, res) => {
   if (!req.user) return res.status(401).json({ ok: false })
   if (!(await userInWorkspace(req.user.id, req.params.workspaceId))) {
@@ -808,13 +825,13 @@ admin.post('/:workspaceId/agents/generate-soul', async (req, res) => {
     return res.status(402).json({
       ok: false,
       code: 'upgrade_required',
-      error: 'AI-generated souls are a Standard feature. Upgrade to use “Surprise me”, or pick a preset role.',
+      error: 'AI-generated souls are a Standard feature. Upgrade to use "Surprise me", or pick a preset role.',
     })
   }
   const hint = typeof req.body?.hint === 'string' ? req.body.hint.trim().slice(0, 200) : ''
   const prompt = [
     `Invent a fresh, distinctive AI agent persona.`,
-    hint ? `Optional theme/hint: "${hint}".` : `Pick any interesting angle — useful, niche, surprising, but not silly.`,
+    hint ? `Optional theme/hint: "${hint}".` : `Pick any interesting angle - useful, niche, surprising, but not silly.`,
     `Output JSON only, no markdown fences, with this exact shape:`,
     `{ "name": "<single word, no spaces>", "avatar": "<single emoji>", "soul_md": "<the SOUL markdown>" }`,
     ``,
@@ -823,7 +840,7 @@ admin.post('/:workspaceId/agents/generate-soul', async (req, res) => {
     `- Sections: ## Who I Am, ## How I Show Up (bullet list), ## What I Care About, ## My Commitments`,
     `- Direct, warm voice. No corporate filler.`,
     `- Concrete behaviors over abstract values ("I cite sources" beats "I value accuracy").`,
-    `- The persona describes the AGENT itself — their voice, instincts, working style. Do not reference any particular product, company, workspace, project, or platform name. The agent's value is who they are, not where they happen to be deployed.`,
+    `- The persona describes the AGENT itself - their voice, instincts, working style. Do not reference any particular product, company, workspace, project, or platform name. The agent's value is who they are, not where they happen to be deployed.`,
   ].join('\n')
 
   const { studioComplete } = await import('./studio-llm.js')
@@ -851,10 +868,10 @@ admin.post('/:workspaceId/agents/generate-soul', async (req, res) => {
 
 // ---------- Pro tier upgrade ----------
 
-// Pricing surface — single source of truth (Pricing & Features v1, ratified
+// Pricing surface - single source of truth (Pricing & Features v1, ratified
 // 2026-06-15). Model: a $15/mo Standard seat (the billable platform-access unit)
 // plus a FLAT per-VPS Pro add-on. A Pro VPS holds up to PRO_VPS_AGENT_CAP agents
-// at one flat price regardless of how many (1–3) run on it; a 4th agent needs a
+// at one flat price regardless of how many (1-3) run on it; a 4th agent needs a
 // second VPS. This supersedes the old per-agent Pro Solo/Crew/Brigade tiers.
 export const STANDARD_SEAT_USD = 15
 export const FOUNDING_SEAT_USD = 10
@@ -886,7 +903,7 @@ admin.get('/:workspaceId/agents/:agentId/pro-droplet', async (req, res) => {
   const { getProDropletInfo } = await import(PRO_PROVISIONER_MOD)
   // Contain any failure here: an unguarded throw in droplet-info was crashing the
   // whole backend (unhandled rejection), which made unrelated pages like agent
-  // settings hang on "Loading…". Degrade to droplet: null instead.
+  // settings hang on "Loading...". Degrade to droplet: null instead.
   let info = null
   try {
     info = await getProDropletInfo(req.params.agentId)
