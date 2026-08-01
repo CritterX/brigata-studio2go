@@ -4,7 +4,7 @@
 -- writer that keeps subscription_status / current_period_end in sync.
 --
 -- subscription_status mirrors Stripe's subscription.status verbatim
--- (active, trialing, past_due, canceled, incomplete, …) plus NULL for users
+-- (active, trialing, past_due, canceled, incomplete, ...) plus NULL for users
 -- who have never started checkout (free tier).
 ALTER TABLE users ADD COLUMN IF NOT EXISTS stripe_customer_id     TEXT;
 ALTER TABLE users ADD COLUMN IF NOT EXISTS stripe_subscription_id TEXT;

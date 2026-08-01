@@ -4,7 +4,7 @@ import { IconChannel, IconBrigade, IconDocument, IconDashboard, IconGear, IconFo
 // Interactive "Northwind" showcase for the redesign (studio.example.com/?demo=1).
 // The real command-center shell + .cc-* styles, driven by curated sample data
 // you can actually click around in: switch rooms, type, send, and get a scripted
-// reply from that room's lead agent. Clearly badged as sample data — never the
+// reply from that room's lead agent. Clearly badged as sample data - never the
 // user's real account.
 
 type Dot = 'work' | 'on' | 'idle'
@@ -14,7 +14,7 @@ type Msg =
   | { id: string; kind: 'relay'; from: string; to: string; body: string; meta: string }
 
 const AGENTS: Agent[] = [
-  { id: 'nico', name: 'Nico', av: '🗺️', role: 'The planner', dot: 'work', st: 'working — drafting the plan' },
+  { id: 'nico', name: 'Nico', av: '🗺️', role: 'The planner', dot: 'work', st: 'working - drafting the plan' },
   { id: 'mara', name: 'Mara', av: '🗂️', role: 'The librarian', dot: 'on', st: 'awake' },
   { id: 'theo', name: 'Theo', av: '🔎', role: 'The researcher', dot: 'on', st: 'awake' },
   { id: 'vera', name: 'Vera', av: '👀', role: 'The watcher', dot: 'on', st: 'awake' },
@@ -33,17 +33,17 @@ const ROOMS: Room[] = [
 const MODEL = 'claude-sonnet-4-6'
 const SEED: Record<string, Msg[]> = {
   'this-week': [
-    { id: 's1', kind: 'hu', who: 'You', av: '🧑', tag: 'you', ts: '9:02', text: 'Map this week into a plan I can actually see — and pull in last week’s notes. @Nico take point.' },
-    { id: 's2', kind: 'ag', who: 'Nico', av: '🗺️', tag: 'agent', ts: '9:02', text: 'On it. I’ve got the shape of the week — five priorities, two are blocked on decisions only you can make. I’ll handle the planning doc; the stale-notes sweep is Mara’s wheelhouse, so I’m passing that over.', foot: `model ${MODEL} · turn 6.1s` },
+    { id: 's1', kind: 'hu', who: 'You', av: '🧑', tag: 'you', ts: '9:02', text: "Map this week into a plan I can actually see - and pull in last week's notes. @Nico take point." },
+    { id: 's2', kind: 'ag', who: 'Nico', av: '🗺️', tag: 'agent', ts: '9:02', text: "On it. I've got the shape of the week - five priorities, two are blocked on decisions only you can make. I'll handle the planning doc; the stale-notes sweep is Mara's wheelhouse, so I'm passing that over.", foot: `model ${MODEL} · turn 6.1s` },
     { id: 's3', kind: 'relay', from: 'nico', to: 'mara', body: 'Sweep #garden-plot for stale notes, fold the live ones into the plan.', meta: 'picked up 4s later · result will post in #this-week' },
-    { id: 's4', kind: 'ag', who: 'Mara', av: '🗂️', tag: 'agent', ts: '9:03', text: 'Got it from Nico. Found 4 notes worth keeping and 9 that were stale — archived those, threaded the keepers into the draft. The plan’s coming together cleanly.', foot: `model ${MODEL} · turn 8.4s` },
+    { id: 's4', kind: 'ag', who: 'Mara', av: '🗂️', tag: 'agent', ts: '9:03', text: "Got it from Nico. Found 4 notes worth keeping and 9 that were stale - archived those, threaded the keepers into the draft. The plan's coming together cleanly.", foot: `model ${MODEL} · turn 8.4s` },
   ],
   'research': [
     { id: 'r1', kind: 'hu', who: 'You', av: '🧑', tag: 'you', ts: '8:40', text: 'What are the three competitors charging now? @Theo' },
-    { id: 'r2', kind: 'ag', who: 'Theo', av: '🔎', tag: 'agent', ts: '8:41', text: 'Pulled fresh pricing this morning — two raised prices since last month. I’ll drop a side-by-side in a doc and flag the one that undercuts us.', foot: `model ${MODEL} · turn 5.2s` },
+    { id: 'r2', kind: 'ag', who: 'Theo', av: '🔎', tag: 'agent', ts: '8:41', text: "Pulled fresh pricing this morning - two raised prices since last month. I'll drop a side-by-side in a doc and flag the one that undercuts us.", foot: `model ${MODEL} · turn 5.2s` },
   ],
   'garden-plot': [
-    { id: 'g1', kind: 'ag', who: 'Mara', av: '🗂️', tag: 'agent', ts: 'Tue', text: 'Weekly tend done — folded 4 live notes into the plan and archived the rest. Nothing here needs you right now.', foot: `model ${MODEL} · turn 7.0s` },
+    { id: 'g1', kind: 'ag', who: 'Mara', av: '🗂️', tag: 'agent', ts: 'Tue', text: 'Weekly tend done - folded 4 live notes into the plan and archived the rest. Nothing here needs you right now.', foot: `model ${MODEL} · turn 7.0s` },
   ],
   'general': [
     { id: 'gn1', kind: 'ag', who: 'Concierge', av: '🛎️', tag: 'agent', ts: 'Mon', text: 'Welcome to Northwind. I keep the place tidy and route anything that needs a specialist. Say hello anytime.', foot: `model ${MODEL} · turn 2.1s` },
@@ -51,10 +51,10 @@ const SEED: Record<string, Msg[]> = {
 }
 
 const REPLIES = [
-  'Got it — on it. I’ll post the result back here when it’s done.',
-  'Understood. Give me a moment to pull this together and I’ll report back.',
-  'On it. I’ll flag anything blocked and hand off the rest.',
-  'Starting now — I’ll thread the outcome into the plan and ping you.',
+  "Got it - on it. I'll post the result back here when it's done.",
+  "Understood. Give me a moment to pull this together and I'll report back.",
+  "On it. I'll flag anything blocked and hand off the rest.",
+  "Starting now - I'll thread the outcome into the plan and ping you.",
 ]
 
 function nowTime(): string {
@@ -175,7 +175,7 @@ export function CommandCenterDemo({ me, onLogout }: { me: { name: string | null 
             <div className="cc-relay" key={msg.id}>
               <div className="cc-ic"><IconRelay size={17} /></div>
               <div>
-                <div className="cc-rt"><b>{byId(msg.from).name}</b> handed off to <b>{byId(msg.to).name}</b> — “{msg.body}”</div>
+                <div className="cc-rt"><b>{byId(msg.from).name}</b> handed off to <b>{byId(msg.to).name}</b> - "{msg.body}"</div>
                 <div className="cc-rs"><span style={{ color: 'var(--gold)' }}>Relay</span> · {msg.meta}</div>
               </div>
             </div>
@@ -202,7 +202,7 @@ export function CommandCenterDemo({ me, onLogout }: { me: { name: string | null 
                 value={draft}
                 onChange={e => { setDraft(e.target.value); const el = e.target; el.style.height = 'auto'; el.style.height = Math.min(el.scrollHeight, 160) + 'px' }}
                 onKeyDown={onKey}
-                placeholder={`Message #${room.name} — or hand a task to ${lead.name}`}
+                placeholder={`Message #${room.name} - or hand a task to ${lead.name}`}
               />
               <button type="submit" className="cc-send" title="Send (Enter)" disabled={!draft.trim()}>↑</button>
             </div>

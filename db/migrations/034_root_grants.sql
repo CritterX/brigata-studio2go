@@ -1,6 +1,6 @@
 -- Audit trail of root-privilege grants on managed Pro boxes. Append-only: one row
 -- each time an owner enables root, capturing who accepted, which ToS version, and
--- the source IP — the consent record behind the managed-root middle-ground.
+-- the source IP - the consent record behind the managed-root middle-ground.
 CREATE TABLE IF NOT EXISTS root_grants (
   id            UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   agent_id      UUID NOT NULL REFERENCES agents(id) ON DELETE CASCADE,

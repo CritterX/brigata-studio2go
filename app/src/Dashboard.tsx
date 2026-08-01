@@ -72,7 +72,7 @@ export function Dashboard({ me, onLogout }: { me: NonNullable<Me>; onLogout: () 
         <div className="flex items-center gap-3">
           <div className="w-8 h-8 rounded bg-[var(--color-accent)] flex items-center justify-center text-white font-bold">B</div>
           <div>
-            <div className="text-sm font-medium">{workspaces[0]?.name ?? 'Loading…'}</div>
+            <div className="text-sm font-medium">{workspaces[0]?.name ?? 'Loading...'}</div>
             <div className="text-xs text-[var(--color-text-dim)]">Dashboard preview · alt UI</div>
           </div>
         </div>
@@ -198,7 +198,7 @@ export function Dashboard({ me, onLogout }: { me: NonNullable<Me>; onLogout: () 
 }
 
 // Channel-wide conversation drawer. Same composer + message list as the
-// agent drawer, but isn't tied to a specific agent — multi-agent channels
+// agent drawer, but isn't tied to a specific agent - multi-agent channels
 // dispatch through Studio's normal selection rules.
 function ChannelDrawer({
   me, channel, workspaceId, agents, onClose,
@@ -295,7 +295,7 @@ function ChannelDrawer({
               if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); void send() }
             }}
             rows={Math.min(6, Math.max(1, draft.split('\n').length))}
-            placeholder={`Message #${channel.name}…`}
+            placeholder={`Message #${channel.name}...`}
             className="flex-1 resize-none bg-[var(--color-bg)] border border-[var(--color-border)] rounded px-3 py-2 text-sm focus:outline-none focus:border-[var(--color-accent)]"
             disabled={sending}
           />
@@ -304,7 +304,7 @@ function ChannelDrawer({
             disabled={!draft.trim() || sending}
             className="bg-[var(--color-accent)] text-white px-4 py-2 rounded text-sm hover:opacity-90 disabled:opacity-40"
           >
-            {sending ? '…' : 'Send'}
+            {sending ? '...' : 'Send'}
           </button>
         </form>
       </aside>
@@ -348,7 +348,7 @@ function DocDrawer({
         </header>
         <div className="flex-1 overflow-y-auto p-6 prose prose-invert max-w-none text-sm">
           {!loaded ? (
-            <div className="text-[var(--color-text-dim)]">Loading…</div>
+            <div className="text-[var(--color-text-dim)]">Loading...</div>
           ) : (
             <ReactMarkdown remarkPlugins={[remarkGfm]}>{body}</ReactMarkdown>
           )}
@@ -358,7 +358,7 @@ function DocDrawer({
   )
 }
 
-// Click-into-card drawer. Single conversation surface — focused, no rail.
+// Click-into-card drawer. Single conversation surface - focused, no rail.
 function AgentDrawer({
   me, agent, workspaceId, channels, onClose,
 }: {
@@ -465,7 +465,7 @@ function AgentDrawer({
               if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); void send() }
             }}
             rows={Math.min(6, Math.max(1, draft.split('\n').length))}
-            placeholder={`Message ${agent.name}…`}
+            placeholder={`Message ${agent.name}...`}
             className="flex-1 resize-none bg-[var(--color-bg)] border border-[var(--color-border)] rounded px-3 py-2 text-sm focus:outline-none focus:border-[var(--color-accent)]"
             disabled={sending}
           />
@@ -474,7 +474,7 @@ function AgentDrawer({
             disabled={!draft.trim() || sending}
             className="bg-[var(--color-accent)] text-white px-4 py-2 rounded text-sm hover:opacity-90 disabled:opacity-40"
           >
-            {sending ? '…' : 'Send'}
+            {sending ? '...' : 'Send'}
           </button>
         </form>
       </aside>

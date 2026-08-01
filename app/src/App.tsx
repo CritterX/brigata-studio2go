@@ -77,7 +77,7 @@ export default function App() {
     setMe(null)
   }
 
-  // Public path-based routes — the marketing/legal pages and invite landing.
+  // Public path-based routes - the marketing/legal pages and invite landing.
   // These must resolve before the signed-in Workspace redirect below, or a
   // signed-in user hitting /about, /terms, etc. falls through into the app.
   if (typeof window !== 'undefined') {
@@ -88,7 +88,7 @@ export default function App() {
     if (path === '/terms') return <Terms />
     if (path === '/help' || path === '/faq') return <Help />
     // Shareable, replayable onboarding walkthrough (no login, nothing saved).
-    // Off production by default — meant for studio.example.com/obdemo.
+    // Off production by default - meant for studio.example.com/obdemo.
     if (path === '/obdemo' && !/(^|\.)app\.brigata\.ai$/.test(window.location.hostname)) {
       return <Onboarding demo onDone={() => window.location.reload()} userName={null} />
     }
@@ -99,7 +99,7 @@ export default function App() {
   }
 
   if (loadedMe && me) {
-    // Still loading onboarding state — keep blank to avoid flashing.
+    // Still loading onboarding state - keep blank to avoid flashing.
     if (onboardingProfile === undefined) return null
     // No profile yet → show the wizard.
     if (onboardingProfile === null) {

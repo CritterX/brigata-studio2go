@@ -30,7 +30,7 @@ function classify(mime: string, filename: string): 'text' | 'image' | 'pdf' | 'o
   if (IMAGE_MIMES.has(mime)) return 'image'
   if (PDF_MIMES.has(mime)) return 'pdf'
   if (TEXT_MIMES.has(mime) || mime.startsWith('text/')) return 'text'
-  // Fall through: many code/text files arrive as octet-stream — sniff by extension.
+  // Fall through: many code/text files arrive as octet-stream - sniff by extension.
   const ext = path.extname(filename).toLowerCase()
   if (['.md', '.txt', '.csv', '.json', '.yaml', '.yml', '.log', '.ts', '.tsx',
        '.js', '.jsx', '.py', '.rb', '.go', '.rs', '.java', '.c', '.cpp', '.h',

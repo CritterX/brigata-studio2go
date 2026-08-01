@@ -1,7 +1,7 @@
 // Password login screen for self-host ("standalone") mode. Rendered by App.tsx
 // in place of the Google sign-in button when /api/standalone-status reports
 // { standalone: true } and the operator is signed out. There is no Google OAuth
-// in a self-host install — the single operator authenticates with the shared
+// in a self-host install - the single operator authenticates with the shared
 // STANDALONE_ADMIN_PASSWORD via POST /api/auth/standalone-login.
 //
 // This whole component is dead code in the cloud build (never mounted), so it
@@ -61,7 +61,7 @@ export function StandaloneLogin({ onSignedIn }: { onSignedIn: () => void }) {
         disabled={busy || !password}
         className="w-full rounded-md bg-[var(--color-accent)] px-4 py-2.5 text-sm font-medium text-black transition hover:opacity-90 disabled:opacity-50"
       >
-        {busy ? 'Signing in…' : 'Sign in'}
+        {busy ? 'Signing in...' : 'Sign in'}
       </button>
       <p className="text-center text-xs text-[var(--color-text-dim)]">
         Self-hosted instance · single admin

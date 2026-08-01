@@ -2,7 +2,7 @@
 // A tokenless user runs a capped number of agent turns on Brigata's own Anthropic
 // key (pinned to Haiku) so they can watch an agent take real action before
 // connecting their own Claude. Everything here is INERT unless both
-// DEMO_MODE_ENABLED is truthy AND BRIGATA_DEMO_ANTHROPIC_KEY is set — so deploying
+// DEMO_MODE_ENABLED is truthy AND BRIGATA_DEMO_ANTHROPIC_KEY is set - so deploying
 // this code changes nothing until the operator flips the flag and adds the key.
 import { db } from './db.js'
 

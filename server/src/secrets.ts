@@ -51,7 +51,7 @@ export function decryptSecret(value: string): string {
     throw new Error('INTEGRATION_SECRET_KEY is not set but an encrypted secret was found')
   }
   const parts = value.split(':')
-  // enc:v1:<iv>:<tag>:<ct> — base64 segments never contain ':'
+  // enc:v1:<iv>:<tag>:<ct> - base64 segments never contain ':'
   const [, , ivB64, tagB64, ctB64] = parts
   const iv = Buffer.from(ivB64, 'base64')
   const tag = Buffer.from(tagB64, 'base64')

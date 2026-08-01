@@ -1,7 +1,7 @@
 // Hosting classification for agents. Three buckets surface in the UI:
 //  - 'pro_droplet'  → Pro · Managed: a dedicated managed VPS we provision
 //  - 'external'     → Pro · BYOVPS: Pro running on the subscriber's own server
-//                     (a +$10/mo Pro add-on — this is a Pro flavor, NOT a tier below Pro)
+//                     (a +$10/mo Pro add-on - this is a Pro flavor, NOT a tier below Pro)
 //  - anything else  → Standard: runs in-process on the shared backend (local)
 // Both 'pro' and 'byovps' are Pro-tier and should read as Pro in the UI; only
 // 'standard' is the non-Pro tier and must be visually distinct from them.

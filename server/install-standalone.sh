@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # =============================================================================
-# Brigata Studio — one-command STANDALONE / self-host installer
+# Brigata Studio - one-command STANDALONE / self-host installer
 # =============================================================================
 # Gets you from a fresh Ubuntu/Debian host to a running single-tenant Brigata
 # Studio: one admin (password login), one workspace, one Standard (in-process)
@@ -14,7 +14,7 @@
 #   4. Writes server/.env from server/.env.standalone.template (won't clobber an
 #      existing .env unless you pass FORCE_ENV=1).
 #   5. Builds the server (server/) and the web app (app/).
-#   6. Prints how to start it — or emits a systemd unit if EMIT_SYSTEMD=1.
+#   6. Prints how to start it - or emits a systemd unit if EMIT_SYSTEMD=1.
 #
 # Values you must supply (env vars, or you'll be prompted where interactive):
 #   STANDALONE_ADMIN_PASSWORD   the shared admin login password (required)
@@ -160,7 +160,7 @@ else
   info "database '$PG_DB' created"
 fi
 
-# Make sure uuid-ossp (used by 001_initial) can be created — it needs superuser.
+# Make sure uuid-ossp (used by 001_initial) can be created - it needs superuser.
 "${PSQL_ADMIN[@]}" -v ON_ERROR_STOP=1 -d "${PG_DB}" -c 'CREATE EXTENSION IF NOT EXISTS "uuid-ossp";' >/dev/null
 
 # ---------------------------------------------------------------------------
@@ -203,7 +203,7 @@ info "migrations: $applied applied, $skipped already present"
 step "Writing $ENV_FILE"
 
 if [ -f "$ENV_FILE" ] && [ "${FORCE_ENV:-0}" != "1" ]; then
-  warn "$ENV_FILE already exists — leaving it untouched (set FORCE_ENV=1 to overwrite)."
+  warn "$ENV_FILE already exists - leaving it untouched (set FORCE_ENV=1 to overwrite)."
 else
   # Start from the template, then substitute the values we know. Anything not
   # matched keeps its template line so the operator can hand-edit later.
@@ -284,14 +284,14 @@ cat <<DONE
       node dist/index.standalone.js
 
   It will listen on http://${BIND_HOST}:${PORT} and serves BOTH the web app and
-  the API — open that URL in a browser and sign in with the admin password you
+  the API - open that URL in a browser and sign in with the admin password you
   configured. No reverse proxy is needed to use it locally.
 
   Remote access (the server binds to ${BIND_HOST}, not the public internet):
     - Reverse proxy + TLS (recommended): Caddy or nginx in front, terminating
       HTTPS, proxying to 127.0.0.1:${PORT}. Then set SESSION_COOKIE_DOMAIN to
       your hostname in $ENV_FILE and restart.
-    - Or a tunnel: cloudflared / tailscale funnel — no open ports needed.
+    - Or a tunnel: cloudflared / tailscale funnel - no open ports needed.
     Do NOT expose port ${PORT} directly to the internet without TLS.
 
   Config lives in: $ENV_FILE

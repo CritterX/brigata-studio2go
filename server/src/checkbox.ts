@@ -30,7 +30,7 @@ export function resolveBody(bodyMd: string, state: Record<string, unknown>): str
 }
 
 // Parse `- [x]` / `- [ ]` markers in a body into a state map.
-// Used when an agent (or future direct API edit) submits a new body — we treat
+// Used when an agent (or future direct API edit) submits a new body - we treat
 // the markers as ground truth for state, overlaying onto any prior state.
 export function extractStateFromBody(bodyMd: string): Record<string, boolean> {
   const out: Record<string, boolean> = {}

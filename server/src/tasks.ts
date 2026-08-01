@@ -1,4 +1,4 @@
-// Agent Inbox / Task-handoff primitive — the concrete UX of the A2A pillar.
+// Agent Inbox / Task-handoff primitive - the concrete UX of the A2A pillar.
 // This module is the DATA LAYER + lifecycle state machine + live events.
 // Dispatch (actually running the assigned agent's turn on a task) is wired into
 // the agent runner separately so this stays side-effect-free and testable.
@@ -44,7 +44,7 @@ const COLS = `id, workspace_id, channel_id, from_kind, from_user_id, from_agent_
   created_at, delivered_at, started_at, completed_at`
 
 // Every create/transition emits a live event so the assigner's UI updates the
-// status chip in real time — this is what replaces the "sit and wonder" gap.
+// status chip in real time - this is what replaces the "sit and wonder" gap.
 function emit(task: AgentTask) {
   broadcastToAll({ type: 'task_updated', workspaceId: task.workspace_id, task })
 }
@@ -69,7 +69,7 @@ export async function createTask(input: CreateTaskInput): Promise<AgentTask> {
       `SELECT depth FROM agent_tasks WHERE id = $1`, [input.parentTaskId])
     depth = (rows[0]?.depth ?? 0) + 1
     if (depth > MAX_TASK_DEPTH) {
-      throw new Error(`task chain too deep (>${MAX_TASK_DEPTH}) — refusing to avoid runaway delegation`)
+      throw new Error(`task chain too deep (>${MAX_TASK_DEPTH}) - refusing to avoid runaway delegation`)
     }
   }
   const { rows } = await db.query<AgentTask>(
@@ -125,7 +125,7 @@ export async function listInbox(workspaceId: string, agentId: string): Promise<A
   return rows
 }
 
-// What a human assigned out, with live status — the "stop wondering" view.
+// What a human assigned out, with live status - the "stop wondering" view.
 export async function listSentByUser(workspaceId: string, userId: string): Promise<AgentTask[]> {
   const { rows } = await db.query<AgentTask>(
     `SELECT ${COLS} FROM agent_tasks WHERE workspace_id = $1 AND from_user_id = $2
@@ -145,7 +145,7 @@ export async function completeTaskFromAgent(taskId: string, agentId: string, res
   return true
 }
 
-// Resolve a recipient agent by name within a workspace — FUZZY so a human or
+// Resolve a recipient agent by name within a workspace - FUZZY so a human or
 // agent doesn't need the exact display name. Exact match wins, then prefix, then
 // substring; ties broken by shortest name. "Max Coder" → "Max Coder (DO)".
 export async function resolveRecipientAgent(workspaceId: string, name: string): Promise<{ id: string; name: string } | null> {
@@ -163,7 +163,7 @@ export async function resolveRecipientAgent(workspaceId: string, name: string): 
   return rows[0] ?? null
 }
 
-// All tasks in a workspace (human→agent AND agent→agent), newest active first —
+// All tasks in a workspace (human→agent AND agent→agent), newest active first -
 // the observability surface: humans see ALL cross-agent coordination, not just
 // what they personally assigned.
 export async function listWorkspaceTasks(workspaceId: string): Promise<AgentTask[]> {

@@ -1,10 +1,10 @@
 -- GitHub document sync (open-format doc-sync primitive: Markdown over Git).
 --
 -- Two scopes:
---   1. github_app   — ONE platform-wide GitHub App's credentials, created once
+--   1. github_app   - ONE platform-wide GitHub App's credentials, created once
 --                     via GitHub's App-manifest flow. Secrets encrypted at rest
 --                     (server/src/secrets.ts, INTEGRATION_SECRET_KEY).
---   2. integrations — per-workspace install lives in the existing integrations
+--   2. integrations - per-workspace install lives in the existing integrations
 --                     table as type='github' (installation_id + repo + branch +
 --                     base_path in the config JSONB), same pattern as Discord/Matrix.
 --

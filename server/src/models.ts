@@ -5,7 +5,7 @@
 //
 // Policy (see memory "model-update-strategy"): new models are ENABLE-ONLY. Adding
 // a model here makes it selectable but never silently changes existing agents'
-// defaults — DEFAULT_MODEL stays put unless we deliberately move it.
+// defaults - DEFAULT_MODEL stays put unless we deliberately move it.
 
 export interface ModelInfo {
   id: string

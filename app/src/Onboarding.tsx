@@ -3,13 +3,13 @@ import { AGENT_TEMPLATES } from './lib/agentTemplates'
 
 type Answers = {
   ai_familiarity?: 'new' | 'few-times' | 'daily' | 'developer'
-  interests?: string[]   // Q2 — inspiration nuggets that seed channels + crew
-  traits?: string[]      // Q3 — personality nuggets that shape the agents' voice
+  interests?: string[]   // Q2 - inspiration nuggets that seed channels + crew
+  traits?: string[]      // Q3 - personality nuggets that shape the agents' voice
 }
 
 const STEPS = ['intro', 'idea', 'ideas', 'ai', 'intent', 'comfort', 'name', 'role', 'setup', 'assemble', 'claude', 'done'] as const
 type Step = (typeof STEPS)[number]
-// The setup "build" sequence — revealed one at a time (spinner → check) so it
+// The setup "build" sequence - revealed one at a time (spinner → check) so it
 // reads like real work happening, not an instant flash.
 const SETUP_STEPS = [
   'Provisioning your workspace',
@@ -22,12 +22,12 @@ const QUESTION_STEPS: Step[] = ['ai', 'intent', 'comfort']
 const RAIL_LABEL: Record<string, string> = { ai: 'You', intent: 'Interests', comfort: 'Style' }
 
 const AI_OPTIONS: { value: NonNullable<Answers['ai_familiarity']>; label: string }[] = [
-  { value: 'new', label: "Brand new — heard about it, haven't really used it" },
+  { value: 'new', label: "Brand new - heard about it, haven't really used it" },
   { value: 'few-times', label: "I've used ChatGPT or similar a few times" },
   { value: 'daily', label: 'I use AI tools daily for work or hobbies' },
   { value: 'developer', label: "I build with AI APIs / I'm a developer" },
 ]
-// Q2 "fridge magnets" — ~30 plain-language nuggets. Each belongs to a bucket
+// Q2 "fridge magnets" - ~30 plain-language nuggets. Each belongs to a bucket
 // that maps to one channel + one starter agent, so picking several still yields
 // a small, coherent studio (buckets dedupe) rather than 30 agents.
 type Bucket = 'learn' | 'writing' | 'research' | 'coding' | 'business' | 'creative' | 'daily'
@@ -74,7 +74,7 @@ const INTEREST_OPTIONS: { value: string; label: string; bucket: Bucket }[] = [
 ]
 
 // Q3 personality nuggets. Each can nudge tone (casual/formal), detail
-// (brief/thorough), and/or add a soul-doc note — together they begin to define
+// (brief/thorough), and/or add a soul-doc note - together they begin to define
 // how the agents actually talk.
 type Tone = 'casual' | 'formal'
 type Detail = 'brief' | 'thorough'
@@ -94,7 +94,7 @@ const TRAIT_OPTIONS: { value: string; label: string; tone?: Tone; detail?: Detai
 ]
 
 // Reduce the selected style nuggets into a small persona the workbench and the
-// final receipt can show — and that the soul docs would draw from.
+// final receipt can show - and that the soul docs would draw from.
 function derivePersona(traits: string[] = []): { tone: string; detail: string; tags: string[] } {
   const sel = TRAIT_OPTIONS.filter(t => traits.includes(t.value))
   const tones = sel.map(t => t.tone).filter(Boolean) as Tone[]
@@ -122,7 +122,7 @@ function deriveStudio(a: Answers): { channels: WbChannel[]; agents: WbAgent[] } 
   if (a.ai_familiarity === 'new' || a.ai_familiarity === 'few-times') addCh('getting-started', 'guide')
   if (a.ai_familiarity === 'developer') addCh('dev', 'core')
 
-  // Coach rides with every studio — the friendly default Kris wanted on the
+  // Coach rides with every studio - the friendly default Kris wanted on the
   // base squad (opt out by changing its role later, not by omitting it here).
   addAg('coach', 'core')
 
@@ -148,7 +148,7 @@ function templateMeta(id: string) {
 // One-line hello in each archetype's own voice, for the "crew assembles" reveal
 // at the end of setup. Keyed by template id; falls back to a generic line.
 const AGENT_HELLOS: Record<string, string> = {
-  concierge: "Hey — I'll help with whatever comes up.",
+  concierge: "Hey - I'll help with whatever comes up.",
   coach: "I'll keep us on track and honest.",
   researcher: "I'll dig up the facts and cite them.",
   coder: "I'll build it and sweat the bugs.",
@@ -230,7 +230,7 @@ export function Onboarding({ onDone, userName, demo = false, standalone = false 
   const starterTemplates = isFree ? [roleForFree] : studio.agents.map(a => a.template)
   const previewAgents = isFree ? [{ template: roleForFree, tag: 'your agent' }] : studio.agents
   const firstName = (userName ?? '').trim().split(/\s+/)[0] || ''
-  // The crew that actually gets created — drives the "say hello" reveal.
+  // The crew that actually gets created - drives the "say hello" reveal.
   const crewList = starterTemplates.map(id => {
     const meta = templateMeta(id)
     return {
@@ -271,7 +271,7 @@ export function Onboarding({ onDone, userName, demo = false, standalone = false 
       }).catch(() => {})
     }
     // Reveal the build steps one at a time (~1.3s each) so it reads like real
-    // work — slow enough that people can actually read each line as it lands.
+    // work - slow enough that people can actually read each line as it lands.
     const per = 1300
     const timers = SETUP_STEPS.map((_, i) => setTimeout(() => setSetupDone(i + 1), per * (i + 1)))
     // After the last check lands, hold a beat, then hand off to the crew reveal
@@ -289,7 +289,7 @@ export function Onboarding({ onDone, userName, demo = false, standalone = false 
     const n = crewList.length
     const per = 700
     const timers = crewList.map((_, i) => setTimeout(() => setAssembled(i + 1), 400 + per * i))
-    // Let the whole crew sit there and breathe before advancing — Chris noted the
+    // Let the whole crew sit there and breathe before advancing - Chris noted the
     // old hold cut the moment off. ~3.6s after the last hello lands.
     const advance = setTimeout(() => setStep(demo || standalone ? 'done' : 'claude'), 400 + per * n + 3600)
     return () => { timers.forEach(clearTimeout); clearTimeout(advance) }
@@ -308,7 +308,7 @@ export function Onboarding({ onDone, userName, demo = false, standalone = false 
         if (cancelled) return
         if (d?.user?.has_anthropic_token) {
           setClaudeConnected(true)
-          // Don't auto-advance — show the success state for ~1.5s then move on.
+          // Don't auto-advance - show the success state for ~1.5s then move on.
           setTimeout(() => { if (!cancelled) setStep('done') }, 1500)
         }
       })
@@ -330,7 +330,7 @@ export function Onboarding({ onDone, userName, demo = false, standalone = false 
     setDemoBusy(false)
     // Only enter the studio once the demo allotment actually exists. If we
     // advanced on failure, the user would be promised a free demo and instead
-    // hit the connect-Claude wall on their first message — a bait-and-switch.
+    // hit the connect-Claude wall on their first message - a bait-and-switch.
     if (r?.ok) {
       onDone()
     } else {
@@ -340,7 +340,7 @@ export function Onboarding({ onDone, userName, demo = false, standalone = false 
 
   // Ask the idea engine for 3 first-project ideas. On any non-LLM result
   // (disabled/limited/timeout/empty) we route to the honest question flow rather
-  // than show canned cards — no fake "magic".
+  // than show canned cards - no fake "magic".
   async function submitWant() {
     const want = wantText.trim()
     if (!want || ideaBusy) return
@@ -361,11 +361,11 @@ export function Onboarding({ onDone, userName, demo = false, standalone = false 
 
   // Carry the chosen idea into the real workspace. /seed self-completes
   // onboarding (sets funnel_seeded_at), so this path must NOT also fire the
-  // template POST at the 'setup' step — we jump straight to 'claude'.
+  // template POST at the 'setup' step - we jump straight to 'claude'.
   async function pickIdea(idea: Idea) {
     if (seedBusy) return
     if (demo) {
-      // No real workspace to seed — fake the result from the chosen idea so the
+      // No real workspace to seed - fake the result from the chosen idea so the
       // reveal lands, then end on a "run it again" loop. Nothing is persisted.
       const crew = idea.crew.map(c => CREW_CAST[c]?.name ?? c)
       const channel = idea.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 22) || 'your-project'
@@ -430,7 +430,7 @@ export function Onboarding({ onDone, userName, demo = false, standalone = false 
     <aside className="ob-workbench">
       <div className="ob-wb-header">
         <span className="title">Your studio</span>
-        <span className="pulse-line"><span className="dot" />assembling…</span>
+        <span className="pulse-line"><span className="dot" />assembling...</span>
       </div>
       <div className="ob-wb-body">
         <div>
@@ -444,7 +444,7 @@ export function Onboarding({ onDone, userName, demo = false, standalone = false 
                   <span className="tag">{c.tag}</span>
                 </div>
               ) : (
-                <div key={`pc${i}`} className="ob-wb-item pending"><span className="hash">#</span><span className="iname">…</span></div>
+                <div key={`pc${i}`} className="ob-wb-item pending"><span className="hash">#</span><span className="iname">...</span></div>
               ),
             )}
           </div>
@@ -460,7 +460,7 @@ export function Onboarding({ onDone, userName, demo = false, standalone = false 
                   <span className="tag">{a.tag}</span>
                 </div>
               ) : (
-                <div key={`pa${i}`} className="ob-wb-item pending agent"><span className="hash">⌗</span><span className="iname">…</span></div>
+                <div key={`pa${i}`} className="ob-wb-item pending agent"><span className="hash">⌗</span><span className="iname">...</span></div>
               ),
             )}
           </div>
@@ -478,8 +478,8 @@ export function Onboarding({ onDone, userName, demo = false, standalone = false 
         <div className="ob-wb-note">
           <div className="label">Note</div>
           {isFree
-            ? `Nothing's saved until you finish. Your free agent is the real thing — custom soul, skills, memory. Pick its role next. Add a whole crew anytime with Standard.`
-            : `Nothing's saved until you finish. Starter agents come pre-named after their role — you'll name them next, and can change everything later.`}
+            ? `Nothing's saved until you finish. Your free agent is the real thing - custom soul, skills, memory. Pick its role next. Add a whole crew anytime with Standard.`
+            : `Nothing's saved until you finish. Starter agents come pre-named after their role - you'll name them next, and can change everything later.`}
         </div>
       </div>
     </aside>
@@ -560,7 +560,7 @@ export function Onboarding({ onDone, userName, demo = false, standalone = false 
     <div className="ob-root">
       {demo && (
         <div style={{ position: 'fixed', top: 0, left: 0, right: 0, zIndex: 60, textAlign: 'center', fontFamily: 'var(--font-mono)', fontSize: 11, letterSpacing: '.04em', color: 'var(--color-text-dim)', background: 'var(--color-surface)', borderBottom: '1px solid var(--color-border)', padding: '6px 12px' }}>
-          Onboarding demo — a replayable walkthrough. Nothing is saved; refresh anytime to start over.
+          Onboarding demo - a replayable walkthrough. Nothing is saved; refresh anytime to start over.
         </div>
       )}
       <div className="ob-brand">brig<span className="accent">a</span>ta<span className="meta">studio · onboarding</span></div>
@@ -590,7 +590,7 @@ export function Onboarding({ onDone, userName, demo = false, standalone = false 
             <h1 className="ob-hero-title">Welcome to Brigata <span className="accent">Studio</span>.</h1>
             <p className="ob-lede">
               Brigata is a shared workspace where you and a small team of AI helpers work side by side.
-              Answer a few quick questions — no jargon — and we'll set the room up so it fits you from
+              Answer a few quick questions - no jargon - and we'll set the room up so it fits you from
               the very first message.
             </p>
             <div className="ob-btn-row">
@@ -609,7 +609,7 @@ export function Onboarding({ onDone, userName, demo = false, standalone = false 
             <div className="ob-paper">
               <div className="ob-stepnum"><span>★</span><span className="of">your first project</span></div>
               <h2 className="ob-question-h">What's something you'd love a hand with?</h2>
-              <p className="ob-subtitle">A few words is plenty. We'll turn it into a few concrete first projects — and the crew to tackle each.</p>
+              <p className="ob-subtitle">A few words is plenty. We'll turn it into a few concrete first projects - and the crew to tackle each.</p>
               <textarea
                 className="ob-idea-input"
                 value={wantText}
@@ -626,7 +626,7 @@ export function Onboarding({ onDone, userName, demo = false, standalone = false 
                   <button className="ob-btn-quiet" onClick={() => setStep('ai')}>I'd rather answer a few questions</button>
                 </div>
                 <button className="ob-btn-primary" disabled={!wantText.trim() || ideaBusy} onClick={() => void submitWant()}>
-                  <span className="glyph">▶</span> {ideaBusy ? 'Thinking…' : 'Show me ideas'}
+                  <span className="glyph">▶</span> {ideaBusy ? 'Thinking...' : 'Show me ideas'}
                 </button>
               </div>
             </div>
@@ -638,7 +638,7 @@ export function Onboarding({ onDone, userName, demo = false, standalone = false 
             <div className="ob-paper">
               <div className="ob-stepnum"><span>★</span><span className="of">pick a starting point</span></div>
               <h2 className="ob-question-h">Here's where we could start.</h2>
-              <p className="ob-subtitle">Pick the one that feels right. Your crew assembles around it — you can change anything later.</p>
+              <p className="ob-subtitle">Pick the one that feels right. Your crew assembles around it - you can change anything later.</p>
               <div className="ob-ideas-grid">
                 {(ideaList ?? []).map((idea, i) => (
                   <button key={i} className="ob-idea-card" disabled={seedBusy} onClick={() => void pickIdea(idea)}>
@@ -660,7 +660,7 @@ export function Onboarding({ onDone, userName, demo = false, standalone = false 
                 <div className="left">
                   <button className="ob-btn-quiet" onClick={() => setStep('idea')}>← Try different words</button>
                 </div>
-                {seedBusy && <span className="ob-subtitle" style={{ margin: 0 }}>Setting up your studio…</span>}
+                {seedBusy && <span className="ob-subtitle" style={{ margin: 0 }}>Setting up your studio...</span>}
               </div>
             </div>
           </div>
@@ -678,7 +678,7 @@ export function Onboarding({ onDone, userName, demo = false, standalone = false 
         {step === 'intent' && questionScene({
           num: '02', railName: 'interests',
           title: 'Do any of these appeal to you?',
-          subtitle: 'Tap anything that sparks — pick as many as you like. Each one becomes a channel and a teammate in your studio. There are no wrong answers.',
+          subtitle: 'Tap anything that sparks - pick as many as you like. Each one becomes a channel and a teammate in your studio. There are no wrong answers.',
           body: chipCloud(
             INTEREST_OPTIONS,
             answers.interests,
@@ -696,7 +696,7 @@ export function Onboarding({ onDone, userName, demo = false, standalone = false 
         {step === 'comfort' && questionScene({
           num: '03', railName: 'style',
           title: 'Pick the ones that sound like you.',
-          subtitle: 'These shape how your agents talk — how short, how formal, how much they check in before acting.',
+          subtitle: 'These shape how your agents talk - how short, how formal, how much they check in before acting.',
           body: chipCloud(
             TRAIT_OPTIONS,
             answers.traits,
@@ -755,7 +755,7 @@ export function Onboarding({ onDone, userName, demo = false, standalone = false 
             <div className="ob-paper">
               <div className="ob-stepnum"><span>★</span><span className="of">pick your agent</span></div>
               <h2 className="ob-question-h">Choose your agent's role.</h2>
-              <p className="ob-subtitle">Your free agent is the real thing — custom soul, skills, memory. Pick the role that fits; you can switch it anytime, and add a whole crew with Standard.</p>
+              <p className="ob-subtitle">Your free agent is the real thing - custom soul, skills, memory. Pick the role that fits; you can switch it anytime, and add a whole crew with Standard.</p>
               <div className="ob-role-grid">
                 {AGENT_TEMPLATES.map(t => (
                   <button
@@ -796,14 +796,14 @@ export function Onboarding({ onDone, userName, demo = false, standalone = false 
 
         {step === 'setup' && (
           <div className="ob-scene ob-setup">
-            <h2 className="ob-setup-title">Setting up your studio…</h2>
+            <h2 className="ob-setup-title">Setting up your studio...</h2>
             <div className="ob-setup-log">
               {SETUP_STEPS.map((label, i) => {
                 const state = i < setupDone ? 'ok' : i === setupDone ? 'run' : 'wait'
                 return (
                   <div key={label} className={`ob-log-line ${state}`}>
                     <span className="glyph">{state === 'ok' ? '✓' : state === 'run' ? <span className="ob-spinner" /> : '○'}</span>
-                    <span>{label}{state === 'run' ? '…' : ''}</span>
+                    <span>{label}{state === 'run' ? '...' : ''}</span>
                   </div>
                 )
               })}
@@ -845,7 +845,7 @@ export function Onboarding({ onDone, userName, demo = false, standalone = false 
             {claudeConnected ? (
               <div className="ob-claude-success">
                 <span className="check">✓</span>
-                <span>Connected — your agents are ready. Taking you in…</span>
+                <span>Connected - your agents are ready. Taking you in...</span>
               </div>
             ) : (
               <>
@@ -864,14 +864,14 @@ export function Onboarding({ onDone, userName, demo = false, standalone = false 
                     <li>Generate a token:
                       <code className="ob-claude-cmd">claude setup-token</code>
                     </li>
-                    <li>Paste the <code>sk-ant-oat…</code> token below.</li>
+                    <li>Paste the <code>sk-ant-oat...</code> token below.</li>
                   </ol>
                   <div className="ob-claude-input-row">
                     <input
                       type="password"
                       value={claudeToken}
                       onChange={e => setClaudeToken(e.target.value)}
-                      placeholder={claudeShowApi ? 'sk-ant-oat01-… or sk-ant-api03-…' : 'sk-ant-oat01-…'}
+                      placeholder={claudeShowApi ? 'sk-ant-oat01-... or sk-ant-api03-...' : 'sk-ant-oat01-...'}
                       className="ob-claude-input"
                       onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); void connectClaude() } }}
                     />
@@ -881,7 +881,7 @@ export function Onboarding({ onDone, userName, demo = false, standalone = false 
                       disabled={claudeBusy || !claudeToken.trim()}
                       className="ob-btn-primary"
                     >
-                      <span className="glyph">▶</span> {claudeBusy ? 'Verifying…' : 'Connect'}
+                      <span className="glyph">▶</span> {claudeBusy ? 'Verifying...' : 'Connect'}
                     </button>
                   </div>
                   {claudeError && (
@@ -901,7 +901,7 @@ export function Onboarding({ onDone, userName, demo = false, standalone = false 
                   <div className="ob-claude-card api">
                     <p className="ob-claude-card-desc">
                       Bills against your Anthropic console credit. Create one at{' '}
-                      <code>console.anthropic.com</code>; format is <code>sk-ant-api03-…</code>.
+                      <code>console.anthropic.com</code>; format is <code>sk-ant-api03-...</code>.
                       Paste it in the same field above and click Connect.
                     </p>
                   </div>
@@ -916,7 +916,7 @@ export function Onboarding({ onDone, userName, demo = false, standalone = false 
                       onClick={() => void startDemoFlow()}
                       disabled={demoBusy}
                     >
-                      {demoBusy ? 'Setting up…' : 'Try a quick demo first — no setup'}
+                      {demoBusy ? 'Setting up...' : 'Try a quick demo first - no setup'}
                     </button>
                     <p className="ob-claude-demo-note">
                       Watch an agent build a doc and search the web, on us. Connect your Claude
@@ -961,8 +961,8 @@ export function Onboarding({ onDone, userName, demo = false, standalone = false 
               {seeded
                 ? `Your studio's ready. ${seeded.crew.join(', ')} ${seeded.crew.length === 1 ? 'is' : 'are'} set up${seeded.channel ? ` in #${seeded.channel}` : ''}, with your plan pinned and a first message waiting.`
                 : isFree
-                  ? `Your studio's ready. Your free agent is the real thing — custom soul, skills, memory — and yours from the first message. Switch its role anytime, or add a crew with Standard.`
-                  : `Your studio's ready. We've set up your channels and starter agents based on your answers — renamed and yours from the first message.`}
+                  ? `Your studio's ready. Your free agent is the real thing - custom soul, skills, memory - and yours from the first message. Switch its role anytime, or add a crew with Standard.`
+                  : `Your studio's ready. We've set up your channels and starter agents based on your answers - renamed and yours from the first message.`}
             </p>
             <div className="ob-receipt">
               {seeded ? (

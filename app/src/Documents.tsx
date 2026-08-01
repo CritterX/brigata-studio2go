@@ -53,7 +53,7 @@ function slugify(s: string): string {
 }
 
 // Self-contained task checkbox. Holds its own checked state so toggling
-// re-renders only this item — the parent must NOT rebuild the markdown
+// re-renders only this item - the parent must NOT rebuild the markdown
 // `components` map on toggle, or ReactMarkdown remounts the whole doc and
 // the scroll position jumps to the top (very visible on mobile).
 function TaskItem({
@@ -214,7 +214,7 @@ export function Documents({
   async function uploadFiles(files: FileList | File[]) {
     const arr = Array.from(files)
     if (!workspaceId) { setUploadStatus('Error: no workspace selected'); return }
-    setUploadStatus(`Uploading ${arr.length} file${arr.length === 1 ? '' : 's'}…`)
+    setUploadStatus(`Uploading ${arr.length} file${arr.length === 1 ? '' : 's'}...`)
     let okCount = 0
     const errors: string[] = []
     for (const file of arr) {
@@ -276,7 +276,7 @@ export function Documents({
         }
         void refreshList()
       } else if (p.type === 'agent_document_focus') {
-        // Agent just created or edited a doc — pull it into focus, unless the
+        // Agent just created or edited a doc - pull it into focus, unless the
         // user is mid-edit on something else (don't yank them out of typing).
         if (p.documentId && !editingRef.current && p.documentId !== activeIdRef.current) {
           setActiveId(p.documentId)
@@ -383,7 +383,7 @@ export function Documents({
     setDoc({ ...d, channel_id: channelId })
   }
 
-  // File a doc into a folder (or unfile it with null) — the target of drag-and-drop
+  // File a doc into a folder (or unfile it with null) - the target of drag-and-drop
   // in the doc list. Optimistic-ish: PATCH then refresh the list.
   async function moveDocToFolder(docId: string, folder: string | null) {
     await fetch(`/api/workspaces/${workspaceId}/documents/${docId}`, {
@@ -418,7 +418,7 @@ export function Documents({
   docRef.current = doc
 
   // Persist via a ref so this stays referentially stable and out of the
-  // `components` deps — see TaskItem for why a stable map matters.
+  // `components` deps - see TaskItem for why a stable map matters.
   function persistCheckbox(id: string, next: boolean) {
     const d = docRef.current
     if (!d) return
@@ -464,7 +464,7 @@ export function Documents({
     () => ({
       input: ({ checked, type, ...rest }: { checked?: boolean; type?: string }) => {
         if (type !== 'checkbox') return <input type={type} {...rest} />
-        // unused — we render the checkbox via the `li` task-item override below.
+        // unused - we render the checkbox via the `li` task-item override below.
         return null
       },
       p: ({ children, ...rest }: { children?: React.ReactNode } & React.HTMLAttributes<HTMLParagraphElement>) => (
@@ -528,7 +528,7 @@ export function Documents({
         )
       },
     }),
-    // Stable across checkbox toggles — TaskItem owns its own checked state.
+    // Stable across checkbox toggles - TaskItem owns its own checked state.
     // Recreate only on doc switch or body edit, else ReactMarkdown remounts
     // the whole doc and the scroll jumps to top.
     [doc?.id, prepared],
@@ -609,7 +609,7 @@ export function Documents({
             value={scope}
             onChange={e => setScope(e.target.value)}
             className="w-full bg-[var(--color-surface)] border border-[var(--color-border)] rounded px-2 py-1 text-xs text-[var(--color-text)] focus:outline-none focus:border-[var(--color-accent)]"
-            title="Show documents for…"
+            title="Show documents for..."
           >
             <option value={SCOPE_ALL}>All documents</option>
             {channels.map(c => (
@@ -662,7 +662,7 @@ export function Documents({
                 <>
                   <div className="text-[var(--color-text)]">No documents yet</div>
                   <div className="text-xs max-w-sm">
-                    Click <span className="mx-1 text-[var(--color-accent)]">New</span> to create your first doc — notes, specs, anything you want your agents to reference.
+                    Click <span className="mx-1 text-[var(--color-accent)]">New</span> to create your first doc - notes, specs, anything you want your agents to reference.
                   </div>
                 </>
               ) : (

@@ -1,7 +1,7 @@
 {
   "name": "Brigata Studio",
   "short_name": "Brigata",
-  "description": "Your team of AI agents — chat, documents, and your brigade, on the go.",
+  "description": "Your team of AI agents - chat, documents, and your brigade, on the go.",
   "id": "/",
   "start_url": "/?source=pwa",
   "scope": "/",

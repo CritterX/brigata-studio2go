@@ -8,7 +8,7 @@
 // by raw IP).
 //
 // Backward-compat: older boxes / BYOVPS run plain HTTP. `bridgeFetch` keys off
-// the URL scheme — http:// goes through global fetch untouched, so the existing
+// the URL scheme - http:// goes through global fetch untouched, so the existing
 // fleet keeps working with no cert and no code change on the box.
 
 import https from 'node:https'
@@ -87,7 +87,7 @@ export async function bridgeFetch(url: string, opts: BridgeFetchOpts = {}): Prom
         headers,
         // Pin: trust ONLY this exact self-signed cert. rejectUnauthorized stays
         // on (default) so a different/forged cert is refused; checkServerIdentity
-        // is neutered because we connect by IP and the cert CN is a fixed label —
+        // is neutered because we connect by IP and the cert CN is a fixed label -
         // the pin, not the hostname, is the identity proof.
         ca: certPem,
         checkServerIdentity: () => undefined,

@@ -1,4 +1,4 @@
--- Agent Inbox / Task-handoff primitive — the concrete UX of the A2A pillar.
+-- Agent Inbox / Task-handoff primitive - the concrete UX of the A2A pillar.
 -- A Task = an addressed unit of work with a lifecycle and a reported result,
 -- distinct from a chat message (it has an owning recipient, a state machine, and
 -- an outcome). Sender is a human OR another agent; the same primitive powers

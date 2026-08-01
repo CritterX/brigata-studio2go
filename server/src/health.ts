@@ -1,8 +1,8 @@
 // Host + process health for the shared backend, distilled into a single "story"
 // an admin can read at a glance. Standard agents run in-process on this box, so
-// the binding constraint is memory (no graceful degradation past RAM — the OOM
-// killer takes the whole server). This module surfaces the leading indicators —
-// free RAM, swap-in-use, event-loop lag, concurrent turns — so we scale up
+// the binding constraint is memory (no graceful degradation past RAM - the OOM
+// killer takes the whole server). This module surfaces the leading indicators -
+// free RAM, swap-in-use, event-loop lag, concurrent turns - so we scale up
 // BEFORE a crash, not after.
 import { readFile } from 'node:fs/promises'
 import { statfs } from 'node:fs/promises'
@@ -12,8 +12,8 @@ import { db } from './db.js'
 import { turnConcurrency } from './activity.js'
 
 // Event-loop delay histogram, enabled once at module load so it's always
-// sampling. Reset on its OWN fixed cadence (not on read) so every reader —
-// the 5s dashboard poll AND the 60s alert poller — sees a consistent rolling
+// sampling. Reset on its OWN fixed cadence (not on read) so every reader -
+// the 5s dashboard poll AND the 60s alert poller - sees a consistent rolling
 // window. Resetting inside collectHealth would let one reader blank the other's
 // data, making lag readings depend on who polled last.
 const ELD_WINDOW_MS = 60_000
@@ -24,7 +24,7 @@ setInterval(() => eld.reset(), ELD_WINDOW_MS).unref()
 export type HealthLevel = 'ok' | 'warn' | 'critical'
 
 // Running high-water marks (as gauge percentages) since process boot. Updated on
-// every collectHealth call — the 5s dashboard poll AND the 60s alert poller both
+// every collectHealth call - the 5s dashboard poll AND the 60s alert poller both
 // feed it, so a spike is captured even when no admin is watching. Same lifetime
 // as turns.peak: resets on restart. The dashboard draws these as a vertical line
 // across each meter.
@@ -183,7 +183,7 @@ export async function collectHealth(): Promise<HealthSnapshot> {
 
   // ---- Event-loop lag ----
   // eld.mean is NaN until the histogram has at least one sample; coerce to 0.
-  // No reset here — the window resets on a fixed timer (see module top).
+  // No reset here - the window resets on a fixed timer (see module top).
   const meanMs = Number.isFinite(eld.mean) ? eld.mean / 1e6 : 0
   const p99Ms = Number.isFinite(eld.percentile(99)) ? eld.percentile(99) / 1e6 : 0
   const loopLevel = band(p99Ms, 80, 250)
@@ -210,11 +210,11 @@ export async function collectHealth(): Promise<HealthSnapshot> {
   const problems = metrics.filter(m => m.level !== 'ok').map(m => m.note)
   let headline: string
   if (overall === 'ok') {
-    headline = `All healthy — ${Math.round(availMb)} MB RAM free, ${turns.current} active turn${turns.current === 1 ? '' : 's'}, event loop crisp (${Math.round(p99Ms)} ms).`
+    headline = `All healthy - ${Math.round(availMb)} MB RAM free, ${turns.current} active turn${turns.current === 1 ? '' : 's'}, event loop crisp (${Math.round(p99Ms)} ms).`
   } else if (overall === 'warn') {
-    headline = `Watch — ${problems.join('; ')}. ${turns.current} active turn${turns.current === 1 ? '' : 's'} (peak ${turns.peak}).`
+    headline = `Watch - ${problems.join('; ')}. ${turns.current} active turn${turns.current === 1 ? '' : 's'} (peak ${turns.peak}).`
   } else {
-    headline = `Action needed — ${problems.join('; ')}. Consider scaling the backend.`
+    headline = `Action needed - ${problems.join('; ')}. Consider scaling the backend.`
   }
 
   return {

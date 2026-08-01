@@ -4,7 +4,7 @@ import { AGENT_TEMPLATES } from './agentTemplates'
 const UPLOAD_MIMES = ['image/png', 'image/jpeg', 'image/webp']
 const UPLOAD_MAX_BYTES = 5 * 1024 * 1024
 
-// Agent avatars are either an image path (template PNG at /avatars/templates/…,
+// Agent avatars are either an image path (template PNG at /avatars/templates/...,
 // or an uploaded URL) or a short emoji string (brigade agents, "surprise me",
 // legacy). Detect images so render sites can branch to <img>.
 export function isImageAvatar(v?: string | null): v is string {
@@ -13,7 +13,7 @@ export function isImageAvatar(v?: string | null): v is string {
 
 // Bundled avatars are 1024×1024 PNGs but render at ≤52px. Map a known
 // template/extra path to its 128px WebP thumbnail. Uploaded/remote avatars
-// (and anything not matching) are returned unchanged — they have no thumb.
+// (and anything not matching) are returned unchanged - they have no thumb.
 export function thumbAvatarUrl(path: string): string {
   return path.replace(/^\/avatars\/(templates|extras)\/([^/]+)\.png$/, '/avatars/$1/thumb/$2.webp')
 }
@@ -44,7 +44,7 @@ export function AgentAvatar({
   )
 }
 
-// Avatar form field: a 48px preview, an "Upload custom…" escape hatch (when
+// Avatar form field: a 48px preview, an "Upload custom..." escape hatch (when
 // onUploadFile is supplied), and the eight template PNGs. onUploadFile sends
 // the file to the server and resolves with the served URL, which we set as the
 // value. When absent (e.g. agent not yet created), the upload button is hidden.
@@ -104,7 +104,7 @@ export function AvatarPicker({
               onClick={() => fileRef.current?.click()}
               className="text-xs px-2 py-1 rounded border border-[var(--color-border)] hover:border-[var(--color-accent)] transition disabled:opacity-50"
             >
-              {uploading ? 'Uploading…' : 'Upload custom…'}
+              {uploading ? 'Uploading...' : 'Upload custom...'}
             </button>
           </div>
         )}
@@ -128,7 +128,7 @@ export function AvatarPicker({
         ))}
       </div>
 
-      {/* "More avatars" — extras decoupled from the role templates. Same
+      {/* "More avatars" - extras decoupled from the role templates. Same
           illustrator's hand, no role mapping. User picks whichever fits. */}
       <div className="text-xs uppercase tracking-wide text-[var(--color-text-dim)] pt-2">
         More avatars
@@ -158,7 +158,7 @@ export function AvatarPicker({
   )
 }
 
-// Extra avatars — the same illustrated style as the role templates, but
+// Extra avatars - the same illustrated style as the role templates, but
 // decoupled from any specific archetype. Users can pick whichever they like.
 const EXTRA_AVATARS: { path: string; label: string }[] = [
   { path: '/avatars/extras/bunny.png', label: 'Bunny' },

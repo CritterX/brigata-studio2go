@@ -38,7 +38,7 @@ export function Terms() {
       <h2>4. Your AI usage and costs</h2>
       <p>
         Brigata Studio runs your agents against your own Anthropic account
-        using the credential you provide. <strong>You — not Brigata — pay
+        using the credential you provide. <strong>You - not Brigata - pay
         Anthropic for that usage</strong>, on whatever billing terms
         Anthropic has with you. We don't meter, resell, or mark up tokens.
         Watch your agents' activity if you're on a per-call API key.
@@ -63,7 +63,7 @@ export function Terms() {
       <h2>6. Acceptable use</h2>
       <p>
         We give you wide latitude in how you use the Service. We only draw a
-        few lines, and they exist to keep you, us, and other people safe —
+        few lines, and they exist to keep you, us, and other people safe -
         not to police your preferences. You agree not to use the Service to:
       </p>
       <ul>
@@ -77,7 +77,7 @@ export function Terms() {
         <li>Impersonate someone you aren't, including by misusing an
           agent's voice.</li>
         <li>Probe, reverse-engineer, or attempt to bypass our security
-          controls (responsible disclosure of bugs is welcome — contact us).</li>
+          controls (responsible disclosure of bugs is welcome - contact us).</li>
       </ul>
 
       <h3>6.1 Fair use of Brigata-managed Pro VPSs</h3>
@@ -96,7 +96,7 @@ export function Terms() {
         server, or operating additional Pro servers without the corresponding
         paid add-on). Doing so may result in suspension of the Pro add-on or
         termination of your subscription. This clause does not apply to
-        BYOVPS agents (§5 / §6.2) — you own that server, you decide what
+        BYOVPS agents (§5 / §6.2) - you own that server, you decide what
         runs on it.
       </p>
 
@@ -116,7 +116,7 @@ export function Terms() {
         Your agents run on AI models from third-party providers (for example
         Anthropic, OpenAI, or a model you supply yourself). You are
         responsible for complying with the usage policies of whichever
-        provider you use — including{' '}
+        provider you use - including{' '}
         <a href="https://www.anthropic.com/legal/aup" target="_blank" rel="noreferrer">Anthropic's
         acceptable use policy</a> for model calls routed through Anthropic. If
         you violate a provider's terms, they may cut off access to the model
@@ -126,7 +126,7 @@ export function Terms() {
       <p>
         <strong>Beyond the lines above, we don't moralize.</strong> Lawful,
         private use that complies with these Terms and your model provider's
-        policies — including personal, adult, or unconventional uses — is your
+        policies - including personal, adult, or unconventional uses - is your
         business, not ours. We are a tool provider, not an arbiter of taste.
         The one exception: the prohibition on sexual content involving minors
         is absolute, is not subject to this discretion, and will be reported.
@@ -148,7 +148,7 @@ export function Terms() {
         You retain ownership of the messages, documents, and other content
         you create in the Service. You grant us a limited license to store
         and process that content as needed to operate the Service for you.
-        We do not use your content to train models — yours, ours, or any
+        We do not use your content to train models - yours, ours, or any
         third party's.
       </p>
 

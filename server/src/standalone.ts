@@ -4,7 +4,7 @@
 // and gets one entitled workspace with one Standard (in-process/SDK) agent.
 //
 // EVERYTHING here is INERT unless STANDALONE_MODE is truthy. With the flag unset
-// the server behaves byte-identically to the multi-tenant cloud build — every
+// the server behaves byte-identically to the multi-tenant cloud build - every
 // call site guards on isStandalone() before diverging. The flag is read fresh
 // each call so the operator flips it via .env + restart, no code change.
 

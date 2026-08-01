@@ -86,8 +86,8 @@ function HealthDot({ agent, size = 9 }: { agent: AgentListItem; size?: number })
   const ok = status === 'ok'
   const when = agent.last_turn_at ? timeAgo(agent.last_turn_at) : ''
   const title = ok
-    ? `Responding${when ? ` — last turn ${when}` : ''}`
-    : `Erroring${when ? ` — ${when}` : ''}${agent.last_error_message ? `: ${agent.last_error_message}` : ''}`
+    ? `Responding${when ? ` - last turn ${when}` : ''}`
+    : `Erroring${when ? ` - ${when}` : ''}${agent.last_error_message ? `: ${agent.last_error_message}` : ''}`
   return (
     <span
       title={title}
@@ -177,7 +177,7 @@ export function Settings({ workspaceId, onWorkspaceChanged, openClaudeNonce, ope
     if (openClaudeNonce) setSection({ kind: 'claude' })
   }, [openClaudeNonce])
 
-  // GitHub App / install flow redirects back to /settings?github=… — land the
+  // GitHub App / install flow redirects back to /settings?github=... - land the
   // user back on the GitHub panel and clean the query string.
   useEffect(() => {
     const params = new URLSearchParams(window.location.search)
@@ -229,7 +229,7 @@ export function Settings({ workspaceId, onWorkspaceChanged, openClaudeNonce, ope
           ${isDesktop && rail.pinned && rail.collapsed ? 'hidden' : ''}
         `}
       >
-        {/* Thin chrome row at the top — pin/collapse moved out of section headers */}
+        {/* Thin chrome row at the top - pin/collapse moved out of section headers */}
         <div className="sb-chrome">
           <button
             onClick={() => rail.setPinned(!rail.pinned)}
@@ -506,7 +506,7 @@ function SettingsLanding({
 }
 
 // Integrations laid out as cards (like the Brigade roster) rather than a menu
-// list — scales as more connectors land (Slack/Teams/Google Chat). Available
+// list - scales as more connectors land (Slack/Teams/Google Chat). Available
 // ones open their connect/manage panel; upcoming ones show a "Soon" chip.
 type IntegrationCard = {
   name: string
@@ -518,7 +518,7 @@ type IntegrationCard = {
 }
 const INTEGRATION_CARDS: IntegrationCard[] = [
   { name: 'Discord', glyph: '💬', desc: 'Mirror workspace channels to a Discord server, both directions.', kind: 'discord', type: 'discord' },
-  { name: 'Matrix', glyph: '🛰️', desc: 'Bridge to your own Matrix homeserver — encrypted rooms supported.', kind: 'matrix', type: 'matrix' },
+  { name: 'Matrix', glyph: '🛰️', desc: 'Bridge to your own Matrix homeserver - encrypted rooms supported.', kind: 'matrix', type: 'matrix' },
   { name: 'GitHub docs', glyph: '🐙', desc: 'Two-way sync your workspace documents with a GitHub repo.', kind: 'github', type: 'github' },
   { name: 'Slack', glyph: '🔷', desc: 'Bring your crew into the Slack workspace your team already uses.', soon: true },
   { name: 'Microsoft Teams', glyph: '🟦', desc: 'Reach your agents from Microsoft Teams.', soon: true },
@@ -632,7 +632,7 @@ function WorkspaceSettings({
     onChanged()
   }
 
-  if (!loaded) return <div className="p-8 text-sm text-[var(--color-text-dim)]">Loading…</div>
+  if (!loaded) return <div className="p-8 text-sm text-[var(--color-text-dim)]">Loading...</div>
 
   return (
     <div className="max-w-2xl p-8 space-y-5">
@@ -649,7 +649,7 @@ function WorkspaceSettings({
       <div className="block">
         <div className="text-xs uppercase tracking-wide text-[var(--color-text-dim)] mb-1">Icon</div>
         <div className="text-xs text-[var(--color-text-dim)] mb-2">
-          Shown in the workspace switcher so it's easy to spot at a glance. Choose “None” to use the first letter of the name.
+          Shown in the workspace switcher so it's easy to spot at a glance. Choose "None" to use the first letter of the name.
         </div>
         <div className="grid grid-cols-6 sm:grid-cols-8 gap-2">
           <button
@@ -685,7 +685,7 @@ function WorkspaceSettings({
       <div className="block">
         <div className="text-xs uppercase tracking-wide text-[var(--color-text-dim)] mb-1">Theme</div>
         <div className="text-xs text-[var(--color-text-dim)] mb-2">
-          Sets the look of this workspace for everyone. Choose “Use my theme” to fall back to your personal setting.
+          Sets the look of this workspace for everyone. Choose "Use my theme" to fall back to your personal setting.
         </div>
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
           <button
@@ -730,7 +730,7 @@ function WorkspaceSettings({
           disabled={saving || !name.trim()}
           className="bg-[var(--color-accent)] text-white px-4 py-2 rounded text-sm hover:opacity-90 disabled:opacity-50"
         >
-          {saving ? 'Saving…' : 'Save'}
+          {saving ? 'Saving...' : 'Save'}
         </button>
         {savedMsg && <span className="text-xs text-green-400">{savedMsg}</span>}
       </div>
@@ -740,7 +740,7 @@ function WorkspaceSettings({
           Export
         </div>
         <p className="text-sm text-[var(--color-text-dim)] mb-3">
-          Download a full export of this workspace — agents, rooms, documents,
+          Download a full export of this workspace - agents, rooms, documents,
           conversation history, settings. Yours to keep. Leave whenever you want.
         </p>
         <a
@@ -760,13 +760,13 @@ function WorkspaceSettings({
           Danger zone
         </div>
         <p className="text-sm text-[var(--color-text-dim)] mb-3">
-          Reset everything in this workspace — rooms, agents, documents, message
+          Reset everything in this workspace - rooms, agents, documents, message
           history. Any Pro servers are destroyed. You'll get a fresh workspace with
           a new Concierge, like a brand-new subscriber.
         </p>
         <ResetButton workspaceId={workspaceId} />
         <p className="text-sm text-[var(--color-text-dim)] mt-6 mb-3">
-          Permanently delete this workspace — rooms, agents, documents, message
+          Permanently delete this workspace - rooms, agents, documents, message
           history, and any Pro servers. This can't be undone and there's no fresh
           workspace afterward. Owner only.
         </p>
@@ -819,7 +819,7 @@ function ClaudeAccountPanel() {
     else setFeedback({ kind: 'err', text: 'Could not disconnect' })
   }
 
-  if (connected === null) return <div className="p-8 text-sm text-[var(--color-text-dim)]">Loading…</div>
+  if (connected === null) return <div className="p-8 text-sm text-[var(--color-text-dim)]">Loading...</div>
 
   return (
     <div className="max-w-2xl p-8 space-y-5">
@@ -827,7 +827,7 @@ function ClaudeAccountPanel() {
         <h2 className="text-xl font-medium">Connect Claude</h2>
         <p className="text-sm text-[var(--color-text-dim)] mt-1">
           Your agents think using your own Claude credential. Connect a Claude
-          Pro/Max subscription token or an Anthropic API key — either works.
+          Pro/Max subscription token or an Anthropic API key - either works.
         </p>
       </div>
 
@@ -835,27 +835,27 @@ function ClaudeAccountPanel() {
         <span className="text-sm">Status</span>
         {connected
           ? <span className="text-xs text-green-400">● Connected</span>
-          : <span className="text-xs text-[var(--color-text-dim)]">Not connected — agents can’t reply yet</span>}
+          : <span className="text-xs text-[var(--color-text-dim)]">Not connected - agents can't reply yet</span>}
       </div>
 
       {!connected && (
         <>
           <div className="border border-[var(--color-border)] rounded p-3 bg-[var(--color-surface)] text-sm space-y-2">
-            <div className="font-medium">Option A — Claude subscription (recommended)</div>
+            <div className="font-medium">Option A - Claude subscription (recommended)</div>
             <div className="text-xs text-[var(--color-text-dim)]">
               Runs on your Claude Pro/Max plan, no extra charges.
             </div>
             <ol className="text-xs text-[var(--color-text-dim)] list-decimal pl-5 space-y-1">
               <li>Install the Claude CLI: <code className="text-[var(--color-text)]">npm install -g @anthropic-ai/claude-code</code></li>
               <li>Run <code className="text-[var(--color-text)]">claude setup-token</code></li>
-              <li>Paste the <code>sk-ant-oat…</code> token it prints below.</li>
+              <li>Paste the <code>sk-ant-oat...</code> token it prints below.</li>
             </ol>
           </div>
           <div className="border border-[var(--color-border)] rounded p-3 bg-[var(--color-surface)] text-sm space-y-2">
-            <div className="font-medium">Option B — Anthropic API key</div>
+            <div className="font-medium">Option B - Anthropic API key</div>
             <div className="text-xs text-[var(--color-text-dim)]">
               Bills against your Anthropic console credit. Create one at{' '}
-              <code>console.anthropic.com</code>; format is <code>sk-ant-api03-…</code>.
+              <code>console.anthropic.com</code>; format is <code>sk-ant-api03-...</code>.
             </div>
           </div>
           <div className="flex gap-2">
@@ -863,7 +863,7 @@ function ClaudeAccountPanel() {
               type="password"
               value={token}
               onChange={e => setToken(e.target.value)}
-              placeholder="sk-ant-oat-… or sk-ant-api03-…"
+              placeholder="sk-ant-oat-... or sk-ant-api03-..."
               className="flex-1 bg-[var(--color-bg)] border border-[var(--color-border)] rounded px-3 py-2 text-sm font-mono focus:outline-none focus:border-[var(--color-accent)]"
             />
             <button
@@ -871,7 +871,7 @@ function ClaudeAccountPanel() {
               disabled={busy || !token.trim()}
               className="bg-[var(--color-accent)] text-white px-4 py-2 rounded text-sm hover:opacity-90 disabled:opacity-50"
             >
-              {busy ? 'Verifying…' : 'Connect'}
+              {busy ? 'Verifying...' : 'Connect'}
             </button>
           </div>
         </>
@@ -883,7 +883,7 @@ function ClaudeAccountPanel() {
           disabled={busy}
           className="text-sm text-[var(--color-text-dim)] hover:text-red-400 disabled:opacity-50"
         >
-          {busy ? '…' : 'Disconnect credential'}
+          {busy ? '...' : 'Disconnect credential'}
         </button>
       )}
 
@@ -947,7 +947,7 @@ function WorkspaceMembers({ workspaceId }: { workspaceId: string }) {
   }, [workspaceId, meUser?.id])
 
   const myRole = members.find(m => m.id === meUser?.id)?.role
-  // Self-host is single-tenant — no multi-member invites. Hide the invite UI
+  // Self-host is single-tenant - no multi-member invites. Hide the invite UI
   // (member management itself still renders). Undefined = still loading = treat
   // as cloud so nothing flashes; only an explicit true suppresses invites.
   const standalone = useStandalone()
@@ -1024,7 +1024,7 @@ function WorkspaceMembers({ workspaceId }: { workspaceId: string }) {
         <div className="text-xs uppercase tracking-wide text-[var(--color-text-dim)] mb-2">In this workspace · {members.length}</div>
         <div className="space-y-1.5">
           {members.length === 0 && (
-            <div className="text-xs text-[var(--color-text-dim)]">Loading…</div>
+            <div className="text-xs text-[var(--color-text-dim)]">Loading...</div>
           )}
           {members.map(m => (
             <div key={m.id} className="flex items-center gap-3 px-3 py-2 bg-[var(--color-surface)] border border-[var(--color-border)] rounded">
@@ -1081,7 +1081,7 @@ function WorkspaceMembers({ workspaceId }: { workspaceId: string }) {
         <div className="border-t border-[var(--color-border)] pt-5 space-y-3">
           <div className="text-xs uppercase tracking-wide text-[var(--color-text-dim)] mb-1">Invite a member</div>
           <p className="text-sm text-[var(--color-text-dim)]">
-            Generate an invite link, share it however you like — email, Discord, text. Whoever opens it signs in with Google and joins.
+            Generate an invite link, share it however you like - email, Discord, text. Whoever opens it signs in with Google and joins.
           </p>
           <div className="border border-amber-500/30 bg-amber-500/5 rounded p-3 text-xs space-y-1.5">
             <div className="font-medium text-amber-300">Before you invite, know what they get:</div>
@@ -1097,7 +1097,7 @@ function WorkspaceMembers({ workspaceId }: { workspaceId: string }) {
               type="email"
               value={inviteEmail}
               onChange={e => setInviteEmail(e.target.value)}
-              placeholder="optional — tag with email for tracking"
+              placeholder="optional - tag with email for tracking"
               className="flex-1 bg-[var(--color-bg)] border border-[var(--color-border)] rounded px-3 py-2 text-sm focus:outline-none focus:border-[var(--color-accent)]"
             />
             <button
@@ -1105,7 +1105,7 @@ function WorkspaceMembers({ workspaceId }: { workspaceId: string }) {
               disabled={busy}
               className="bg-[var(--accent-chat)] text-[var(--bg-deep)] px-4 py-2 rounded text-sm font-medium hover:opacity-90 disabled:opacity-40"
             >
-              {busy ? '…' : 'Create invite'}
+              {busy ? '...' : 'Create invite'}
             </button>
           </div>
           {error && <div className="text-xs text-red-400">{error}</div>}
@@ -1243,7 +1243,7 @@ function AgentSkills({
     return (
       <div className="border-t border-[var(--color-border)] pt-5">
         <div className="field-label mb-2">Skills</div>
-        <div className="text-xs text-[var(--color-text-dim)]">Loading…</div>
+        <div className="text-xs text-[var(--color-text-dim)]">Loading...</div>
       </div>
     )
   }
@@ -1262,11 +1262,11 @@ function AgentSkills({
       </div>
       <p className="text-sm text-[var(--color-text-dim)] mb-4 max-w-2xl">
         Turn on extra abilities. With nothing enabled, your agent already handles workspace
-        documents, web search, and web fetch — these add focused tools and explicit guidance on top.
+        documents, web search, and web fetch - these add focused tools and explicit guidance on top.
       </p>
       {canEdit && enabled.size === 0 && catalog.some(s => s.available) && (
         <p className="mb-4 -mt-2 text-xs text-[var(--color-accent)]">
-          Nothing enabled yet — turn on a skill below to expand what this agent can do.
+          Nothing enabled yet - turn on a skill below to expand what this agent can do.
         </p>
       )}
       <div className="skills-grid">
@@ -1303,7 +1303,7 @@ function AgentSkills({
                       : !canEdit
                         ? (isOn ? 'On' : 'Off')
                         : saving
-                          ? 'Saving…'
+                          ? 'Saving...'
                           : (isOn ? 'On' : 'Off')}
                   </span>
                 </label>
@@ -1315,7 +1315,7 @@ function AgentSkills({
       {error && <div className="text-xs text-red-400 mt-2">{error}</div>}
       {!canEdit && (
         <div className="text-xs text-[var(--color-text-dim)] mt-3 font-mono">
-          Members see this read-only — owner/admin to edit.
+          Members see this read-only - owner/admin to edit.
         </div>
       )}
     </div>
@@ -1350,7 +1350,7 @@ function MoveAgent({
   async function move() {
     if (!target) return
     const dest = workspaces.find(w => w.id === target)
-    if (!confirm(`Move "${agentName}" to "${dest?.name ?? 'that workspace'}"? Its room memberships here will be cleared — you'll re-add it to rooms in the destination.`)) return
+    if (!confirm(`Move "${agentName}" to "${dest?.name ?? 'that workspace'}"? Its room memberships here will be cleared - you'll re-add it to rooms in the destination.`)) return
     setBusy(true); setError(null)
     const r = await fetch(`/api/workspaces/${workspaceId}/agents/${agentId}/move`, {
       method: 'POST',
@@ -1374,7 +1374,7 @@ function MoveAgent({
     <div className="border-t border-[var(--color-border)] pt-5 mt-5">
       <div className="field-label">Move to another workspace</div>
       <p className="text-sm text-[var(--color-text-dim)] mb-3">
-        Hand this agent off to another workspace where you're owner or admin. Its SOUL, model, hosting, and version history travel with it. Room memberships reset because those reference this workspace's rooms — you'll re-add it to rooms in the destination.
+        Hand this agent off to another workspace where you're owner or admin. Its SOUL, model, hosting, and version history travel with it. Room memberships reset because those reference this workspace's rooms - you'll re-add it to rooms in the destination.
       </p>
       <div className="flex items-center gap-2">
         <select
@@ -1382,7 +1382,7 @@ function MoveAgent({
           onChange={e => setTarget(e.target.value)}
           className="input mono flex-1"
         >
-          <option value="">Pick a destination workspace…</option>
+          <option value="">Pick a destination workspace...</option>
           {eligible.map(w => (
             <option key={w.id} value={w.id}>
               {w.name} · {w.role}
@@ -1395,7 +1395,7 @@ function MoveAgent({
           disabled={!target || busy}
           className="bg-[var(--accent-chat)] text-[var(--bg-deep)] px-4 py-2 rounded text-sm font-medium hover:opacity-90 disabled:opacity-40"
         >
-          {busy ? 'Moving…' : '▶ Move'}
+          {busy ? 'Moving...' : '▶ Move'}
         </button>
       </div>
       {error && <div className="text-xs text-red-400 mt-2">{error}</div>}
@@ -1448,14 +1448,14 @@ function BillingSection() {
       <p className="text-sm text-[var(--color-text-dim)] mb-3">
         {active
           ? `Standard plan is active${
-              periodEnd ? ` — renews ${new Date(periodEnd).toLocaleDateString()}` : ''
+              periodEnd ? ` - renews ${new Date(periodEnd).toLocaleDateString()}` : ''
             }.`
-          : 'You’re on the free tier — one real agent with custom soul, skills, memory, rooms, and shared docs in your own workspace, and you can join shared workspaces you’re invited to. Upgrade to Standard for $15/mo for unlimited agents.'}
+          : "You're on the free tier - one real agent with custom soul, skills, memory, rooms, and shared docs in your own workspace, and you can join shared workspaces you're invited to. Upgrade to Standard for $15/mo for unlimited agents."}
       </p>
       {!active && (
         <p className="text-xs text-[var(--color-text-dim)] mb-3">
           <strong className="text-[var(--color-text)]">Founding rate: $10/mo, locked for life</strong>{' '}
-          while you stay subscribed — first ~100 members or 60 days, whichever
+          while you stay subscribed - first ~100 members or 60 days, whichever
           comes first. Or pay annually: 10 months for 12.
         </p>
       )}
@@ -1466,7 +1466,7 @@ function BillingSection() {
           disabled={busy}
           className="inline-block bg-[var(--color-surface)] border border-[var(--color-border)] hover:border-[var(--color-accent)] text-sm px-4 py-2 rounded transition disabled:opacity-50"
         >
-          {busy ? '…' : 'Manage billing'}
+          {busy ? '...' : 'Manage billing'}
         </button>
       ) : (
         <button
@@ -1474,7 +1474,7 @@ function BillingSection() {
           disabled={busy}
           className="bg-[var(--color-accent)] text-white px-4 py-2 rounded text-sm hover:opacity-90 disabled:opacity-50"
         >
-          {busy ? '…' : 'Upgrade to Standard'}
+          {busy ? '...' : 'Upgrade to Standard'}
         </button>
       )}
     </div>
@@ -1614,7 +1614,7 @@ function AgentCreate({
               pickedTemplate === 'surprise' ? 'border-[var(--color-accent)] bg-[var(--color-active-bg)]' : 'border-[var(--color-border)]'
             } hover:border-[var(--color-accent)] disabled:opacity-50`}
           >
-            {generating ? 'Inventing…' : '✨ Surprise me'}
+            {generating ? 'Inventing...' : '✨ Surprise me'}
           </button>
           <button
             type="button"
@@ -1654,7 +1654,7 @@ function AgentCreate({
           value={soul}
           onChange={e => setSoul(e.target.value)}
           rows={12}
-          placeholder={'# Name — Soul\n\n## Who I Am\n\n## How I Show Up\n\n...'}
+          placeholder={'# Name - Soul\n\n## Who I Am\n\n## How I Show Up\n\n...'}
           className="w-full bg-[var(--color-surface)] border border-[var(--color-border)] rounded px-3 py-2 text-sm font-mono focus:outline-none focus:border-[var(--color-accent)]"
         />
       </FormField>
@@ -1696,7 +1696,7 @@ function AgentCreate({
           disabled={submitting || !name.trim()}
           className="bg-[var(--color-accent)] text-white px-4 py-2 rounded text-sm hover:opacity-90 disabled:opacity-50"
         >
-          {submitting ? 'Creating…' : 'Create agent'}
+          {submitting ? 'Creating...' : 'Create agent'}
         </button>
       </div>
     </form>
@@ -1704,7 +1704,7 @@ function AgentCreate({
 }
 
 // Per-agent encrypted secrets (Cosimo's backend, 2026-06-27). Owner/admin only;
-// values are write-only — the API returns names + timestamps, never values.
+// values are write-only - the API returns names + timestamps, never values.
 type AgentSecret = { name: string; updated_at: string; scope?: 'workspace' | 'agent' }
 const RESERVED_SECRETS = ['ANTHROPIC_API_KEY', 'CLAUDE_CODE_OAUTH_TOKEN']
 
@@ -1765,8 +1765,8 @@ function AgentSecrets({ workspaceId, agentId }: { workspaceId: string; agentId: 
       <p className="text-sm text-[var(--color-text-dim)] mb-3">
         Everything this agent can actually see. <span className="text-[var(--color-text)]">Workspace</span> secrets are
         shared by every agent (manage them in Workspace settings); <span className="text-[var(--color-text)]">agent</span>{' '}
-        secrets are set here and only for this agent — a same-named agent secret overrides the workspace one. Stored
-        encrypted — your agent reads them as environment variables (e.g.{' '}
+        secrets are set here and only for this agent - a same-named agent secret overrides the workspace one. Stored
+        encrypted - your agent reads them as environment variables (e.g.{' '}
         <code className="font-mono text-[var(--color-text)]">$STRIPE_API_KEY</code>) in its shell and tools. They're never
         shown in chat and never written to the agent's machine.
       </p>
@@ -1774,7 +1774,7 @@ function AgentSecrets({ workspaceId, agentId }: { workspaceId: string; agentId: 
       {forbidden ? (
         <div className="text-xs text-[var(--color-text-dim)]">Only workspace owners and admins can manage agent secrets.</div>
       ) : secrets === null ? (
-        <div className="text-xs text-[var(--color-text-dim)]">Loading…</div>
+        <div className="text-xs text-[var(--color-text-dim)]">Loading...</div>
       ) : (
         <>
           {secrets.length > 0 && (
@@ -1818,12 +1818,12 @@ function AgentSecrets({ workspaceId, agentId }: { workspaceId: string; agentId: 
                 />
                 <div className="text-[11px] mt-1 text-[var(--color-text-dim)]">
                   {reserved
-                    ? <span className="text-[#e5484d]">Reserved — this is the agent's Claude credential and can't be overridden.</span>
+                    ? <span className="text-[#e5484d]">Reserved - this is the agent's Claude credential and can't be overridden.</span>
                     : name && !nameValid
-                      ? <span className="text-[#e5484d]">UPPER_SNAKE_CASE only — letters, numbers and underscores; can't start with a number.</span>
+                      ? <span className="text-[#e5484d]">UPPER_SNAKE_CASE only - letters, numbers and underscores; can't start with a number.</span>
                       : existing
                         ? <span>Saving rotates the existing <span className="font-mono">{name}</span>.</span>
-                        : 'UPPER_SNAKE_CASE — the agent reads it under this exact name.'}
+                        : 'UPPER_SNAKE_CASE - the agent reads it under this exact name.'}
                 </div>
               </div>
               <input
@@ -1837,7 +1837,7 @@ function AgentSecrets({ workspaceId, agentId }: { workspaceId: string; agentId: 
               {error && <div className="text-xs text-[#e5484d]">{error}</div>}
               <div className="flex items-center gap-2">
                 <button type="submit" disabled={!canSave} className="bg-[var(--color-accent)] text-white px-4 py-2 rounded text-sm hover:opacity-90 disabled:opacity-50">
-                  {busy ? 'Saving…' : 'Save secret'}
+                  {busy ? 'Saving...' : 'Save secret'}
                 </button>
                 <button type="button" onClick={() => { setAdding(false); setName(''); setValue(''); setError(null) }} className="text-[var(--color-text-dim)] hover:text-[var(--color-text)] px-2 py-2 text-sm">
                   Cancel
@@ -1858,7 +1858,7 @@ function AgentSecrets({ workspaceId, agentId }: { workspaceId: string; agentId: 
   )
 }
 
-// Workspace-level encrypted secrets — shared by every agent in the workspace.
+// Workspace-level encrypted secrets - shared by every agent in the workspace.
 // Owner/admin only; values are write-only (the API returns names + timestamps).
 function WorkspaceSecrets({ workspaceId }: { workspaceId: string }) {
   const base = `/api/workspaces/${workspaceId}/secrets`
@@ -1917,14 +1917,14 @@ function WorkspaceSecrets({ workspaceId }: { workspaceId: string }) {
       <p className="text-sm text-[var(--color-text-dim)] mb-3">
         Shared by every agent in this workspace. Set a credential once (e.g.{' '}
         <code className="font-mono text-[var(--color-text)]">$STRIPE_API_KEY</code>) and all your agents can read it as an
-        environment variable. Stored encrypted — never shown in chat, never written to an agent's machine. To override
+        environment variable. Stored encrypted - never shown in chat, never written to an agent's machine. To override
         for a single agent, set an agent-level secret of the same name in that agent's Advanced tab.
       </p>
 
       {forbidden ? (
         <div className="text-xs text-[var(--color-text-dim)]">Only workspace owners and admins can manage secrets.</div>
       ) : secrets === null ? (
-        <div className="text-xs text-[var(--color-text-dim)]">Loading…</div>
+        <div className="text-xs text-[var(--color-text-dim)]">Loading...</div>
       ) : (
         <>
           {secrets.length > 0 && (
@@ -1955,12 +1955,12 @@ function WorkspaceSecrets({ workspaceId }: { workspaceId: string }) {
                 />
                 <div className="text-[11px] mt-1 text-[var(--color-text-dim)]">
                   {reserved
-                    ? <span className="text-[#e5484d]">Reserved — this is the agent's Claude credential and can't be overridden.</span>
+                    ? <span className="text-[#e5484d]">Reserved - this is the agent's Claude credential and can't be overridden.</span>
                     : name && !nameValid
-                      ? <span className="text-[#e5484d]">UPPER_SNAKE_CASE only — letters, numbers and underscores; can't start with a number.</span>
+                      ? <span className="text-[#e5484d]">UPPER_SNAKE_CASE only - letters, numbers and underscores; can't start with a number.</span>
                       : existing
                         ? <span>Saving rotates the existing <span className="font-mono">{name}</span>.</span>
-                        : 'UPPER_SNAKE_CASE — agents read it under this exact name.'}
+                        : 'UPPER_SNAKE_CASE - agents read it under this exact name.'}
                 </div>
               </div>
               <input
@@ -1974,7 +1974,7 @@ function WorkspaceSecrets({ workspaceId }: { workspaceId: string }) {
               {error && <div className="text-xs text-[#e5484d]">{error}</div>}
               <div className="flex items-center gap-2">
                 <button type="submit" disabled={!canSave} className="bg-[var(--color-accent)] text-white px-4 py-2 rounded text-sm hover:opacity-90 disabled:opacity-50">
-                  {busy ? 'Saving…' : 'Save secret'}
+                  {busy ? 'Saving...' : 'Save secret'}
                 </button>
                 <button type="button" onClick={() => { setAdding(false); setName(''); setValue(''); setError(null) }} className="text-[var(--color-text-dim)] hover:text-[var(--color-text)] px-2 py-2 text-sm">
                   Cancel
@@ -2038,7 +2038,7 @@ function AgentDomain({ workspaceId, agentId, agent }: { workspaceId: string; age
     <div className="border-t border-[var(--color-border)] pt-5">
       <div className="field-label mb-1">Custom domain (optional)</div>
       <p className="text-sm text-[var(--color-text-dim)] mb-3">
-        Your agent's site already works on its box IP — this is only if you want to serve it on
+        Your agent's site already works on its box IP - this is only if you want to serve it on
         your own domain with HTTPS (Let's Encrypt). A power-user upgrade, not a requirement.
       </p>
 
@@ -2052,11 +2052,11 @@ function AgentDomain({ workspaceId, agentId, agent }: { workspaceId: string; age
       )}
 
       <div className="border border-amber-500/40 bg-amber-500/5 rounded px-3 py-2.5 text-sm mb-3">
-        <div className="font-medium text-amber-300 mb-1">Before you save — set up DNS</div>
+        <div className="font-medium text-amber-300 mb-1">Before you save - set up DNS</div>
         <p className="text-[var(--color-text-dim)]">
           Add a DNS <span className="text-[var(--color-text)]">A record</span> for this domain pointing to{' '}
           <code className="font-mono text-[var(--color-text)]">{boxIp ?? '(your box IP)'}</code>, set to{' '}
-          <span className="text-[var(--color-text)]">DNS-only / grey-cloud (NOT proxied)</span> — otherwise the
+          <span className="text-[var(--color-text)]">DNS-only / grey-cloud (NOT proxied)</span> - otherwise the
           certificate can't be issued.
         </p>
       </div>
@@ -2071,7 +2071,7 @@ function AgentDomain({ workspaceId, agentId, agent }: { workspaceId: string; age
           spellCheck={false}
         />
         <button type="submit" disabled={busy || !domain.trim()} className="bg-[var(--color-accent)] text-white px-4 py-2 rounded text-sm hover:opacity-90 disabled:opacity-50">
-          {busy ? 'Setting up…' : 'Save'}
+          {busy ? 'Setting up...' : 'Save'}
         </button>
       </form>
       {error && <div className="text-xs text-[#e5484d] mt-2">{error}</div>}
@@ -2082,7 +2082,7 @@ function AgentDomain({ workspaceId, agentId, agent }: { workspaceId: string; age
 
 // Rule-of-two safety tracker: self-declared risky capabilities + a computed
 // status. The risky bits (spend, inbound email) are wired up by the subscriber
-// and can't be auto-detected, so we ask — and the asking is the safety value.
+// and can't be auto-detected, so we ask - and the asking is the safety value.
 function AgentSafety({ workspaceId, agentId, initial }: { workspaceId: string; agentId: string; initial?: SafetyProfile }) {
   const [profile, setProfile] = useState<SafetyProfile>(initial ?? {})
   const [saving, setSaving] = useState(false)
@@ -2111,7 +2111,7 @@ function AgentSafety({ workspaceId, agentId, initial }: { workspaceId: string; a
       <div className="field-label mb-1">Agent safety · rule of two</div>
       <p className="text-xs text-[var(--color-text-dim)] mb-3">
         Declare what you&apos;ve given this agent. Reading untrusted input, taking consequential
-        actions, AND running without a human in the loop is all three risk axes at once — keep it
+        actions, AND running without a human in the loop is all three risk axes at once - keep it
         to at most two.
       </p>
 
@@ -2139,7 +2139,7 @@ function AgentSafety({ workspaceId, agentId, initial }: { workspaceId: string; a
           )
         })}
       </div>
-      {saving && <div className="text-xs text-[var(--color-text-dim)] mt-2">Saving…</div>}
+      {saving && <div className="text-xs text-[var(--color-text-dim)] mt-2">Saving...</div>}
     </section>
   )
 }
@@ -2265,7 +2265,7 @@ function AgentPrivilege({ workspaceId, agentId, agent }: { workspaceId: string; 
                 onClick={() => void confirmRoot()}
                 className="bg-[#e5484d] text-white px-4 py-2 rounded text-sm hover:opacity-90 disabled:opacity-50"
               >
-                {busy ? 'Granting…' : 'Grant root'}
+                {busy ? 'Granting...' : 'Grant root'}
               </button>
               <button
                 type="button"
@@ -2476,7 +2476,7 @@ function AgentEdit({
     if (r.ok) onDeleted()
   }
 
-  if (!agent) return <div className="p-8 text-sm text-[var(--color-text-dim)]">Loading…</div>
+  if (!agent) return <div className="p-8 text-sm text-[var(--color-text-dim)]">Loading...</div>
 
   const isPro = agent.hosting === 'pro_droplet'
   const handle = agentHandle(name || agent.name)
@@ -2620,7 +2620,7 @@ function AgentEdit({
           </div>
           {entitled && (
             <p className="mt-2 text-xs text-[var(--color-text-dim)]">
-              Every save is versioned —{' '}
+              Every save is versioned -{' '}
               <button
                 type="button"
                 onClick={openVersionHistory}
@@ -2636,7 +2636,7 @@ function AgentEdit({
         <div>
           <div className="field-label">
             Instructions {instructionsDirty && <span className="dirty-dot" />}
-            <span className="hint">Explicit directions this agent always follows — e.g. tone, formatting, do's and don'ts. Separate from its persona.</span>
+            <span className="hint">Explicit directions this agent always follows - e.g. tone, formatting, do's and don'ts. Separate from its persona.</span>
           </div>
           <div className="soul-editor">
             <div className="soul-toolbar">
@@ -2712,7 +2712,7 @@ function AgentEdit({
                 ))}
               </div>
               <div className="text-[11px] text-[var(--color-text-dim)] mt-2">
-                {reRoling ? 'Re-roling…' : 'Picking a role replaces name, avatar, and soul. Available on every plan.'}
+                {reRoling ? 'Re-roling...' : 'Picking a role replaces name, avatar, and soul. Available on every plan.'}
               </div>
             </div>
           )}
@@ -2740,7 +2740,7 @@ function AgentEdit({
               disabled={savingProfile || !dirty}
               className="bg-[var(--color-accent)] text-white px-4 py-2 rounded text-sm hover:opacity-90 disabled:opacity-40"
             >
-              {savingProfile ? 'Saving…' : 'Save changes'}
+              {savingProfile ? 'Saving...' : 'Save changes'}
             </button>
           </div>
         </div>
@@ -2869,7 +2869,7 @@ function AgentEdit({
               <span className="prev-time">just now</span>
             </div>
             <p className="prev-body">
-              Hey — I'm {name || agent.name}. Tell me what you're working on and I'll jump
+              Hey - I'm {name || agent.name}. Tell me what you're working on and I'll jump
               in. I can read and write your workspace docs, pull live results from the web,
               and keep our thread in context. Where should we start?
             </p>
@@ -2894,12 +2894,12 @@ function AgentCapabilities({ hosting }: { hosting: string }) {
     'Room-scoped conversation memory',
   ]
   const proCaps = [
-    'Shell access on a Pro server — the agent runs commands, not you',
+    'Shell access on a Pro server - the agent runs commands, not you',
     'Build and run web applications',
     'Scheduled tasks via cron',
     'Browser automation (operate live web apps on your behalf)',
     'Integrations (Gmail, Calendar, Discord, and more as we add them)',
-    '24/7 background operation — keeps working when this tab is closed',
+    '24/7 background operation - keeps working when this tab is closed',
   ]
   return (
     <div className="border-t border-[var(--color-border)] pt-5">
@@ -2934,7 +2934,7 @@ function AgentCapabilities({ hosting }: { hosting: string }) {
             ))}
           </div>
           <div className="mt-3 text-xs text-[var(--color-text-dim)]">
-            Pro is a server, not an agent — one Pro server runs up to 3 agents at one flat price, and add a fourth and you add a second server. Provisioned in seconds with one click in Hosting above, no technical skills required. You don't open a terminal; the agent does.
+            Pro is a server, not an agent - one Pro server runs up to 3 agents at one flat price, and add a fourth and you add a second server. Provisioned in seconds with one click in Hosting above, no technical skills required. You don't open a terminal; the agent does.
           </div>
         </div>
       )}
@@ -2970,7 +2970,7 @@ function ResetButton({ workspaceId }: { workspaceId: string }) {
         disabled={busy}
         className="inline-block border border-red-500/40 hover:border-red-400 hover:bg-red-500/10 text-red-400 text-sm px-4 py-2 rounded transition disabled:opacity-50"
       >
-        {busy ? 'Resetting…' : 'Reset workspace'}
+        {busy ? 'Resetting...' : 'Reset workspace'}
       </button>
       {err && <div className="text-xs text-red-400 mt-2">{err}</div>}
     </div>
@@ -3001,10 +3001,10 @@ function DeleteWorkspaceButton({ workspaceId }: { workspaceId: string }) {
   async function go() {
     if (isLast) return
     const typed = window.prompt(
-      `This permanently deletes "${wsName}" — all rooms, messages, documents, agents, and any Pro servers. It cannot be undone.\n\nType the workspace name to confirm:`,
+      `This permanently deletes "${wsName}" - all rooms, messages, documents, agents, and any Pro servers. It cannot be undone.\n\nType the workspace name to confirm:`,
     )
     if (typed == null) return
-    if (typed.trim() !== wsName.trim()) { setErr('Name didn’t match — nothing was deleted.'); return }
+    if (typed.trim() !== wsName.trim()) { setErr("Name didn't match - nothing was deleted."); return }
     setBusy(true); setErr(null)
     const r = await fetch(`/api/workspaces/${workspaceId}`, {
       method: 'DELETE',
@@ -3022,9 +3022,9 @@ function DeleteWorkspaceButton({ workspaceId }: { workspaceId: string }) {
         disabled={busy || isLast}
         className="inline-block border border-red-500/40 hover:border-red-400 hover:bg-red-500/10 text-red-400 text-sm px-4 py-2 rounded transition disabled:opacity-50"
       >
-        {busy ? 'Deleting…' : 'Delete workspace'}
+        {busy ? 'Deleting...' : 'Delete workspace'}
       </button>
-      {isLast && <div className="text-xs text-[var(--color-text-dim)] mt-2">You can’t delete your only workspace.</div>}
+      {isLast && <div className="text-xs text-[var(--color-text-dim)] mt-2">You can't delete your only workspace.</div>}
       {err && <div className="text-xs text-red-400 mt-2">{err}</div>}
     </div>
   )
@@ -3056,7 +3056,7 @@ function ClaudeOauthPanel({ workspaceId, agentId }: { workspaceId: string; agent
     }).then(r => r.json())
     setBusy(false)
     if (r.ok) {
-      setFeedback({ kind: 'ok', text: 'Connected. Bridge restarting…' })
+      setFeedback({ kind: 'ok', text: 'Connected. Bridge restarting...' })
       setToken('')
       setTimeout(() => void refresh(), 4000)
     } else {
@@ -3072,7 +3072,7 @@ function ClaudeOauthPanel({ workspaceId, agentId }: { workspaceId: string; agent
     }).then(r => r.json())
     setBusy(false)
     if (r.ok) {
-      setFeedback({ kind: 'ok', text: 'Disconnected. Bridge restarting…' })
+      setFeedback({ kind: 'ok', text: 'Disconnected. Bridge restarting...' })
       setTimeout(() => void refresh(), 4000)
     } else {
       setFeedback({ kind: 'err', text: r.error ?? 'disconnect failed' })
@@ -3097,7 +3097,7 @@ function ClaudeOauthPanel({ workspaceId, agentId }: { workspaceId: string; agent
         {connected ? (
           <span className="text-xs text-green-400 whitespace-nowrap">● Connected</span>
         ) : status?.online === false ? (
-          <span className="text-xs text-[var(--color-text-dim)] whitespace-nowrap">— Bridge offline</span>
+          <span className="text-xs text-[var(--color-text-dim)] whitespace-nowrap">- Bridge offline</span>
         ) : (
           <span className="text-xs text-[var(--color-text-dim)] whitespace-nowrap">Not connected</span>
         )}
@@ -3123,7 +3123,7 @@ function ClaudeOauthPanel({ workspaceId, agentId }: { workspaceId: string; agent
               type="password"
               value={token}
               onChange={e => setToken(e.target.value)}
-              placeholder="sk-ant-oat-…"
+              placeholder="sk-ant-oat-..."
               className="flex-1 bg-[var(--color-bg)] border border-[var(--color-border)] rounded px-2 py-1 text-xs font-mono focus:outline-none focus:border-[var(--color-accent)]"
             />
             <button
@@ -3131,7 +3131,7 @@ function ClaudeOauthPanel({ workspaceId, agentId }: { workspaceId: string; agent
               disabled={busy || !token.trim()}
               className="text-xs bg-[var(--color-accent)] text-white px-3 py-1 rounded disabled:opacity-40"
             >
-              {busy ? '…' : 'Connect'}
+              {busy ? '...' : 'Connect'}
             </button>
           </div>
         </div>
@@ -3142,7 +3142,7 @@ function ClaudeOauthPanel({ workspaceId, agentId }: { workspaceId: string; agent
           disabled={busy}
           className="text-xs text-[var(--color-text-dim)] hover:text-red-400 disabled:opacity-50"
         >
-          {busy ? '…' : 'Disconnect subscription'}
+          {busy ? '...' : 'Disconnect subscription'}
         </button>
       )}
       {feedback && (
@@ -3205,7 +3205,7 @@ function AgentHosting({
   const [downgrading, setDowngrading] = useState(false)
   const [restarting, setRestarting] = useState(false)
   // Co-location: existing Pro servers in this workspace with a free agent slot.
-  // Picking one adds this agent there as a sibling — no new VM, no extra charge.
+  // Picking one adds this agent there as a sibling - no new VM, no extra charge.
   const [attachableServers, setAttachableServers] = useState<{
     id: string; provider: string; ip: string | null; agent_count: number; free_slots: number
   }[]>([])
@@ -3258,8 +3258,8 @@ function AgentHosting({
     if (r.ok) {
       setSavedMsg(
         selectedProServerId
-          ? 'Adding to your existing server…'
-          : r.billing?.comp ? 'Provisioning your Pro server…' : 'Provisioning… (subscription mock)',
+          ? 'Adding to your existing server...'
+          : r.billing?.comp ? 'Provisioning your Pro server...' : 'Provisioning... (subscription mock)',
       )
       setTimeout(() => setSavedMsg(null), 4000)
       onChanged()
@@ -3276,7 +3276,7 @@ function AgentHosting({
     }).then(r => r.json())
     setDowngrading(false)
     if (r.ok) {
-      setSavedMsg('Downgraded to Standard — server destroyed')
+      setSavedMsg('Downgraded to Standard - server destroyed')
       setTimeout(() => setSavedMsg(null), 3000)
       onChanged()
     } else {
@@ -3290,7 +3290,7 @@ function AgentHosting({
       method: 'POST',
     }).then(r => r.json())
     if (r.ok) {
-      setSavedMsg('Redeploying — destroying current server, provisioning fresh one (~90s)')
+      setSavedMsg('Redeploying - destroying current server, provisioning fresh one (~90s)')
       setTimeout(() => setSavedMsg(null), 5000)
       onChanged()
     } else {
@@ -3299,7 +3299,7 @@ function AgentHosting({
   }
 
   async function restart() {
-    if (!confirm(`Restart ${agent.name}'s server? It will power-cycle and come back in ~60 seconds. The server, its IP, and its files are kept — only the running processes restart. Use this if the agent is unresponsive.`)) return
+    if (!confirm(`Restart ${agent.name}'s server? It will power-cycle and come back in ~60 seconds. The server, its IP, and its files are kept - only the running processes restart. Use this if the agent is unresponsive.`)) return
     setRestarting(true)
     setSavedMsg(null)
     const r = await fetch(`/api/workspaces/${workspaceId}/agents/${agent.id}/restart-pro`, {
@@ -3307,7 +3307,7 @@ function AgentHosting({
     }).then(r => r.json()).catch(() => ({ ok: false, error: 'request failed' }))
     setRestarting(false)
     if (r.ok) {
-      setSavedMsg('Restarting server — back online in ~60s')
+      setSavedMsg('Restarting server - back online in ~60s')
       setTimeout(() => setSavedMsg(null), 5000)
       onChanged()
     } else {
@@ -3342,7 +3342,7 @@ function AgentHosting({
 
   const isPro = agent.hosting === 'pro_droplet'
   // Attaching to an existing server (vs. provisioning a new VM) carries no extra
-  // charge — the server is already paid for and just has a free slot.
+  // charge - the server is already paid for and just has a free slot.
   const isAttach = selectedProServerId !== null
 
   const proAddon = hosting === 'external'
@@ -3352,7 +3352,7 @@ function AgentHosting({
       : { price: 25, label: 'managed server', byo: false }
 
   // Self-host: hide the Pro hosting/provisioning panel entirely (all agents run
-  // in-process as Standard). Only an explicit true suppresses — undefined (still
+  // in-process as Standard). Only an explicit true suppresses - undefined (still
   // loading) keeps the cloud default so nothing flashes on a slow probe.
   if (standalone === true) return null
 
@@ -3366,7 +3366,7 @@ function AgentHosting({
               {agent.status === 'provisioning' && (
                 <span className="text-xs text-[var(--color-text-dim)] inline-flex items-center gap-1">
                   <span className="inline-block w-2 h-2 rounded-full bg-[var(--color-accent)] animate-pulse" />
-                  Provisioning dedicated server…
+                  Provisioning dedicated server...
                 </span>
               )}
               {agent.status === 'online' && (
@@ -3381,7 +3381,7 @@ function AgentHosting({
             </div>
             {agent.status === 'provisioning' && (
               <p className="text-xs text-[var(--color-text-dim)]">
-                Spinning up the agent's VPS (typically ~60–90 seconds). You can leave this page; the status updates live.
+                Spinning up the agent's VPS (typically ~60-90 seconds). You can leave this page; the status updates live.
               </p>
             )}
             {agent.status === 'online' && dropletInfo && (
@@ -3391,7 +3391,7 @@ function AgentHosting({
               </div>
             )}
             <p className="text-xs text-[var(--color-text-dim)]">
-              The agent has shell access on this server (bash, file system, scheduled tasks) plus the Standard tools. The server is provisioned and managed for you — you never SSH in.
+              The agent has shell access on this server (bash, file system, scheduled tasks) plus the Standard tools. The server is provisioned and managed for you - you never SSH in.
             </p>
             {agent.status === 'online' && (
               <ClaudeOauthPanel workspaceId={workspaceId} agentId={agent.id} />
@@ -3404,7 +3404,7 @@ function AgentHosting({
                     : 'Agent not responding?'}
                 </p>
                 <p className="text-xs text-[var(--color-text-dim)]">
-                  A restart power-cycles the server in place — same server, IP, and files —
+                  A restart power-cycles the server in place - same server, IP, and files -
                   and is usually back in ~60s. If that doesn't help, redeploy provisions a
                   fresh server with the latest agent runtime (conversation history is kept).
                 </p>
@@ -3413,9 +3413,9 @@ function AgentHosting({
                     onClick={restart}
                     disabled={restarting}
                     className="text-sm bg-[var(--color-accent)] text-white px-3 py-1.5 rounded hover:opacity-90 disabled:opacity-50"
-                    title="Power-cycle the VM in place — keeps the server, IP, and files"
+                    title="Power-cycle the VM in place - keeps the server, IP, and files"
                   >
-                    {restarting ? 'Restarting…' : '⟳ Restart agent'}
+                    {restarting ? 'Restarting...' : '⟳ Restart agent'}
                   </button>
                   <button
                     onClick={redeploy}
@@ -3429,7 +3429,7 @@ function AgentHosting({
                     disabled={downgrading}
                     className="ml-auto text-xs text-[var(--color-text-dim)] hover:text-red-400 disabled:opacity-50"
                   >
-                    {downgrading ? 'Destroying server…' : 'Downgrade to Standard'}
+                    {downgrading ? 'Destroying server...' : 'Downgrade to Standard'}
                   </button>
                 </div>
               </div>
@@ -3440,9 +3440,9 @@ function AgentHosting({
                   onClick={restart}
                   disabled={restarting}
                   className="text-sm border border-[var(--color-border)] px-3 py-1.5 rounded hover:bg-[var(--color-hover-bg)] hover:border-[var(--color-text-dim)] disabled:opacity-50"
-                  title="Power-cycle the VM in place — keeps the server, IP, and files"
+                  title="Power-cycle the VM in place - keeps the server, IP, and files"
                 >
-                  {restarting ? 'Restarting…' : '⟳ Restart'}
+                  {restarting ? 'Restarting...' : '⟳ Restart'}
                 </button>
                 <button
                   onClick={redeploy}
@@ -3457,7 +3457,7 @@ function AgentHosting({
                   className="ml-auto text-xs text-[var(--color-text-dim)] hover:text-red-400 disabled:opacity-50"
                   title="Destroys the dedicated server and moves this agent to shared infrastructure"
                 >
-                  {downgrading ? 'Destroying server…' : 'Downgrade to Standard'}
+                  {downgrading ? 'Destroying server...' : 'Downgrade to Standard'}
                 </button>
               </div>
             )}
@@ -3480,13 +3480,13 @@ function AgentHosting({
                 </span>
               </div>
               <p className="text-xs text-[var(--color-text-dim)] mb-3">
-                A dedicated, fully managed server that runs up to 3 of your agents at one flat price — add a fourth and you add a second server. Shell access, scheduled tasks, file system, integrations — the works. We provision and manage it; you never open a terminal. Ready in ~90 seconds.
+                A dedicated, fully managed server that runs up to 3 of your agents at one flat price - add a fourth and you add a second server. Shell access, scheduled tasks, file system, integrations - the works. We provision and manage it; you never open a terminal. Ready in ~90 seconds.
               </p>
 
               {attachableServers.length > 0 && (
                 <div className="mb-3 space-y-1.5 border border-[var(--color-border)] rounded p-2.5 bg-[var(--color-bg)]">
                   <div className="text-xs text-[var(--color-text-dim)]">
-                    You already have room on a Pro server — add this agent there for <strong className="text-[var(--color-text)]">no extra charge</strong> (each server runs up to 3 agents):
+                    You already have room on a Pro server - add this agent there for <strong className="text-[var(--color-text)]">no extra charge</strong> (each server runs up to 3 agents):
                   </div>
                   {attachableServers.map(s => (
                     <label key={s.id} className="flex items-start gap-2 text-sm py-0.5 cursor-pointer">
@@ -3498,7 +3498,7 @@ function AgentHosting({
                         className="mt-0.5 accent-[var(--color-accent)]"
                       />
                       <span>
-                        Existing server <span className="font-mono text-xs">{s.ip ?? '(provisioning)'}</span> — {s.free_slots} of 3 slot{s.free_slots === 1 ? '' : 's'} free · <strong className="text-green-400">no extra charge</strong>
+                        Existing server <span className="font-mono text-xs">{s.ip ?? '(provisioning)'}</span> - {s.free_slots} of 3 slot{s.free_slots === 1 ? '' : 's'} free · <strong className="text-green-400">no extra charge</strong>
                       </span>
                     </label>
                   ))}
@@ -3510,7 +3510,7 @@ function AgentHosting({
                       onChange={() => setSelectedProServerId(null)}
                       className="mt-0.5 accent-[var(--color-accent)]"
                     />
-                    <span>New dedicated server — <strong>+$25/mo</strong></span>
+                    <span>New dedicated server - <strong>+$25/mo</strong></span>
                   </label>
                 </div>
               )}
@@ -3524,7 +3524,7 @@ function AgentHosting({
 
               <details className="mt-4 pt-3 border-t border-[var(--color-border)]">
                 <summary className="cursor-pointer text-xs uppercase tracking-wide text-[var(--color-text-dim)]">
-                  Hosting — Advanced
+                  Hosting - Advanced
                 </summary>
                 <p className="text-xs text-[var(--color-text-dim)] mt-3 mb-2">
                   Pick where this Pro server lives. Our managed server is the default and recommended; you can also choose global-region hosting or bring your own server.
@@ -3537,7 +3537,7 @@ function AgentHosting({
                     onChange={() => { setProProvider('hetzner'); setHosting('standard') }}
                     className="mt-0.5 accent-[var(--color-accent)]"
                   />
-                  <span><strong>Managed server</strong> — <strong>+$25/mo, flat</strong>. Recommended. <span className="text-xs text-[var(--color-text-dim)]">(default; 3 vCPU / 4 GB; EU &amp; US regions)</span></span>
+                  <span><strong>Managed server</strong> - <strong>+$25/mo, flat</strong>. Recommended. <span className="text-xs text-[var(--color-text-dim)]">(default; 3 vCPU / 4 GB; EU &amp; US regions)</span></span>
                 </label>
                 <label className="flex items-start gap-2 text-sm py-1">
                   <input
@@ -3547,7 +3547,7 @@ function AgentHosting({
                     onChange={() => setHosting('external')}
                     className="mt-0.5 accent-[var(--color-accent)]"
                   />
-                  <span>Bring your own server (<strong>BYOVPS</strong>) — <strong>+$10/mo</strong>. You stay the operator; no uptime SLA. <span className="text-xs text-[var(--color-text-dim)]">(any cloud; Contabo, Linode, OVH, a Pi, etc.)</span></span>
+                  <span>Bring your own server (<strong>BYOVPS</strong>) - <strong>+$10/mo</strong>. You stay the operator; no uptime SLA. <span className="text-xs text-[var(--color-text-dim)]">(any cloud; Contabo, Linode, OVH, a Pi, etc.)</span></span>
                 </label>
                 <label className="flex items-start gap-2 text-sm py-1">
                   <input
@@ -3557,7 +3557,7 @@ function AgentHosting({
                     onChange={() => { setProProvider('digitalocean'); setHosting('standard') }}
                     className="mt-0.5 accent-[var(--color-accent)]"
                   />
-                  <span><strong>Managed server — global regions</strong> — <strong>+$35/mo</strong>. <span className="text-xs text-[var(--color-text-dim)]">(2 vCPU / 4 GB; 13 regions worldwide — for hosting outside the EU/US)</span></span>
+                  <span><strong>Managed server - global regions</strong> - <strong>+$35/mo</strong>. <span className="text-xs text-[var(--color-text-dim)]">(2 vCPU / 4 GB; 13 regions worldwide - for hosting outside the EU/US)</span></span>
                 </label>
               </details>
             </div>
@@ -3577,8 +3577,8 @@ function AgentHosting({
               )}
               <ul className="text-xs text-[var(--color-text-dim)] list-disc pl-5 space-y-1">
                 {isAttach
-                  ? <li>The agent joins your existing server — no new server, no extra charge</li>
-                  : <li>A dedicated server is provisioned — it runs up to 3 of your agents</li>}
+                  ? <li>The agent joins your existing server - no new server, no extra charge</li>
+                  : <li>A dedicated server is provisioned - it runs up to 3 of your agents</li>}
                 <li>Agents on it get the full tool surface (shell, files, system admin)</li>
                 <li>{isAttach ? 'Ready in about 60 seconds' : 'Provisioning takes about 60 seconds'}</li>
                 {!isAttach && proAddon.byo && <li>You stay the operator of your server; no uptime SLA</li>}
@@ -3586,17 +3586,17 @@ function AgentHosting({
               <div className="mt-3 border-t border-[var(--color-border)] pt-3">
                 {isAttach ? (
                   <div className="text-green-400 text-sm">
-                    No additional charge — this server is already part of your subscription.
+                    No additional charge - this server is already part of your subscription.
                   </div>
                 ) : me?.is_comp ? (
                   <div className="text-[var(--color-accent)] text-sm">
-                    Your account is comped — no charge.
+                    Your account is comped - no charge.
                   </div>
                 ) : (
                   <div>
                     <div className="text-base text-[var(--color-text)]">+${proAddon.price}/mo, flat</div>
                     <div className="text-xs text-[var(--color-text-dim)]">
-                      A separate Brigata charge on top of your $15 Standard seat, per server (runs up to 3 agents). Cancel anytime — downgrading destroys the server immediately. (Billing isn't connected yet — this is a preview confirmation.)
+                      A separate Brigata charge on top of your $15 Standard seat, per server (runs up to 3 agents). Cancel anytime - downgrading destroys the server immediately. (Billing isn't connected yet - this is a preview confirmation.)
                     </div>
                   </div>
                 )}
@@ -3630,7 +3630,7 @@ function AgentHosting({
               className="w-full bg-[var(--color-surface)] border border-[var(--color-border)] rounded px-3 py-2 text-sm font-mono focus:outline-none focus:border-[var(--color-accent)]"
             />
             <div className="text-xs text-[var(--color-text-dim)] mt-1">
-              Paste the URL the install script printed when it finished —{' '}
+              Paste the URL the install script printed when it finished -{' '}
               looks like <code className="font-mono">http://&lt;your-vps-ip&gt;:4040</code>.
               You can also find it by SSH'ing into your server and running{' '}
               <code className="font-mono">curl ifconfig.me</code>.
@@ -3648,7 +3648,7 @@ function AgentHosting({
               <div className="space-y-2">
                 <CopyableCode code={issuedToken} />
                 <div className="text-xs text-[var(--color-accent)]">
-                  Copy this now — it won't be shown again. Store it on the server side.
+                  Copy this now - it won't be shown again. Store it on the server side.
                 </div>
               </div>
             ) : (
@@ -3676,8 +3676,8 @@ function AgentHosting({
               {!issuedToken && (
                 <div className="text-xs text-[var(--color-accent)]">
                   Substitute your bridge token into <code>BRIDGE_TOKEN=</code> below.
-                  If you saved it when you first generated it, reuse that one —
-                  only click “Rotate token” if you’ve lost it (rotating
+                  If you saved it when you first generated it, reuse that one -
+                  only click "Rotate token" if you've lost it (rotating
                   invalidates the old token and breaks an already-running bridge).
                 </div>
               )}
@@ -3692,7 +3692,7 @@ function AgentHosting({
                     onChange={() => setPrivilege('standard')}
                   />
                   <span className="text-xs text-[var(--color-text-dim)]">
-                    <span className="font-medium text-[var(--color-text)]">Standard (recommended)</span> — runs
+                    <span className="font-medium text-[var(--color-text)]">Standard (recommended)</span> - runs
                     as a dedicated non-root user. It can install packages and work in its own directory, but
                     can't read every file on the box or damage the system. To let it work on an existing
                     project, grant that folder to it (the installer prints how).
@@ -3707,16 +3707,16 @@ function AgentHosting({
                     onChange={() => setPrivilege('root')}
                   />
                   <span className="text-xs text-[var(--color-text-dim)]">
-                    <span className="font-medium text-[var(--color-text)]">Root (full access)</span> — runs as
+                    <span className="font-medium text-[var(--color-text)]">Root (full access)</span> - runs as
                     root with unrestricted access to the whole server. Choose this only if you want the agent to
-                    touch anything without per-folder grants — note a malicious instruction it reads would also
+                    touch anything without per-folder grants - note a malicious instruction it reads would also
                     run as root.
                   </span>
                 </label>
               </div>
               <div className="text-xs text-[var(--color-text)] mt-2">Pick ONE auth method:</div>
               <div className="text-xs text-[var(--color-text-dim)] mt-1 mb-1">
-                <strong>Option A — Claude subscription (recommended)</strong>:
+                <strong>Option A - Claude subscription (recommended)</strong>:
                 runs on your Claude Pro/Max plan, no extra charges. Run{' '}
                 <code>claude setup-token</code> on any machine with the Claude
                 CLI; it'll print an <code>sk-ant-oat-...</code> token.
@@ -3728,7 +3728,7 @@ function AgentHosting({
   CLAUDE_CODE_OAUTH_TOKEN=sk-ant-oat-... \\
   bash`} />
               <div className="text-xs text-[var(--color-text-dim)] mt-3 mb-1">
-                <strong>Option B — Anthropic API key</strong>: bills against
+                <strong>Option B - Anthropic API key</strong>: bills against
                 your Anthropic console credit. Generate one at{' '}
                 <code>console.anthropic.com</code>; format is{' '}
                 <code>sk-ant-api03-...</code>.
@@ -3745,7 +3745,7 @@ function AgentHosting({
                 prefix), so swapping the variable name accidentally is fine.
               </div>
               <div className="text-xs text-[var(--color-text-dim)]">
-                When the script finishes, it prints your webhook URL —{' '}
+                When the script finishes, it prints your webhook URL -{' '}
                 <code>http://&lt;your-vps-ip&gt;:4040</code>. Paste that into{' '}
                 "Bridge webhook URL" above and click "Save self-host config".
               </div>
@@ -3760,7 +3760,7 @@ function AgentHosting({
             disabled={saving}
             className="bg-[var(--color-accent)] text-white px-4 py-2 rounded text-sm hover:opacity-90 disabled:opacity-50"
           >
-            {saving ? 'Saving…' : 'Save self-host config'}
+            {saving ? 'Saving...' : 'Save self-host config'}
           </button>
           {savedMsg && <span className="text-xs text-green-400">{savedMsg}</span>}
         </div>
@@ -3870,7 +3870,7 @@ function GitHubIntegration({ workspaceId }: { workspaceId: string }) {
     }).then(r => r.json()).catch(() => null)
     setBusy(false)
     if (r?.ok) {
-      setMsg({ kind: 'ok', text: `Synced — pushed ${r.summary.pushed}, pulled ${r.summary.pulled}.` })
+      setMsg({ kind: 'ok', text: `Synced - pushed ${r.summary.pushed}, pulled ${r.summary.pulled}.` })
       setEditingRepo(false); void load()
     } else {
       setMsg({ kind: 'err', text: r?.summary?.error || r?.error || 'Configure failed' })
@@ -3881,7 +3881,7 @@ function GitHubIntegration({ workspaceId }: { workspaceId: string }) {
     setBusy(true); setMsg(null)
     const r = await fetch(`/api/github/${workspaceId}/sync`, { method: 'POST' }).then(r => r.json()).catch(() => null)
     setBusy(false)
-    if (r?.ok) { setMsg({ kind: 'ok', text: `Synced — pushed ${r.summary.pushed}, pulled ${r.summary.pulled}.` }); void load() }
+    if (r?.ok) { setMsg({ kind: 'ok', text: `Synced - pushed ${r.summary.pushed}, pulled ${r.summary.pulled}.` }); void load() }
     else setMsg({ kind: 'err', text: r?.summary?.error || 'Sync failed' })
   }
 
@@ -3892,7 +3892,7 @@ function GitHubIntegration({ workspaceId }: { workspaceId: string }) {
     setBusy(false); setMsg(null); void load()
   }
 
-  if (loading) return <div className="max-w-2xl p-8 text-sm text-[var(--color-text-dim)]">Loading…</div>
+  if (loading) return <div className="max-w-2xl p-8 text-sm text-[var(--color-text-dim)]">Loading...</div>
 
   const inputCls = 'w-full bg-[var(--color-surface)] border border-[var(--color-border)] rounded px-3 py-2 text-sm focus:outline-none focus:border-[var(--color-accent)]'
   const btnCls = 'bg-[var(--color-accent)] text-white px-4 py-2 rounded text-sm hover:opacity-90 disabled:opacity-50'
@@ -3902,7 +3902,7 @@ function GitHubIntegration({ workspaceId }: { workspaceId: string }) {
       <div>
         <h2 className="text-xl font-medium">GitHub doc sync</h2>
         <p className="text-sm text-[var(--color-text-dim)] mt-1">
-          Keep this workspace's documents in sync with a GitHub repo as plain Markdown — edit in Brigata
+          Keep this workspace's documents in sync with a GitHub repo as plain Markdown - edit in Brigata
           or in Obsidian, Logseq, or any editor over Git, and changes flow both ways.
         </p>
       </div>
@@ -3912,7 +3912,7 @@ function GitHubIntegration({ workspaceId }: { workspaceId: string }) {
         isAdmin ? (
           <div className="space-y-3">
             <p className="text-sm text-[var(--color-text-dim)]">
-              One-time setup: create the Brigata GitHub App. GitHub hands the credentials straight back —
+              One-time setup: create the Brigata GitHub App. GitHub hands the credentials straight back -
               nothing to copy by hand.
             </p>
             <button type="button" onClick={setupApp} className={btnCls}>Set up GitHub App</button>
@@ -3937,7 +3937,7 @@ function GitHubIntegration({ workspaceId }: { workspaceId: string }) {
               const m = repos.find(x => x.full_name === e.target.value)
               if (m) setBranch(m.default_branch)
             }} className={inputCls}>
-              <option value="">Select a repository…</option>
+              <option value="">Select a repository...</option>
               {repos.map(r => <option key={r.full_name} value={r.full_name}>{r.full_name}{r.private ? ' (private)' : ''}</option>)}
             </select>
             {status.account_login && repos.length === 0 && (
@@ -3951,7 +3951,7 @@ function GitHubIntegration({ workspaceId }: { workspaceId: string }) {
             <input value={basePath} onChange={e => setBasePath(e.target.value)} className={`${inputCls} font-mono`} placeholder="brigata-docs" />
           </FormField>
           <div className="flex gap-2">
-            <button type="button" disabled={busy || !repo} onClick={saveRepo} className={btnCls}>{busy ? 'Syncing…' : 'Save & sync'}</button>
+            <button type="button" disabled={busy || !repo} onClick={saveRepo} className={btnCls}>{busy ? 'Syncing...' : 'Save & sync'}</button>
             {status.repo_full_name && <button type="button" onClick={() => setEditingRepo(false)} className="px-4 py-2 rounded text-sm border border-[var(--color-border)]">Cancel</button>}
           </div>
         </div>
@@ -3963,14 +3963,14 @@ function GitHubIntegration({ workspaceId }: { workspaceId: string }) {
             <div>
               <span className="text-[var(--color-text-dim)]">Status:</span>{' '}
               {status.last_sync_status === 'error'
-                ? <span className="text-red-400">error — {status.last_error}</span>
+                ? <span className="text-red-400">error - {status.last_error}</span>
                 : status.last_sync_at
                   ? <span className="text-emerald-500">synced {new Date(status.last_sync_at).toLocaleString()}</span>
                   : <span className="text-[var(--color-text-dim)]">not synced yet</span>}
             </div>
           </div>
           <div className="flex gap-2">
-            <button type="button" disabled={busy} onClick={syncNow} className={btnCls}>{busy ? 'Syncing…' : 'Sync now'}</button>
+            <button type="button" disabled={busy} onClick={syncNow} className={btnCls}>{busy ? 'Syncing...' : 'Sync now'}</button>
             <button type="button" onClick={() => setEditingRepo(true)} className="px-4 py-2 rounded text-sm border border-[var(--color-border)]">Change repo</button>
             <button type="button" disabled={busy} onClick={disconnect} className="px-4 py-2 rounded text-sm border border-[var(--color-border)] text-red-400">Disconnect</button>
           </div>
@@ -4052,7 +4052,7 @@ function DiscordIntegration({
     void loadIntegration()
   }
 
-  if (loading) return <div className="p-8 text-sm text-[var(--color-text-dim)]">Loading…</div>
+  if (loading) return <div className="p-8 text-sm text-[var(--color-text-dim)]">Loading...</div>
 
   if (!integration || !integration.config.has_token) {
     return (
@@ -4083,7 +4083,7 @@ function DiscordIntegration({
           disabled={submitting || !token.trim()}
           className="bg-[var(--color-accent)] text-white px-4 py-2 rounded text-sm hover:opacity-90 disabled:opacity-50"
         >
-          {submitting ? 'Connecting…' : 'Connect'}
+          {submitting ? 'Connecting...' : 'Connect'}
         </button>
       </form>
     )
@@ -4120,7 +4120,7 @@ function DiscordIntegration({
       </div>
       <div className="text-sm text-[var(--color-text-dim)]">
         Connected as <span className="text-[var(--color-text)]">{integration.config.bot_username ?? 'bot'}</span>
-        {' '}({integration.config.application_id ?? '—'})
+        {' '}({integration.config.application_id ?? '-'})
         {' '}· Status: <span className="text-[var(--color-text)]">{integration.status}</span>
       </div>
 
@@ -4145,7 +4145,7 @@ function DiscordIntegration({
                       onChange={e => setMapping(c.id, e.target.value)}
                       className="flex-1 bg-[var(--color-surface)] border border-[var(--color-border)] rounded px-2 py-1 text-sm focus:outline-none focus:border-[var(--color-accent)]"
                     >
-                      <option value="">— not bridged —</option>
+                      <option value="">- not bridged -</option>
                       {discordChannels.map(d => (
                         <option key={d.channel_id} value={d.channel_id}>
                           {d.guild_name} / #{d.channel_name}
@@ -4175,7 +4175,7 @@ function DiscordIntegration({
               disabled={submitting || !token.trim()}
               className="bg-[var(--color-accent)] text-white px-3 py-2 rounded text-sm hover:opacity-90 disabled:opacity-50"
             >
-              {submitting ? '…' : 'Replace'}
+              {submitting ? '...' : 'Replace'}
             </button>
           </form>
           {error && <div className="text-xs text-red-400 mt-1">{error}</div>}
@@ -4285,11 +4285,11 @@ function UsagePanel({ workspaceId }: { workspaceId: string }) {
     <div className="p-6 max-w-2xl mx-auto w-full">
       <h1 className="text-lg font-medium">Usage</h1>
       <p className="text-sm text-[var(--color-text-dim)] mt-1 mb-1">
-        Token consumption across your agents — see which models and which agents are spending your tokens.
+        Token consumption across your agents - see which models and which agents are spending your tokens.
       </p>
       <p className="text-xs text-[var(--color-text-dim)] mb-5">
         Token counts are exact. Cost is an estimate from standard API pricing; if your agents run on a Claude
-        subscription, the marginal cost is covered by your plan. Standard-tier turns only — Pro agents aren’t metered here yet.
+        subscription, the marginal cost is covered by your plan. Standard-tier turns only - Pro agents aren't metered here yet.
       </p>
 
       <div className="flex gap-1.5 mb-5">
@@ -4306,7 +4306,7 @@ function UsagePanel({ workspaceId }: { workspaceId: string }) {
       </div>
 
       {loading ? (
-        <div className="text-sm text-[var(--color-text-dim)]">Loading…</div>
+        <div className="text-sm text-[var(--color-text-dim)]">Loading...</div>
       ) : error ? (
         <div className="text-sm text-red-400">{error}</div>
       ) : !data || data.totals.turns === 0 ? (
@@ -4438,7 +4438,7 @@ function MatrixIntegration({
     e.preventDefault()
     if (!homeserver.trim() || !token.trim()) return
     if (isPublicHomeserverInput(homeserver)) {
-      setError('Brigata requires your own Matrix homeserver — public homeservers block bot accounts.')
+      setError('Brigata requires your own Matrix homeserver - public homeservers block bot accounts.')
       return
     }
     setSubmitting(true)
@@ -4477,7 +4477,7 @@ function MatrixIntegration({
     void loadIntegration()
   }
 
-  if (loading) return <div className="p-8 text-sm text-[var(--color-text-dim)]">Loading…</div>
+  if (loading) return <div className="p-8 text-sm text-[var(--color-text-dim)]">Loading...</div>
 
   if (!integration || !integration.config.has_token) {
     return (
@@ -4490,13 +4490,13 @@ function MatrixIntegration({
           homeserver you control. To set up:
         </p>
         <ol className="text-sm text-[var(--color-text-dim)] list-decimal pl-5 space-y-1">
-          <li>Run your own homeserver — <a className="text-[var(--color-accent)] underline" href="https://github.com/element-hq/synapse" target="_blank" rel="noreferrer">Synapse</a>, <a className="text-[var(--color-accent)] underline" href="https://conduit.rs" target="_blank" rel="noreferrer">Conduit</a>, or <a className="text-[var(--color-accent)] underline" href="https://github.com/element-hq/dendrite" target="_blank" rel="noreferrer">Dendrite</a> are common choices</li>
+          <li>Run your own homeserver - <a className="text-[var(--color-accent)] underline" href="https://github.com/element-hq/synapse" target="_blank" rel="noreferrer">Synapse</a>, <a className="text-[var(--color-accent)] underline" href="https://conduit.rs" target="_blank" rel="noreferrer">Conduit</a>, or <a className="text-[var(--color-accent)] underline" href="https://github.com/element-hq/dendrite" target="_blank" rel="noreferrer">Dendrite</a> are common choices</li>
           <li>Create a Matrix account on it for your bot and copy that account's access token</li>
-          <li>Invite the bot account to the room you want to bridge — it auto-joins</li>
+          <li>Invite the bot account to the room you want to bridge - it auto-joins</li>
           <li>Paste your homeserver URL + access token below, then pick which channels to bridge</li>
         </ol>
         <p className="text-xs text-[var(--color-text-dim)]">
-          Note: v1 bridges <strong>unencrypted</strong> rooms only — turn off encryption on the room you test with. (On your own homeserver the messages never leave infrastructure you control, so this is a much smaller concern.)
+          Note: v1 bridges <strong>unencrypted</strong> rooms only - turn off encryption on the room you test with. (On your own homeserver the messages never leave infrastructure you control, so this is a much smaller concern.)
         </p>
         <FormField label="Homeserver URL">
           <input
@@ -4508,7 +4508,7 @@ function MatrixIntegration({
           />
           {isPublicHomeserverInput(homeserver) && (
             <p className="mt-1 text-xs text-amber-500">
-              That looks like a public homeserver. Brigata requires your own — bot accounts get throttled or banned on shared public servers.
+              That looks like a public homeserver. Brigata requires your own - bot accounts get throttled or banned on shared public servers.
             </p>
           )}
         </FormField>
@@ -4527,7 +4527,7 @@ function MatrixIntegration({
           disabled={submitting || !homeserver.trim() || !token.trim() || isPublicHomeserverInput(homeserver)}
           className="bg-[var(--color-accent)] text-white px-4 py-2 rounded text-sm hover:opacity-90 disabled:opacity-50"
         >
-          {submitting ? 'Connecting…' : 'Connect'}
+          {submitting ? 'Connecting...' : 'Connect'}
         </button>
       </form>
     )
@@ -4562,7 +4562,7 @@ function MatrixIntegration({
       </div>
       <div className="text-sm text-[var(--color-text-dim)]">
         Connected as <span className="text-[var(--color-text)]">{integration.config.bot_user_id ?? 'bot'}</span>
-        {' '}· <span className="text-[var(--color-text)]">{integration.config.homeserver_url ?? '—'}</span>
+        {' '}· <span className="text-[var(--color-text)]">{integration.config.homeserver_url ?? '-'}</span>
         {' '}· Status: <span className="text-[var(--color-text)]">{integration.status}</span>
       </div>
 
@@ -4587,7 +4587,7 @@ function MatrixIntegration({
                       onChange={e => setMapping(c.id, e.target.value)}
                       className="flex-1 bg-[var(--color-surface)] border border-[var(--color-border)] rounded px-2 py-1 text-sm focus:outline-none focus:border-[var(--color-accent)]"
                     >
-                      <option value="">— not bridged —</option>
+                      <option value="">- not bridged -</option>
                       {rooms.map(rm => (
                         <option key={rm.room_id} value={rm.room_id}>
                           {rm.name}
@@ -4617,7 +4617,7 @@ function MatrixIntegration({
               disabled={submitting || !token.trim()}
               className="bg-[var(--color-accent)] text-white px-3 py-2 rounded text-sm hover:opacity-90 disabled:opacity-50"
             >
-              {submitting ? '…' : 'Replace'}
+              {submitting ? '...' : 'Replace'}
             </button>
           </form>
           {error && <div className="text-xs text-red-400 mt-1">{error}</div>}

@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 
-// Curated agent-flavored emojis grouped by vibe. Not exhaustive — designed for
+// Curated agent-flavored emojis grouped by vibe. Not exhaustive - designed for
 // "pick a face/symbol for an AI agent" rather than full unicode coverage.
 // Users can still paste any emoji directly into the input.
 

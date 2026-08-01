@@ -1,5 +1,5 @@
 /*
- * Brigata Studio — minimal service worker (PWA v1).
+ * Brigata Studio - minimal service worker (PWA v1).
  * Goals: installability + an offline app-shell. Deliberately conservative:
  *  - NEVER intercepts /api or /ws (auth + realtime must always hit the network).
  *  - Navigations are network-first (online users always get the freshest

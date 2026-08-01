@@ -24,13 +24,13 @@ type ToolHandler = (input: unknown, ctx: AgentToolContext) => Promise<ToolResult
 export const tools: Anthropic.Tool[] = [
   {
     name: 'list_documents',
-    description: 'List the documents in the current channel (plus any workspace-level docs). Returns id, title, folder (or null for "Inbox"), pinned flag, and last updated time. Documents can be organized into folders — pass a folder name when creating or editing to set/move it.',
+    description: 'List the documents in the current channel (plus any workspace-level docs). Returns id, title, folder (or null for "Inbox"), pinned flag, and last updated time. Documents can be organized into folders - pass a folder name when creating or editing to set/move it.',
     input_schema: { type: 'object', properties: {}, required: [] },
   },
   {
     name: 'read_document',
     description:
-      'Read a document into YOUR context so you can answer questions about it, summarize it, or use it to inform your reply. Use this when YOU need the content — NOT when the user just wants to see the document themselves. If the user said "open", "show me", "pull up", or "bring up" a document, call `focus_document` instead so the document opens in their UI without you dumping the body into chat. Returns the title and the current markdown body, with task-list checkboxes already reflecting their up-to-date state (`- [x]` = checked, `- [ ]` = unchecked).',
+      'Read a document into YOUR context so you can answer questions about it, summarize it, or use it to inform your reply. Use this when YOU need the content - NOT when the user just wants to see the document themselves. If the user said "open", "show me", "pull up", or "bring up" a document, call `focus_document` instead so the document opens in their UI without you dumping the body into chat. Returns the title and the current markdown body, with task-list checkboxes already reflecting their up-to-date state (`- [x]` = checked, `- [ ]` = unchecked).',
     input_schema: {
       type: 'object',
       properties: {
@@ -42,7 +42,7 @@ export const tools: Anthropic.Tool[] = [
   {
     name: 'focus_document',
     description:
-      'Open a document in the user\'s workspace UI. Use this when the user asks you to "open", "show me", "pull up", "bring up", or "display" a document — they want to look at it themselves, not have you paste it back to them. The document window appears in their view; you should NOT echo the contents in your reply. Returns only a short confirmation. If you need the body for your own reasoning, use `read_document` instead.',
+      'Open a document in the user\'s workspace UI. Use this when the user asks you to "open", "show me", "pull up", "bring up", or "display" a document - they want to look at it themselves, not have you paste it back to them. The document window appears in their view; you should NOT echo the contents in your reply. Returns only a short confirmation. If you need the body for your own reasoning, use `read_document` instead.',
     input_schema: {
       type: 'object',
       properties: {
@@ -67,7 +67,7 @@ export const tools: Anthropic.Tool[] = [
   {
     name: 'edit_document',
     description:
-      'Replace the body of an existing document. The `- [x]` / `- [ ]` markers in the new body are taken as the up-to-date checkbox state. When revising, preserve the exact text of any task-list items you intend to leave with the same state — checkbox state is keyed by the trimmed text of each item, so changing the text resets it. Adding or removing items is fine. Optionally update the title or move to a different folder.',
+      'Replace the body of an existing document. The `- [x]` / `- [ ]` markers in the new body are taken as the up-to-date checkbox state. When revising, preserve the exact text of any task-list items you intend to leave with the same state - checkbox state is keyed by the trimmed text of each item, so changing the text resets it. Adding or removing items is fine. Optionally update the title or move to a different folder.',
     input_schema: {
       type: 'object',
       properties: {
@@ -82,7 +82,7 @@ export const tools: Anthropic.Tool[] = [
   {
     name: 'append_to_document',
     description:
-      'Append markdown to the END of an existing document WITHOUT resending the whole body. Strongly preferred over edit_document for large or growing documents — you only send the new content, which avoids the size/truncation limits of a full-body rewrite. Any `- [x]` / `- [ ]` markers in the appended text are added to the checkbox state.',
+      'Append markdown to the END of an existing document WITHOUT resending the whole body. Strongly preferred over edit_document for large or growing documents - you only send the new content, which avoids the size/truncation limits of a full-body rewrite. Any `- [x]` / `- [ ]` markers in the appended text are added to the checkbox state.',
     input_schema: {
       type: 'object',
       properties: {
@@ -95,7 +95,7 @@ export const tools: Anthropic.Tool[] = [
   {
     name: 'delete_document',
     description:
-      'Permanently delete a document. Only do this when the user has explicitly asked you to delete it — never on your own judgment. Confirm in your reply what you deleted.',
+      'Permanently delete a document. Only do this when the user has explicitly asked you to delete it - never on your own judgment. Confirm in your reply what you deleted.',
     input_schema: {
       type: 'object',
       properties: {
@@ -152,7 +152,7 @@ const handlers: Record<string, ToolHandler> = {
     )
     if (!rows[0]) return { content: 'Document not found', is_error: true }
     broadcastToAll({ type: 'agent_document_focus', documentId: document_id })
-    return { content: `Opened "${rows[0].title}" in the user's view. Do not paste the contents into chat — they can read it now.` }
+    return { content: `Opened "${rows[0].title}" in the user's view. Do not paste the contents into chat - they can read it now.` }
   },
 
   async read_document(input, ctx) {

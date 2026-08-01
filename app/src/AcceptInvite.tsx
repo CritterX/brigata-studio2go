@@ -53,13 +53,13 @@ export function AcceptInvite({ token, signedIn }: { token: string; signedIn: boo
         </div>
 
         {loading && (
-          <p className="text-sm text-[var(--color-text-dim)]">Looking up your invite…</p>
+          <p className="text-sm text-[var(--color-text-dim)]">Looking up your invite...</p>
         )}
 
         {error && !loading && (
           <>
             <h1 className="font-display text-4xl font-bold tracking-tight text-[var(--color-text)] leading-tight">
-              That invite isn’t usable.
+              That invite isn't usable.
             </h1>
             <p className="text-sm text-[var(--color-text-dim)]">{error}</p>
             <p className="text-sm text-[var(--color-text-dim)]">
@@ -71,16 +71,16 @@ export function AcceptInvite({ token, signedIn }: { token: string; signedIn: boo
         {info && !error && !done && (
           <>
             <h1 className="font-display text-4xl font-bold tracking-tight text-[var(--color-text)] leading-tight">
-              You’ve been invited.
+              You've been invited.
             </h1>
             <p className="text-sm text-[var(--color-text-dim)] max-w-sm leading-relaxed">
               <strong className="text-[var(--color-text)]">{inviterName}</strong>
               {info.inviter_name && <> ({info.inviter_email})</>}
-              {' '}has invited you to join <strong className="text-[var(--color-text)]">“{info.workspace_name}”</strong> on Brigata Studio.
+              {' '}has invited you to join <strong className="text-[var(--color-text)]">"{info.workspace_name}"</strong> on Brigata Studio.
             </p>
             <div className="text-xs text-[var(--color-text-dim)] max-w-sm leading-relaxed">
-              You’ll see every channel, document, and agent in that workspace, and you can talk to them.
-              The owner’s Claude account funds agent activity — you don’t need your own to participate there.
+              You'll see every channel, document, and agent in that workspace, and you can talk to them.
+              The owner's Claude account funds agent activity - you don't need your own to participate there.
             </div>
             {signedIn ? (
               <button
@@ -88,7 +88,7 @@ export function AcceptInvite({ token, signedIn }: { token: string; signedIn: boo
                 disabled={accepting}
                 className="bg-[var(--accent-chat)] text-[var(--bg-deep)] px-6 py-2.5 rounded-md text-xs font-mono font-semibold uppercase tracking-wider hover:opacity-90 disabled:opacity-40"
               >
-                {accepting ? 'Joining…' : '▶ Accept and join'}
+                {accepting ? 'Joining...' : '▶ Accept and join'}
               </button>
             ) : (
               <a
@@ -113,7 +113,7 @@ export function AcceptInvite({ token, signedIn }: { token: string; signedIn: boo
             <h1 className="font-display text-4xl font-bold tracking-tight text-[var(--color-text)] leading-tight">
               Welcome aboard.
             </h1>
-            <p className="text-sm text-[var(--color-text-dim)]">Taking you to the workspace…</p>
+            <p className="text-sm text-[var(--color-text-dim)]">Taking you to the workspace...</p>
           </>
         )}
       </div>

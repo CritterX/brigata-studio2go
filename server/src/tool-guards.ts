@@ -12,7 +12,7 @@ export function isUuid(v: unknown): v is string {
 }
 
 // Fail closed: a turn that reaches a tool without a valid workspace UUID is a
-// bug or a forged context — refuse rather than run a query that isn't bound to a
+// bug or a forged context - refuse rather than run a query that isn't bound to a
 // tenant.
 export function assertWorkspaceScope(workspaceId: unknown): void {
   if (!isUuid(workspaceId)) {

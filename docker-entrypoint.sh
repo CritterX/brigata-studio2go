@@ -1,9 +1,9 @@
 #!/bin/bash
-# Brigata Studio-to-Go — container entrypoint.
+# Brigata Studio-to-Go - container entrypoint.
 # Runs an embedded Postgres whose ENTIRE state (config + data) lives in one dir
 # on the persistent volume, then runs the standalone installer once and launches
 # the app on :3030. Keeping config inside PGDATA (not Ubuntu's /etc/postgresql
-# split) is what makes a container recreate — i.e. an Unraid app update — safe.
+# split) is what makes a container recreate - i.e. an Unraid app update - safe.
 set -e
 PGBIN="/usr/lib/postgresql/16/bin"
 export PGDATA="/var/lib/postgresql/data"   # self-contained cluster on the volume

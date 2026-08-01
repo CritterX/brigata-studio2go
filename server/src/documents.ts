@@ -90,7 +90,7 @@ documents.get('/:workspaceId/documents/:documentId', async (req, res) => {
   res.json({ ok: true, document: rows[0] })
 })
 
-// Update body and/or title — full replace of body_md. State is *not* clobbered here;
+// Update body and/or title - full replace of body_md. State is *not* clobbered here;
 // the front-end keeps state intact across body edits because state is keyed by element id.
 documents.patch('/:workspaceId/documents/:documentId', async (req, res) => {
   if (!req.user) return res.status(401).json({ ok: false })

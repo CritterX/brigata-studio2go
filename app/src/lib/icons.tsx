@@ -1,6 +1,6 @@
 // Monochrome stroke icons. They inherit currentColor, so they adopt whichever
 // theme color the parent element uses (text-dim, accent on hover, etc.).
-// Style: 1.75px stroke, 18px default size — Lucide-ish proportions.
+// Style: 1.75px stroke, 18px default size - Lucide-ish proportions.
 
 import type { CSSProperties } from 'react'
 
@@ -42,7 +42,7 @@ export const IconPencil = (p: IconProps) => base(p, (
 ))
 
 // Per-room mute control: speech bubble (agent talks in this room) / bubble with a
-// slash (muted here). Literal for text chat — a chat bubble is "talking".
+// slash (muted here). Literal for text chat - a chat bubble is "talking".
 export const IconSpeech = (p: IconProps) => base(p, (
   <path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z" />
 ))
@@ -119,7 +119,7 @@ export const IconDocument = (p: IconProps) => base(p, (
   </>
 ))
 
-// In focus — a target/spotlight (ring + center node). Replaces the ❖ glyph,
+// In focus - a target/spotlight (ring + center node). Replaces the ❖ glyph,
 // which rendered as a movie-clapper in some fonts.
 export const IconFocus = (p: IconProps) => base(p, (
   <>
@@ -128,7 +128,7 @@ export const IconFocus = (p: IconProps) => base(p, (
   </>
 ))
 
-// Relay — an agent→agent handoff: two nodes joined by an arrow.
+// Relay - an agent→agent handoff: two nodes joined by an arrow.
 export const IconRelay = (p: IconProps) => base(p, (
   <>
     <circle cx="5.5" cy="12" r="2.3" fill="currentColor" stroke="none" />
@@ -138,7 +138,7 @@ export const IconRelay = (p: IconProps) => base(p, (
   </>
 ))
 
-// Brigade — a little crew: three antenna'd heads above their shoulders (two in
+// Brigade - a little crew: three antenna'd heads above their shoulders (two in
 // front, one behind). The antennas make them read as agents, not just people,
 // and the heads-and-shoulders silhouette is unmistakably distinct from the
 // constellation channel glyph (which Chris found too close to the old network
@@ -163,7 +163,7 @@ export const IconBrigade = (p: IconProps) => base(p, (
   </>
 ))
 
-// Dashboard / Overview — a trend line whose data points are nodes (ties to the
+// Dashboard / Overview - a trend line whose data points are nodes (ties to the
 // constellation motif while reading clearly as "metrics / dashboard").
 export const IconDashboard = (p: IconProps) => base(p, (
   <>
@@ -176,7 +176,7 @@ export const IconDashboard = (p: IconProps) => base(p, (
   </>
 ))
 
-// Settings — sliders whose knobs are nodes (bespoke + cohesive with the
+// Settings - sliders whose knobs are nodes (bespoke + cohesive with the
 // node-motif family; clearer at small size than a fiddly cog). Exported as
 // IconGear for the existing rail import.
 export const IconGear = (p: IconProps) => base(p, (
@@ -190,7 +190,7 @@ export const IconGear = (p: IconProps) => base(p, (
   </>
 ))
 
-// Brigata brand glyph — "Nucleus": six orbs coordinated around a command core,
+// Brigata brand glyph - "Nucleus": six orbs coordinated around a command core,
 // matching the marketing logo (brigata.ai) and favicon. Monochrome (currentColor)
 // so it tints with theme/hover/active. Also serves as the Slack-style room prefix.
 export const IconChannel = (p: IconProps) => {
@@ -205,7 +205,7 @@ export const IconChannel = (p: IconProps) => {
       className={rest.className}
       aria-hidden="true"
     >
-      {/* connectors — core to each orb */}
+      {/* connectors - core to each orb */}
       <g stroke="currentColor" strokeWidth="1" strokeLinecap="round" opacity="0.42">
         <path d="M12 12 L12 4" />
         <path d="M12 12 L18.9 8" />

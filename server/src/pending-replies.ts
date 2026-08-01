@@ -2,7 +2,7 @@
 // webhook request) can cancel the safety timeout, and a genuinely-dead bridge
 // trips the timeout instead of leaving the "thinking" indicator stuck forever.
 //
-// Keyed by channelId:agentId — one outstanding dispatch per agent-per-channel is
+// Keyed by channelId:agentId - one outstanding dispatch per agent-per-channel is
 // the right granularity (a newer dispatch supersedes an older pending one).
 //
 // `pending` is separate from `timers` on purpose: the timeout callback re-arms

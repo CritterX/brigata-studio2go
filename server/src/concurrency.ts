@@ -2,7 +2,7 @@
 //
 // Every Standard turn spawns a claude-agent-sdk subprocess (CPU + memory). With
 // no cap, a burst of Standard traffic across tenants can exhaust the shared
-// backend and degrade or OOM the box for everyone — a cross-tenant availability
+// backend and degrade or OOM the box for everyone - a cross-tenant availability
 // risk inherent to the shared-process model. We run at most
 // STANDARD_MAX_CONCURRENCY turns at once and queue the rest (FIFO) up to
 // STANDARD_MAX_QUEUE; past that we reject fast with CapacityError so the caller
@@ -32,7 +32,7 @@ async function acquire(): Promise<void> {
   }
   if (waiters.length >= MAX_QUEUE) throw new CapacityError()
   // Wait for a slot to be handed off. The releaser does NOT decrement active in
-  // this case — the slot transfers directly to us — so we must not increment.
+  // this case - the slot transfers directly to us - so we must not increment.
   await new Promise<void>((resolve) => waiters.push(resolve))
 }
 

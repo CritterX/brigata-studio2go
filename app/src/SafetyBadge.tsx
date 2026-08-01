@@ -1,14 +1,14 @@
 import { computeSafety, type SafetyProfile } from './agentSafety'
 
 // Compact rule-of-two badge for cards (In Focus, Brigade). An agent whose profile
-// hasn't been set shows a neutral "not set" chip — never a false green — which
+// hasn't been set shows a neutral "not set" chip - never a false green - which
 // also nudges the owner to declare it.
 export function SafetyBadge({ profile }: { profile?: SafetyProfile | null }) {
   const declared = !!profile && Object.values(profile).some(Boolean)
   if (!declared) {
     return (
       <span
-        title="Safety not assessed yet — set this agent's rule-of-two profile in Settings → Advanced → Agent safety."
+        title="Safety not assessed yet - set this agent's rule-of-two profile in Settings → Advanced → Agent safety."
         style={{
           display: 'inline-flex', alignItems: 'center', gap: 4, fontSize: 11, fontWeight: 600,
           padding: '1px 7px', borderRadius: 999, color: 'var(--ink-3)',
@@ -27,7 +27,7 @@ export function SafetyBadge({ profile }: { profile?: SafetyProfile | null }) {
     : { fg: '#4ade80', bg: 'rgba(34,197,94,.10)', bd: 'rgba(34,197,94,.35)', dot: '🟢', label: 'Safe' }
   return (
     <span
-      title={`${s.label} — ${s.detail}${s.remediation ? ` Fix: ${s.remediation}` : ''}`}
+      title={`${s.label} - ${s.detail}${s.remediation ? ` Fix: ${s.remediation}` : ''}`}
       style={{
         display: 'inline-flex', alignItems: 'center', gap: 4, fontSize: 11, fontWeight: 700,
         padding: '1px 7px', borderRadius: 999, color: tone.fg,

@@ -94,7 +94,7 @@ type Message = {
   turn_ms?: number | null
   attachments?: AttachmentMeta[]
   // Reply + reactions (backend lands separately; all optional so the UI
-  // degrades gracefully until the server serves them — see brigade spec).
+  // degrades gracefully until the server serves them - see brigade spec).
   reply_to_id?: string | null
   reply_to?: { id: string; sender_kind: 'user' | 'agent'; sender_label: string; excerpt: string } | null
   reactions?: { emoji: string; count: number; mine: boolean }[]
@@ -182,8 +182,8 @@ function ProStarBadge({ size = 14 }: { size?: number }) {
 function ByovpsBadge({ size = 14 }: { size?: number }) {
   return (
     <span
-      title="BYOVPS — self-hosted agent"
-      aria-label="BYOVPS — self-hosted agent"
+      title="BYOVPS - self-hosted agent"
+      aria-label="BYOVPS - self-hosted agent"
       className="absolute -bottom-0.5 -right-0.5 rounded-full bg-[var(--color-bg)] flex items-center justify-center"
       style={{ width: size, height: size }}
     >
@@ -195,12 +195,12 @@ function ByovpsBadge({ size = 14 }: { size?: number }) {
   )
 }
 
-// First non-heading sentence of an agent's soul_md, capped — the In-focus blurb.
+// First non-heading sentence of an agent's soul_md, capped - the In-focus blurb.
 function ccBlurb(soul: string): string {
   if (!soul) return ''
   const line = soul.split('\n').map(l => l.trim()).find(l => l && !/^#{1,6}\s/.test(l) && !/^[-*>]/.test(l)) ?? ''
   const sentence = line.split(/(?<=[.!?])\s/)[0] || line
-  return sentence.length > 150 ? sentence.slice(0, 147).trimEnd() + '…' : sentence
+  return sentence.length > 150 ? sentence.slice(0, 147).trimEnd() + '...' : sentence
 }
 
 // The /help slash-command panel. Extracted so both the legacy layout and the
@@ -236,7 +236,7 @@ function SlashHelp({ onClose }: { onClose: () => void }) {
           <li><span className="font-mono text-[var(--color-text)]">Enter</span> sends · <span className="font-mono text-[var(--color-text)]">Shift+Enter</span> adds a new line.</li>
           <li>@mention <em>several</em> agents in one message to get them working together in the room.</li>
           <li>Open a document to <span className="text-[var(--color-text)]">edit, print, or download</span> it; drag docs into folders to keep things tidy.</li>
-          <li>Each room has its own documents — see the <span className="text-[var(--color-text)]">Docs</span> list in the sidebar.</li>
+          <li>Each room has its own documents - see the <span className="text-[var(--color-text)]">Docs</span> list in the sidebar.</li>
         </ul>
 
         <div className="text-xs uppercase tracking-wide text-[var(--color-text-dim)] mb-2">Agent capabilities</div>
@@ -248,7 +248,7 @@ function SlashHelp({ onClose }: { onClose: () => void }) {
           <li>• Hold conversation context within a room</li>
         </ul>
         <div className="text-xs text-[var(--color-text-dim)] italic">
-          A Pro server gives agents shell access — they can build &amp; run web apps, schedule tasks, automate browsers, and use integrations. Pro is a server, not an agent: one Pro server runs up to 3 agents at one flat price, and add a fourth and you add a second server. The platform sets it up in one click; you don't touch a terminal. See Settings → your agent → Capabilities for the full picture.
+          A Pro server gives agents shell access - they can build &amp; run web apps, schedule tasks, automate browsers, and use integrations. Pro is a server, not an agent: one Pro server runs up to 3 agents at one flat price, and add a fourth and you add a second server. The platform sets it up in one click; you don't touch a terminal. See Settings → your agent → Capabilities for the full picture.
         </div>
       </div>
     </div>
@@ -288,7 +288,7 @@ export function Workspace({ me, onLogout }: { me: NonNullable<Me>; onLogout: () 
   // reaction picker is open.
   const [replyTo, setReplyTo] = useState<Message | null>(null)
   const [reactionPickerFor, setReactionPickerFor] = useState<string | null>(null)
-  // Per-channel unseen @mention counts (distinct from plain unread — a direct
+  // Per-channel unseen @mention counts (distinct from plain unread - a direct
   // address gets a stronger "@" badge).
   const [mentionsByChannel, setMentionsByChannel] = useState<Record<string, number>>({})
   const [typingAgents, setTypingAgents] = useState<Map<string, { name: string; avatar: string | null }>>(new Map())
@@ -328,7 +328,7 @@ export function Workspace({ me, onLogout }: { me: NonNullable<Me>; onLogout: () 
   }, [members, agents])
   // Each array element must be a unified *attacher* (plugin), which unified calls
   // to get the transformer. remarkMentions(handles) IS the transformer, so wrap it
-  // in an attacher — putting the transformer directly in the array makes unified
+  // in an attacher - putting the transformer directly in the array makes unified
   // call it as an attacher with tree=undefined and crashes at parse/freeze.
   const mentionPlugins = useMemo(() => [remarkGfm, () => remarkMentions(mentionHandles)], [mentionHandles])
   // Agents with access to the currently-selected room (for the room-scoped Brigade
@@ -345,7 +345,7 @@ export function Workspace({ me, onLogout }: { me: NonNullable<Me>; onLogout: () 
   const [demo, setDemo] = useState<{ messagesRemaining: number; capReached: boolean; converted: boolean } | null>(null)
   const draftInputRef = useRef<HTMLTextAreaElement>(null)
   // Auto-grow the composer textarea to fit its content (wrapped lines included),
-  // capped — beyond the cap it scrolls. Recomputes on every draft change (typing,
+  // capped - beyond the cap it scrolls. Recomputes on every draft change (typing,
   // history recall, clear-after-send).
   useEffect(() => {
     const el = draftInputRef.current
@@ -382,7 +382,7 @@ export function Workspace({ me, onLogout }: { me: NonNullable<Me>; onLogout: () 
     // switches the dropdown to a different mode, which unmounts the clicked
     // element. On the later bubbled `click`, that target is already detached, so
     // `closest('.sb-ws')` returns null and we'd wrongly treat it as an outside
-    // click and close the dropdown — making the create/accept forms unreachable.
+    // click and close the dropdown - making the create/accept forms unreachable.
     // mousedown fires before React re-renders, while the target is still in-tree.
     function onMouseDown(e: MouseEvent) {
       const t = e.target as HTMLElement
@@ -457,7 +457,7 @@ export function Workspace({ me, onLogout }: { me: NonNullable<Me>; onLogout: () 
   // personalTheme is the user's own pref; appliedTheme is what's actually shown.
   // A workspace's theme seeds appliedTheme when you switch into it, but the
   // profile switcher (setTheme) always overrides it immediately so it's never
-  // dead — the workspace theme just re-asserts when you switch back in.
+  // dead - the workspace theme just re-asserts when you switch back in.
   const personalTheme = normalizeTheme(theme)
   const [appliedTheme, setAppliedTheme] = useState(personalTheme)
 
@@ -492,7 +492,7 @@ export function Workspace({ me, onLogout }: { me: NonNullable<Me>; onLogout: () 
     // overflow-hidden still allows *programmatic* scrolling, so when a control
     // inside a taller-than-the-pane view (e.g. toggling an agent skill deep in
     // Settings) takes focus, the browser scrolls the focused element into view by
-    // scrolling the pane itself — with no scrollbar to recover, the content is
+    // scrolling the pane itself - with no scrollbar to recover, the content is
     // stuck off-screen until refresh. overflow-clip clips identically but is not
     // a scroll container, so it can never be scrolled. Inner areas still scroll.
     return `${shown ? 'flex' : 'hidden'} flex-col min-w-0 min-h-0 overflow-clip`
@@ -683,7 +683,7 @@ export function Workspace({ me, onLogout }: { me: NonNullable<Me>; onLogout: () 
       // On a *re*connect, any message broadcast while we were disconnected was
       // missed (it's durably in the DB but never reached this socket). Refetch
       // the active channel so those replies appear instead of staying invisible
-      // until a manual refresh. Skipped on the first open — the channel-load
+      // until a manual refresh. Skipped on the first open - the channel-load
       // effect already fetches then.
       if (wsReconnectRef.current && cid && currentWorkspace) {
         fetch(`/api/workspaces/${currentWorkspace.id}/channels/${cid}/messages`)
@@ -723,7 +723,7 @@ export function Workspace({ me, onLogout }: { me: NonNullable<Me>; onLogout: () 
           return [...prev, p.message!]
         })
         // A mention that lands in the channel the user is actively viewing counts as
-        // seen — ping /seen so it clears server-side and never triggers the "what you
+        // seen - ping /seen so it clears server-side and never triggers the "what you
         // missed" email. (Only when the tab is actually in front of the user.)
         if (!document.hidden && p.message.mentioned_user_ids?.includes(me.id) && currentWorkspace && msgChannel) {
           void fetch(`/api/workspaces/${currentWorkspace.id}/channels/${msgChannel}/seen`, { method: 'POST' })
@@ -744,7 +744,7 @@ export function Workspace({ me, onLogout }: { me: NonNullable<Me>; onLogout: () 
       } else if (p.type === 'message_deleted' && p.messageId) {
         setMessages(prev => prev.filter(m => m.id !== p.messageId))
       } else if (p.type === 'message_reactions' && p.messageId && Array.isArray(p.reactions)) {
-        // Sync counts from the server but keep THIS viewer's own `mine` flags —
+        // Sync counts from the server but keep THIS viewer's own `mine` flags -
         // the broadcast aggregate is viewer-agnostic.
         setMessages(prev => prev.map(m => {
           if (m.id !== p.messageId) return m
@@ -869,7 +869,7 @@ export function Workspace({ me, onLogout }: { me: NonNullable<Me>; onLogout: () 
   }, [currentWorkspace?.id, currentWorkspace?.theme])
 
   // Keep personal-pref changes (e.g. server-loaded value) reflected when the
-  // active workspace has no theme of its own — never clobbers a workspace theme.
+  // active workspace has no theme of its own - never clobbers a workspace theme.
   useEffect(() => {
     if (!currentWorkspace?.theme) setAppliedTheme(personalTheme)
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -882,7 +882,7 @@ export function Workspace({ me, onLogout }: { me: NonNullable<Me>; onLogout: () 
 
   // Profile-dropdown theme change. Sets the personal pref + applies immediately,
   // AND (when you own/admin the workspace) persists it as the workspace theme so
-  // it STICKS across refresh/navigation — the load path prioritizes the
+  // it STICKS across refresh/navigation - the load path prioritizes the
   // workspace theme, so without this the dropdown choice reverted. Non-owners
   // keep the personal-pref behavior (the PATCH 403s and is ignored).
   async function applyTheme(themeId: string) {
@@ -933,9 +933,9 @@ export function Workspace({ me, onLogout }: { me: NonNullable<Me>; onLogout: () 
       // copy that may be edited server-side). See Cosimo's pricing contract.
       const gated =
         r.code === 'upgrade_required'
-          ? 'Creating shared workspaces is a Standard feature. You can always join any workspace you’re invited to — free. Upgrade to Standard ($15/mo) to create your own (up to 2).'
+          ? "Creating shared workspaces is a Standard feature. You can always join any workspace you're invited to - free. Upgrade to Standard ($15/mo) to create your own (up to 2)."
           : r.code === 'workspace_cap_reached'
-            ? 'You’ve created your 2 shared workspaces (3 total, counting your personal one). That’s the Standard limit for now.'
+            ? "You've created your 2 shared workspaces (3 total, counting your personal one). That's the Standard limit for now."
             : null
       setWsActionError(gated ?? r.error ?? 'Could not create workspace')
     }
@@ -979,7 +979,7 @@ export function Workspace({ me, onLogout }: { me: NonNullable<Me>; onLogout: () 
       .then((d: { agents: { id: string; name: string; avatar: string | null; hosting?: string | null; safety_profile?: SafetyProfile }[] }) => {
         setAgents(d.agents ?? [])
       })
-    // Members — used to pill real human @mentions in message bodies.
+    // Members - used to pill real human @mentions in message bodies.
     fetch(`/api/workspaces/${currentWorkspace.id}/members`)
       .then(r => r.json())
       .then((d: { members?: Member[] }) => setMembers(d.members ?? []))
@@ -1017,7 +1017,7 @@ export function Workspace({ me, onLogout }: { me: NonNullable<Me>; onLogout: () 
       ws.send(JSON.stringify({ type: 'subscribe', channelId: activeChannelId }))
     }
 
-    // Mark this channel as seen — clears unread server-side and locally.
+    // Mark this channel as seen - clears unread server-side and locally.
     void fetch(`/api/workspaces/${currentWorkspace.id}/channels/${activeChannelId}/seen`, { method: 'POST' })
     setUnreadByChannel(prev => {
       if (!(activeChannelId in prev)) return prev
@@ -1036,7 +1036,7 @@ export function Workspace({ me, onLogout }: { me: NonNullable<Me>; onLogout: () 
 
   // Room-scope the Brigade list: fetch the agents that can access the selected
   // room. Falls back to the full `agents` list (roomAgents = null) when no room
-  // is selected, or if the fetch fails / returns empty — so it's never empty.
+  // is selected, or if the fetch fails / returns empty - so it's never empty.
   useEffect(() => {
     if (!currentWorkspace || !activeChannelId) { setRoomAgents(null); return }
     let cancelled = false
@@ -1062,7 +1062,7 @@ export function Workspace({ me, onLogout }: { me: NonNullable<Me>; onLogout: () 
   }, [activeChannelId, currentWorkspace?.id])
 
   // When the channels tab becomes active again, jump straight to the bottom.
-  // (The container has just remounted, so `messages` didn't change — we have to
+  // (The container has just remounted, so `messages` didn't change - we have to
   // trigger this manually.)
   useEffect(() => {
     if (tab !== 'channels') return
@@ -1078,7 +1078,7 @@ export function Workspace({ me, onLogout }: { me: NonNullable<Me>; onLogout: () 
     const settle = () => { el.scrollTop = el.scrollHeight }
     if (justSwitchedChannelRef.current) {
       // Jump to the newest message. On a fresh load/refresh the history fetch is
-      // async, so the FIRST render here is often an empty list — don't consume the
+      // async, so the FIRST render here is often an empty list - don't consume the
       // flag until real content has actually rendered. Even then a fixed tick loses
       // to late-inflating content (markdown, avatars, images), and a reflow-driven
       // onScroll (scrollTop still 0) can mark us "not near bottom" and strand the
@@ -1177,7 +1177,7 @@ export function Workspace({ me, onLogout }: { me: NonNullable<Me>; onLogout: () 
       if (r?.document?.id) {
         refreshDocCounts.current()
         setInlineDocId(r.document.id); setInlineDocEditing(true)
-        showFeedback(`Created “${args}”`)
+        showFeedback(`Created "${args}"`)
       } else showFeedback('Could not create the document')
       return true
     }
@@ -1189,7 +1189,7 @@ export function Workspace({ me, onLogout }: { me: NonNullable<Me>; onLogout: () 
       })
       return true
     }
-    showFeedback(`Unknown command: ${cmd} — try /help`)
+    showFeedback(`Unknown command: ${cmd} - try /help`)
     return true
   }
 
@@ -1213,7 +1213,7 @@ export function Workspace({ me, onLogout }: { me: NonNullable<Me>; onLogout: () 
         const text = await r.text().catch(() => '')
         // Strip HTML/JSON envelopes so we don't dump a whole error page into the UI.
         const cleaned = text.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim().slice(0, 120)
-        setUploadError(`Upload failed: ${filename} (${r.status})${cleaned ? ` — ${cleaned}` : ''}`)
+        setUploadError(`Upload failed: ${filename} (${r.status})${cleaned ? ` - ${cleaned}` : ''}`)
         return null
       }
       const j = await r.json()
@@ -1317,7 +1317,7 @@ export function Workspace({ me, onLogout }: { me: NonNullable<Me>; onLogout: () 
       setDraft(d => (d ? d : body))
       setPendingAttachments(p => (p.length ? p : atts))
       if (replyId) setReplyTo(r => r ?? messages.find(m => m.id === replyId) ?? null)
-      setSendError('Couldn’t send — check your connection and try again.')
+      setSendError("Couldn't send - check your connection and try again.")
     }
   }
 
@@ -1356,7 +1356,7 @@ export function Workspace({ me, onLogout }: { me: NonNullable<Me>; onLogout: () 
 
   // --- @mention autocomplete ---
   function updateDraft(value: string, cursor: number) {
-    // Typing breaks us out of history navigation — the value at this point is
+    // Typing breaks us out of history navigation - the value at this point is
     // the user's own edit, no longer a recalled prompt.
     if (historyIndexRef.current !== null) {
       historyIndexRef.current = null
@@ -1372,7 +1372,7 @@ export function Workspace({ me, onLogout }: { me: NonNullable<Me>; onLogout: () 
       setMentionQuery(null)
     }
   }
-  // Autocomplete candidates: agents AND human members (the latter were missing —
+  // Autocomplete candidates: agents AND human members (the latter were missing -
   // the picker only knew agents). Humans insert their first-name handle, which is
   // what the server resolves; same-first-name people both appear and both resolve
   // (a known v1 collision until handles are unique).
@@ -1470,11 +1470,11 @@ export function Workspace({ me, onLogout }: { me: NonNullable<Me>; onLogout: () 
   // ── Command-center layout (the default UI, launched 2026-06-27) ──────────
   // A from-scratch multi-column shell (rail · rooms+brigade · chat · context)
   // that reuses this component's live state + handlers, so it's fully
-  // functional — not a mock. Default everywhere; ?cc=0 falls back to the legacy
+  // functional - not a mock. Default everywhere; ?cc=0 falls back to the legacy
   // layout below (escape hatch / quick comparison).
   const ccQuery = typeof window !== 'undefined' ? new URLSearchParams(window.location.search).get('cc') : null
   // The command-center redesign is the default UI everywhere now (launched
-  // 2026-06-27). ?cc=0 falls back to the legacy layout — an escape hatch for
+  // 2026-06-27). ?cc=0 falls back to the legacy layout - an escape hatch for
   // quick comparison / rollback without a redeploy.
   const showCommandCenter = ccQuery !== '0'
   if (showCommandCenter) {
@@ -1508,7 +1508,7 @@ export function Workspace({ me, onLogout }: { me: NonNullable<Me>; onLogout: () 
         : s === 'in_progress' ? { cls: 'work', label: 'working · now' }
           : (s === 'failed' || s === 'declined' || s === 'cancelled') ? { cls: 'done', label: s }
             : { cls: 'new', label: 'new' }
-    // Composer slash-command autocomplete — open while the draft is a bare "/cmd".
+    // Composer slash-command autocomplete - open while the draft is a bare "/cmd".
     const slashTyping = draft.startsWith('/') && !/\s/.test(draft)
     const slashMatches = slashTyping ? SLASH_COMMANDS.filter(c => c.cmd.startsWith(draft.toLowerCase())) : []
     const slashOpen = slashMatches.length > 0
@@ -1535,7 +1535,7 @@ export function Workspace({ me, onLogout }: { me: NonNullable<Me>; onLogout: () 
     const rail = (
       <nav className="cc-rail">
         <div className="cc-ws-wrap">
-          <button className="cc-mark" onClick={() => setWsSwitcherOpen(o => !o)} title={`${currentWorkspace?.name ?? 'Workspace'} — switch workspace`} aria-label="Switch workspace">{wsMono}</button>
+          <button className="cc-mark" onClick={() => setWsSwitcherOpen(o => !o)} title={`${currentWorkspace?.name ?? 'Workspace'} - switch workspace`} aria-label="Switch workspace">{wsMono}</button>
           {wsSwitcherOpen && (
             <div className="cc-ws-menu">
               {wsSwitcherMode === 'menu' && (
@@ -1563,7 +1563,7 @@ export function Workspace({ me, onLogout }: { me: NonNullable<Me>; onLogout: () 
                   <input className="cc-ws-input" autoFocus value={wsCreateName} onChange={e => setWsCreateName(e.target.value)} placeholder="Workspace name" />
                   {wsActionError && <div className="cc-ws-err">{wsActionError}</div>}
                   <div className="cc-ws-formrow">
-                    <button type="submit" className="cc-ws-submit" disabled={wsActionBusy || !wsCreateName.trim()}>{wsActionBusy ? 'Creating…' : 'Create'}</button>
+                    <button type="submit" className="cc-ws-submit" disabled={wsActionBusy || !wsCreateName.trim()}>{wsActionBusy ? 'Creating...' : 'Create'}</button>
                     <button type="button" className="cc-ws-cancel" onClick={() => { setWsSwitcherMode('menu'); setWsActionError(null) }}>Cancel</button>
                   </div>
                 </form>
@@ -1574,7 +1574,7 @@ export function Workspace({ me, onLogout }: { me: NonNullable<Me>; onLogout: () 
                   <input className="cc-ws-input" autoFocus value={wsAcceptToken} onChange={e => setWsAcceptToken(e.target.value)} placeholder="Paste invite link or token" />
                   {wsActionError && <div className="cc-ws-err">{wsActionError}</div>}
                   <div className="cc-ws-formrow">
-                    <button type="submit" className="cc-ws-submit" disabled={wsActionBusy || !wsAcceptToken.trim()}>{wsActionBusy ? 'Joining…' : 'Join'}</button>
+                    <button type="submit" className="cc-ws-submit" disabled={wsActionBusy || !wsAcceptToken.trim()}>{wsActionBusy ? 'Joining...' : 'Join'}</button>
                     <button type="button" className="cc-ws-cancel" onClick={() => { setWsSwitcherMode('menu'); setWsActionError(null) }}>Cancel</button>
                   </div>
                 </form>
@@ -1782,8 +1782,8 @@ export function Workspace({ me, onLogout }: { me: NonNullable<Me>; onLogout: () 
                         onClick={async e => {
                           e.stopPropagation()
                           if (!currentWorkspace) return
-                          if (channels.length <= 1) { showFeedback('Can’t delete your only room.'); return }
-                          if (!confirm(`Delete #${ch.name}? This permanently removes the room and all of its messages and documents. This can’t be undone.`)) return
+                          if (channels.length <= 1) { showFeedback("Can't delete your only room."); return }
+                          if (!confirm(`Delete #${ch.name}? This permanently removes the room and all of its messages and documents. This can't be undone.`)) return
                           const r = await fetch(`/api/workspaces/${currentWorkspace.id}/channels/${ch.id}`, { method: 'DELETE' }).then(r => r.json())
                           if (r.ok) {
                             const cr = await fetch(`/api/workspaces/${currentWorkspace.id}/channels`).then(r => r.json())
@@ -1820,7 +1820,7 @@ export function Workspace({ me, onLogout }: { me: NonNullable<Me>; onLogout: () 
                     <div>
                       <div className="cc-nm">{a.name}</div>
                       {work
-                        ? <div className="cc-st w">working — {work.title ?? 'a handoff'}</div>
+                        ? <div className="cc-st w">working - {work.title ?? 'a handoff'}</div>
                         : <div className="cc-st">awake</div>}
                     </div>
                   </button>
@@ -1853,7 +1853,7 @@ export function Workspace({ me, onLogout }: { me: NonNullable<Me>; onLogout: () 
           >
             {messages.length === 0 ? (
               <div className="cc-ctx-empty" style={{ textAlign: 'center', marginTop: '16%' }}>
-                {activeChannel ? `Nothing in ${activeChannel.name} yet — say hello, or @mention an agent.` : 'Pick a room to start.'}
+                {activeChannel ? `Nothing in ${activeChannel.name} yet - say hello, or @mention an agent.` : 'Pick a room to start.'}
               </div>
             ) : (
               <>
@@ -1863,7 +1863,7 @@ export function Workspace({ me, onLogout }: { me: NonNullable<Me>; onLogout: () 
                   const isAgent = m.sender_kind === 'agent'
                   const nm = isAgent ? (m.agent_name ?? 'Agent') : (m.user_name ?? 'You')
                   const av = isAgent ? m.agent_avatar : m.user_avatar
-                  // "Is this mine?" — match on stable user id, fall back to name.
+                  // "Is this mine?" - match on stable user id, fall back to name.
                   const isOwn = m.sender_kind === 'user' && (
                     m.sender_user_id ? m.sender_user_id === me.id : m.user_name === me.name
                   )
@@ -2062,7 +2062,7 @@ export function Workspace({ me, onLogout }: { me: NonNullable<Me>; onLogout: () 
                     <button type="button" onClick={() => removePending(a.id)} aria-label={`Remove ${a.filename}`}>✕</button>
                   </span>
                 ))}
-                {uploadingCount > 0 && <span className="cc-chip dim">Uploading {uploadingCount}…</span>}
+                {uploadingCount > 0 && <span className="cc-chip dim">Uploading {uploadingCount}...</span>}
                 {uploadError && <span className="cc-chip err">{uploadError}</span>}
                 {sendError && <span className="cc-chip err">{sendError}</span>}
               </div>
@@ -2071,7 +2071,7 @@ export function Workspace({ me, onLogout }: { me: NonNullable<Me>; onLogout: () 
               className="cc-cbox"
               onMouseDown={e => {
                 // Clicking anywhere in the box (the hint row, the padding, a near
-                // miss) focuses the input — so a click never lands in dead space.
+                // miss) focuses the input - so a click never lands in dead space.
                 // Skip when an actual control (Attach/send) or the textarea itself
                 // was hit, so we don't fight native caret placement.
                 const t = e.target as HTMLElement
@@ -2087,7 +2087,7 @@ export function Workspace({ me, onLogout }: { me: NonNullable<Me>; onLogout: () 
                   value={draft}
                   onChange={e => updateDraft(e.target.value, e.target.selectionStart ?? e.target.value.length)}
                   onKeyDown={onComposerKeyDown}
-                  placeholder={activeChannel ? `Message ${activeChannel.name} — or hand a task to an agent` : 'Select a room'}
+                  placeholder={activeChannel ? `Message ${activeChannel.name} - or hand a task to an agent` : 'Select a room'}
                   disabled={!activeChannelId}
                 />
                 <button type="submit" className="cc-send" disabled={!activeChannelId || (!draft.trim() && pendingAttachments.length === 0)} title="Send (Enter)">↑</button>
@@ -2138,7 +2138,7 @@ export function Workspace({ me, onLogout }: { me: NonNullable<Me>; onLogout: () 
           <div className="cc-relayfeed">
             <h2 style={{ marginBottom: 6 }}><IconRelay size={15} /> Relay <span className="cc-label" style={{ marginLeft: 'auto' }}>handoffs</span></h2>
             {ccTasks.length === 0 ? (
-              <div className="cc-ctx-empty">No handoffs yet — they appear here the moment one agent hands work to another.</div>
+              <div className="cc-ctx-empty">No handoffs yet - they appear here the moment one agent hands work to another.</div>
             ) : ccTasks.slice(0, 8).map(t => {
               const from = t.from_kind === 'user' ? null : agentById.get(t.from_agent_id ?? '')
               const to = agentById.get(t.to_agent_id)
@@ -2167,7 +2167,7 @@ export function Workspace({ me, onLogout }: { me: NonNullable<Me>; onLogout: () 
     <div className="h-full flex flex-col">
       {adminOpen && <Admin onClose={() => setAdminOpen(false)} />}
       <div className="h-12 border-b border-[var(--color-border)] flex items-center px-3 md:px-4 gap-1 bg-[var(--color-surface)]">
-        {/* Workspace switcher — lives in the top bar so it's reachable from
+        {/* Workspace switcher - lives in the top bar so it's reachable from
             any tab (Channels / Documents / Settings), on mobile too (the pill
             collapses to glyph-only below md; see .sb-ws.in-topbar CSS). */}
         <div className="flex items-center mr-1 md:mr-2">
@@ -2272,7 +2272,7 @@ export function Workspace({ me, onLogout }: { me: NonNullable<Me>; onLogout: () 
                     disabled={wsActionBusy || !wsCreateName.trim()}
                     className="sb-ws-dd-submit"
                   >
-                    {wsActionBusy ? 'Creating…' : '▶ Create'}
+                    {wsActionBusy ? 'Creating...' : '▶ Create'}
                   </button>
                 </form>
               )}
@@ -2307,7 +2307,7 @@ export function Workspace({ me, onLogout }: { me: NonNullable<Me>; onLogout: () 
                     disabled={wsActionBusy || !wsAcceptToken.trim()}
                     className="sb-ws-dd-submit"
                   >
-                    {wsActionBusy ? 'Joining…' : '▶ Accept'}
+                    {wsActionBusy ? 'Joining...' : '▶ Accept'}
                   </button>
                 </form>
               )}
@@ -2388,7 +2388,7 @@ export function Workspace({ me, onLogout }: { me: NonNullable<Me>; onLogout: () 
               <div className="fixed inset-0 z-[37]" onClick={() => setProfileOpen(false)} />
               <div className="absolute right-0 mt-1 z-[38] bg-[var(--color-surface-elevated)] border border-[var(--color-border)] rounded-md shadow-elevated w-60 py-1 text-sm">
                 <div className="px-3 py-2 border-b border-[var(--color-border)]">
-                  <div className="text-[var(--color-text)] truncate">{me.name ?? '—'}</div>
+                  <div className="text-[var(--color-text)] truncate">{me.name ?? '-'}</div>
                   <div className="text-[10px] text-[var(--color-text-dim)] truncate">{me.email}</div>
                 </div>
 
@@ -2444,7 +2444,7 @@ export function Workspace({ me, onLogout }: { me: NonNullable<Me>; onLogout: () 
       </div>
 
       <div className="flex-1 flex min-h-0 relative">
-        {/* Channels panel — always mounted; visibility/size from panelClasses + panelStyle */}
+        {/* Channels panel - always mounted; visibility/size from panelClasses + panelStyle */}
         <div className={panelClasses('channels')} style={panelStyle('channels')} onMouseDown={() => recordPaneActivity('channels')}>
           <div className="flex-1 flex min-h-0 relative">
       {railOpen && (
@@ -2464,7 +2464,7 @@ export function Workspace({ me, onLogout }: { me: NonNullable<Me>; onLogout: () 
           ${isDesktop && channelsRail.pinned && channelsRail.collapsed ? 'hidden' : ''}
         `}
       >
-        {/* Thin chrome row at the top — pin/collapse moved out of the section header */}
+        {/* Thin chrome row at the top - pin/collapse moved out of the section header */}
         <div className="sb-chrome">
           <button
             onClick={() => channelsRail.setPinned(!channelsRail.pinned)}
@@ -2736,7 +2736,7 @@ export function Workspace({ me, onLogout }: { me: NonNullable<Me>; onLogout: () 
                 />
               ) : (
                 <article className="prose-doc max-w-3xl">
-                  <ReactMarkdown remarkPlugins={[remarkGfm]}>{inlineDoc.body_md || '*Empty document — hit Edit to start writing.*'}</ReactMarkdown>
+                  <ReactMarkdown remarkPlugins={[remarkGfm]}>{inlineDoc.body_md || '*Empty document - hit Edit to start writing.*'}</ReactMarkdown>
                 </article>
               )}
             </div>
@@ -2748,7 +2748,7 @@ export function Workspace({ me, onLogout }: { me: NonNullable<Me>; onLogout: () 
             <span className="text-base leading-5 text-[var(--color-accent)]" aria-hidden>✨</span>
             <div className="flex-1 min-w-0">
               <div className="text-sm text-[var(--color-text)]">
-                Demo mode — {demo.messagesRemaining} {demo.messagesRemaining === 1 ? 'message' : 'messages'} left
+                Demo mode - {demo.messagesRemaining} {demo.messagesRemaining === 1 ? 'message' : 'messages'} left
               </div>
               <div className="text-xs text-[var(--color-text-dim)]">
                 This is on us. Ask your agent to build a doc or search the web. Connect your Claude anytime to keep going.
@@ -2769,7 +2769,7 @@ export function Workspace({ me, onLogout }: { me: NonNullable<Me>; onLogout: () 
             <div className="flex-1 min-w-0">
               <div className="text-sm text-[var(--color-text)]">Your free demo's used up</div>
               <div className="text-xs text-[var(--color-text-dim)]">
-                Connect your Claude to keep your crew working — your costs and data stay yours.
+                Connect your Claude to keep your crew working - your costs and data stay yours.
               </div>
             </div>
             <button
@@ -3116,9 +3116,9 @@ export function Workspace({ me, onLogout }: { me: NonNullable<Me>; onLogout: () 
               </span>
               {(() => {
                 const names = Array.from(typingAgents.values()).map(a => isImageAvatar(a.avatar) ? a.name : `${a.avatar ?? '🤖'} ${a.name}`)
-                if (names.length === 1) return <span><span className="text-[var(--color-text)]">{names[0]}</span> is thinking…</span>
-                if (names.length === 2) return <span><span className="text-[var(--color-text)]">{names[0]}</span> and <span className="text-[var(--color-text)]">{names[1]}</span> are thinking…</span>
-                return <span>{names.length} agents are thinking…</span>
+                if (names.length === 1) return <span><span className="text-[var(--color-text)]">{names[0]}</span> is thinking...</span>
+                if (names.length === 2) return <span><span className="text-[var(--color-text)]">{names[0]}</span> and <span className="text-[var(--color-text)]">{names[1]}</span> are thinking...</span>
+                return <span>{names.length} agents are thinking...</span>
               })()}
             </div>
           )}
@@ -3145,7 +3145,7 @@ export function Workspace({ me, onLogout }: { me: NonNullable<Me>; onLogout: () 
               ))}
               {uploadingCount > 0 && (
                 <span className="text-xs text-[var(--color-text-dim)] italic">
-                  Uploading {uploadingCount}…
+                  Uploading {uploadingCount}...
                 </span>
               )}
               {uploadError && (

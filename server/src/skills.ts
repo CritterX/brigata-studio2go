@@ -3,11 +3,11 @@
 // sections to inject at dispatch.
 //
 // Design: BASE_TOOLS is exactly today's hardcoded Standard tool set. Skills are
-// purely ADDITIVE — an agent with no skills enabled gets BASE_TOOLS and nothing
+// purely ADDITIVE - an agent with no skills enabled gets BASE_TOOLS and nothing
 // else, i.e. identical behavior to before this system existed. Some catalog
 // entries map to tools already in BASE (Web Research, Documents & PDF); enabling
 // those adds explanatory prompt guidance but no new capability. Others map to
-// tools not yet wired into the product dispatch path — these carry available:false
+// tools not yet wired into the product dispatch path - these carry available:false
 // so the UI can show the roadmap without us pretending they work yet.
 
 export type SkillTier = 'standard' | 'pro'
@@ -17,7 +17,7 @@ export interface SkillDef {
   label: string
   /** One-line "what it does" for the catalog card. */
   description: string
-  /** Honest capability/permission line — "what it can access". */
+  /** Honest capability/permission line - "what it can access". */
   access: string
   tier: SkillTier
   /** Tier-2 skills that require an OAuth/connect-account step before they work. */
@@ -91,7 +91,7 @@ export const SKILL_CATALOG: readonly SkillDef[] = [
   {
     id: 'browser-automation',
     label: 'Browser Automation',
-    description: 'Navigate websites and extract information — do a thing on a site for you.',
+    description: 'Navigate websites and extract information - do a thing on a site for you.',
     access: 'Controls a browser to visit pages and extract content on your behalf.',
     tier: 'standard',
     needsConnection: false,
@@ -115,7 +115,7 @@ export interface ResolvedSkills {
 
 // Turn a per-agent enabled-skills list (raw jsonb value) into the dispatch additions.
 // Unknown ids and not-yet-available skills are ignored for tool purposes; an empty
-// or absent list yields exactly BASE_TOOLS and no extra prompt — today's behavior.
+// or absent list yields exactly BASE_TOOLS and no extra prompt - today's behavior.
 export function resolveSkills(enabled: unknown): ResolvedSkills {
   const ids = new Set(normalizeEnabled(enabled))
   const tools = new Set<string>(BASE_TOOLS)

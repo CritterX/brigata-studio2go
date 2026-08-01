@@ -97,7 +97,7 @@ exportRouter.get('/:workspaceId/export', async (req, res) => {
     notes_for_recipient: [
       'This file is a full export of your Brigata workspace.',
       'It contains everything you own: agent SOULs, channels, conversation history, documents, and settings.',
-      'Re-import will be supported in a future release. Keep this file safe — it is your data, you can leave anytime.',
+      'Re-import will be supported in a future release. Keep this file safe - it is your data, you can leave anytime.',
     ].join('\n'),
   }
 

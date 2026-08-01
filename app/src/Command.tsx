@@ -30,7 +30,7 @@ type Member = { id: string; role: string }
 function relTime(iso?: string | null): string {
   if (!iso) return 'never'
   const t = new Date(iso).getTime()
-  if (Number.isNaN(t)) return '—'
+  if (Number.isNaN(t)) return '-'
   const s = Math.floor((Date.now() - t) / 1000)
   if (s < 60) return `${s}s`
   if (s < 3600) return `${Math.floor(s / 60)}m`
@@ -184,7 +184,7 @@ export function Command({ workspaceId, workspaceName }: { workspaceId: string; w
         </div>
 
         {loading ? (
-          <div className="text-sm text-[var(--color-text-dim)] py-20 text-center">Loading overview…</div>
+          <div className="text-sm text-[var(--color-text-dim)] py-20 text-center">Loading overview...</div>
         ) : (
           <div className="grid grid-cols-12 gap-3 md:gap-4">
             {/* stat row */}
@@ -249,7 +249,7 @@ export function Command({ workspaceId, workspaceName }: { workspaceId: string; w
 
             {/* activity chart */}
             <Card className="col-span-12 md:col-span-7">
-              <SectionHead title="Activity — last 7 days" right="turns / day" />
+              <SectionHead title="Activity - last 7 days" right="turns / day" />
               <div className="flex items-end gap-2" style={{ height: 120 }}>
                 {days7.map(d => (
                   <div key={d.key} title={`${d.key}: ${d.turns} turns`} className="flex-1 rounded-t-md"
@@ -311,7 +311,7 @@ export function Command({ workspaceId, workspaceName }: { workspaceId: string; w
                   <div className="flex-1 min-w-0">
                     <b className="font-semibold">{a.name}</b>
                     <div className="text-xs text-[var(--color-text-dim)] truncate">
-                      {a.last_error_message || (a.status === 'provisioning' ? 'Provisioning…' : a.status === 'offline' ? 'Offline' : a.status)}
+                      {a.last_error_message || (a.status === 'provisioning' ? 'Provisioning...' : a.status === 'offline' ? 'Offline' : a.status)}
                     </div>
                   </div>
                   <Tag tone={healthOf(a) === 'error' ? 'error' : 'attention'}>{healthOf(a) === 'error' ? 'error' : a.status}</Tag>

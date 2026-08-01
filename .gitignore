@@ -5,7 +5,7 @@ node_modules/
 server/dist/
 app/dist/
 
-# Local config & secrets — never commit
+# Local config & secrets - never commit
 server/.env
 server/.env.*
 !server/.env.standalone.template

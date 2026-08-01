@@ -1,8 +1,8 @@
 // Layered agent secrets: named credentials injected into an agent's runtime env
 // at turn time, encrypted at rest, NEVER returned to the browser or stored in chat.
 // Two scopes (project_pro_capabilities):
-//   • WORKSPACE-level (agent_id NULL) — shared by every agent in the workspace.
-//   • AGENT-level (agent_id set) — scoped to one agent; overrides a workspace
+//   • WORKSPACE-level (agent_id NULL) - shared by every agent in the workspace.
+//   • AGENT-level (agent_id set) - scoped to one agent; overrides a workspace
 //     secret of the same name (isolation for a low-trust agent / a key one agent
 //     alone should hold).
 import { Router } from 'express'
@@ -43,7 +43,7 @@ export async function setSecret(
   }
 }
 
-// Workspace-level secret names (names + timestamps only — never values).
+// Workspace-level secret names (names + timestamps only - never values).
 export async function listWorkspaceSecrets(workspaceId: string): Promise<SecretRow[]> {
   const { rows } = await db.query<{ name: string; updated_at: string }>(
     `SELECT name, updated_at FROM agent_secrets
@@ -93,7 +93,7 @@ export async function getSecretsForAgent(workspaceId: string, agentId: string): 
 
 // ── Routes ──────────────────────────────────────────────────────────────────
 // Mounted at /api/workspaces. Owner/admin only (stricter than connectors, which
-// allow any member) — secrets are higher-stakes. Reads return NAMES ONLY.
+// allow any member) - secrets are higher-stakes. Reads return NAMES ONLY.
 export const agentSecretsRouter = Router()
 
 async function isOwnerAdmin(userId: string, workspaceId: string): Promise<boolean> {

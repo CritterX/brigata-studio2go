@@ -15,7 +15,7 @@ ALTER TABLE channels ADD COLUMN IF NOT EXISTS agent_response_mode TEXT NOT NULL 
 
 -- Reactions: one row per (message, user, emoji). Toggle = insert/delete. The PK
 -- is on three NOT NULL columns, which sidesteps the NULL-dedupe flaw in the draft
--- schema (a UNIQUE over a nullable column won't dedupe — NULLs aren't equal).
+-- schema (a UNIQUE over a nullable column won't dedupe - NULLs aren't equal).
 CREATE TABLE IF NOT EXISTS message_reactions (
     message_id UUID NOT NULL REFERENCES messages(id) ON DELETE CASCADE,
     user_id    UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,

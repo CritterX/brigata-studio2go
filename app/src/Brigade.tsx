@@ -85,7 +85,7 @@ function extractBlurb(soul: string): string {
 function firstSentence(s: string): string {
   const m = s.match(/^.*?[.!?](\s|$)/)
   const out = (m ? m[0] : s).trim()
-  return out.length > 140 ? out.slice(0, 137).trimEnd() + '…' : out
+  return out.length > 140 ? out.slice(0, 137).trimEnd() + '...' : out
 }
 
 function timeAgo(iso: string): string {
@@ -100,7 +100,7 @@ function timeAgo(iso: string): string {
   return `${Math.floor(h / 24)}d ago`
 }
 
-// Client-derived VPS name — matches the server provisioner's deterministic
+// Client-derived VPS name - matches the server provisioner's deterministic
 // scheme (pro-<safe-name>-<agentId[:8]>), so we can show it without a new API.
 function vpsName(m: AgentRow): string {
   const safe = m.name.toLowerCase().replace(/[^a-z0-9-]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 30) || 'pro-agent'
@@ -115,7 +115,7 @@ function statusDot(status: string): Dot {
   return 'off'
 }
 function lastTurnText(m: AgentRow): { text: string; tone: Dot } {
-  if (m.status === 'provisioning') return { text: 'provisioning…', tone: 'prov' }
+  if (m.status === 'provisioning') return { text: 'provisioning...', tone: 'prov' }
   if (m.status === 'error') return { text: 'needs attention', tone: 'err' }
   const when = m.last_turn_at ? timeAgo(m.last_turn_at) : ''
   if (m.status === 'online') return { text: when ? `active ${when}` : 'online', tone: 'on' }
@@ -126,7 +126,7 @@ const GOLD = 'var(--accent-doc)'
 const GOLD_SOFT = 'var(--accent-doc-soft)'
 const GOLD_EDGE = 'var(--accent-doc-edge)'
 
-// BYOVPS (self-hosted) accent — a cool blue, kept distinct from gold Pro and
+// BYOVPS (self-hosted) accent - a cool blue, kept distinct from gold Pro and
 // the plain Standard pill so the three hosting modes read apart at a glance.
 const BYO = '#6cb6ff'
 const BYO_SOFT = 'rgba(108,182,255,0.10)'
@@ -243,7 +243,7 @@ export function Brigade({
           </button>
         </div>
 
-        {/* Plan / tier strip — hidden in self-host (no paid hosting options) */}
+        {/* Plan / tier strip - hidden in self-host (no paid hosting options) */}
         {standalone !== true && (
         <div
           className="my-7 rounded-[14px] overflow-hidden grid gap-px"
@@ -274,7 +274,7 @@ export function Brigade({
             <span className="font-mono text-[10.5px] tracking-[0.14em] uppercase text-[var(--color-text-dim)]">Pro servers · up to 3 agents each</span>
             <span className="text-[17px] font-bold mt-0.5" style={{ color: GOLD }}>★ Pro server · $25/mo, flat</span>
             <span className="text-[12.5px] text-[var(--color-text-dim)] leading-snug mt-0.5">
-              <b className="text-[var(--color-text)] font-semibold">{proCount} of {total}</b> on Pro servers. A Pro server runs up to 3 agents — shell, cron, 24/7 background, integrations. Add a fourth agent and you add a second server.
+              <b className="text-[var(--color-text)] font-semibold">{proCount} of {total}</b> on Pro servers. A Pro server runs up to 3 agents - shell, cron, 24/7 background, integrations. Add a fourth agent and you add a second server.
             </span>
             <div className="mt-2.5">
               <button
@@ -291,7 +291,7 @@ export function Brigade({
 
         {/* Roster grid */}
         {loading ? (
-          <div className="text-[var(--color-text-dim)] text-sm py-10 text-center">Loading your brigade…</div>
+          <div className="text-[var(--color-text-dim)] text-sm py-10 text-center">Loading your brigade...</div>
         ) : (
           <div className="grid gap-[18px]" style={{ gridTemplateColumns: 'repeat(auto-fill,minmax(320px,1fr))' }}>
             {members.map(m => (
@@ -317,7 +317,7 @@ export function Brigade({
 }
 
 // ---- Relay: the agent handoff inbox -----------------------------------------
-// "Relay" — an email-style inbox of agent↔agent (and human→agent) handoffs: who
+// "Relay" - an email-style inbox of agent↔agent (and human→agent) handoffs: who
 // dropped it → who owns it, read vs unread, with the result surfaced when done.
 // Wired to GET /api/workspaces/:id/tasks; live via the task_updated ws event.
 type HandoffTask = {
@@ -352,7 +352,7 @@ function RelayRow({ t, byId }: { t: HandoffTask; byId: Map<string, Member> }) {
   const status = done
     ? { label: '✓ Done', color: 'var(--color-accent)' }
     : working
-      ? { label: 'Working…', color: GOLD }
+      ? { label: 'Working...', color: GOLD }
       : (t.status === 'failed' || t.status === 'declined' || t.status === 'cancelled')
         ? { label: t.status === 'cancelled' ? 'Cancelled' : t.status === 'declined' ? 'Declined' : 'Failed', color: '#ef4444' }
         : { label: 'New', color: 'var(--color-accent)' }
@@ -405,7 +405,7 @@ function BrigadeRelay({ tasks, members }: { tasks: HandoffTask[]; members: Membe
       {tasks.length === 0 ? (
         <div className="px-5 py-10 text-center">
           <div className="text-sm text-[var(--color-text)]">No handoffs yet</div>
-          <div className="text-xs text-[var(--color-text-dim)] mt-1 max-w-[460px] mx-auto">When you or an agent hands work to another agent, it lands here — with a read/unread signal and the result when it’s done.</div>
+          <div className="text-xs text-[var(--color-text-dim)] mt-1 max-w-[460px] mx-auto">When you or an agent hands work to another agent, it lands here - with a read/unread signal and the result when it's done.</div>
         </div>
       ) : (
         <div className="max-h-[420px] overflow-y-auto">
@@ -417,10 +417,10 @@ function BrigadeRelay({ tasks, members }: { tasks: HandoffTask[]; members: Membe
 }
 
 const PRO_PERKS: { title: string; body: string }[] = [
-  { title: 'A Pro server — up to 3 agents', body: 'A managed VPS that runs up to 3 agents at one flat price — not shared infrastructure. Provisioned and managed for you; you never SSH in. Add a fourth agent and you add a second server.' },
+  { title: 'A Pro server - up to 3 agents', body: 'A managed VPS that runs up to 3 agents at one flat price - not shared infrastructure. Provisioned and managed for you; you never SSH in. Add a fourth agent and you add a second server.' },
   { title: 'Shell access', body: 'Real bash, a persistent filesystem, and the ability to install and run its own tools.' },
-  { title: 'Scheduled tasks', body: 'Cron jobs that fire on a timer — daily digests, periodic checks, recurring work.' },
-  { title: 'Runs 24/7 in the background', body: 'Keeps working when you’re away and when the app is closed, not just while you’re chatting.' },
+  { title: 'Scheduled tasks', body: 'Cron jobs that fire on a timer - daily digests, periodic checks, recurring work.' },
+  { title: 'Runs 24/7 in the background', body: "Keeps working when you're away and when the app is closed, not just while you're chatting." },
   { title: 'Integrations', body: 'Connect external services that need a persistent, always-on host to call back into.' },
 ]
 
@@ -457,7 +457,7 @@ function ProInfoModal({ proCount, onClose }: { proCount: number; onClose: () => 
         <div className="font-mono text-[10.5px] tracking-[0.14em] uppercase text-[var(--color-text-dim)]">Add a Pro server</div>
         <h2 className="text-[22px] font-bold mt-1 mb-1" style={{ color: GOLD }}>★ What Pro unlocks</h2>
         <p className="text-[13px] text-[var(--color-text-dim)] leading-relaxed m-0">
-          Pro is a server, not an agent. One Pro server runs up to 3 agents at one flat price — add a fourth and you add a second server. It’s separate from your workspace plan, and lets your agents do things a shared agent can’t.
+          Pro is a server, not an agent. One Pro server runs up to 3 agents at one flat price - add a fourth and you add a second server. It's separate from your workspace plan, and lets your agents do things a shared agent can't.
         </p>
 
         <div className="flex flex-col gap-3 mt-5">
@@ -476,7 +476,7 @@ function ProInfoModal({ proCount, onClose }: { proCount: number; onClose: () => 
           className="font-mono text-[11px] rounded-[8px] px-3 py-2.5 mt-5 leading-relaxed"
           style={{ color: GOLD, background: GOLD_SOFT, border: `1px solid ${GOLD_EDGE}` }}
         >
-          +$25/mo per server, flat — runs up to 3 agents · provisioned in ~90 seconds · fully managed.
+          +$25/mo per server, flat - runs up to 3 agents · provisioned in ~90 seconds · fully managed.
           {proCount > 0 && ` ${proCount} of your agents ${proCount === 1 ? 'is' : 'are'} already on a Pro server.`}
         </div>
 
@@ -564,7 +564,7 @@ function MemberCard({ m, handoffs = 0, usage, onManage, standalone }: { m: Membe
           <b style={{ color: '#ffe6bd', fontWeight: 600 }}>{vpsName(m)}</b>
           {m.droplet
             ? <> · {m.status === 'online' ? '● Online' : m.status} · {m.droplet.region.toUpperCase()} · {m.droplet.size} · {m.droplet.ip ?? 'pending IP'} · ${m.droplet.price_monthly ?? 25}/mo</>
-            : <> · {m.status === 'provisioning' ? 'provisioning…' : m.status}</>}
+            : <> · {m.status === 'provisioning' ? 'provisioning...' : m.status}</>}
         </div>
       )}
 

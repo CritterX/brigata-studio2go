@@ -7,7 +7,7 @@
 /* ── Brigata design system ──────────────────────────────────────────────
    Three Brigata-original themes: Charcoal (charcoal/white/violet dark), Ember (warm dark),
    Atelier (light). Each defines two token layers:
-     1. The new design-system tokens (--bg, --text, --accent-chat, --paper*…)
+     1. The new design-system tokens (--bg, --text, --accent-chat, --paper*...)
         consumed by the redesigned chat/docs/settings surfaces.
      2. Legacy --color-* aliases mapped onto the new tokens so components that
         haven't been migrated yet keep rendering with the new palette.
@@ -177,7 +177,7 @@ html, body, #root {
   /* Lock the document so only the messages area scrolls. On mobile, when the
    * virtual keyboard opens with interactive-widget=resizes-content, the
    * browser was scrolling the whole document up to keep the composer visible
-   * — pushing the top bar offscreen and leaving it there after the keyboard
+   * - pushing the top bar offscreen and leaving it there after the keyboard
    * minimized. Pinning overflow stops that. */
   overflow: hidden;
   overscroll-behavior: none;
@@ -193,7 +193,7 @@ body {
   position: relative;
 }
 
-/* Subtle grain — keeps surfaces from reading as flat poster paint. */
+/* Subtle grain - keeps surfaces from reading as flat poster paint. */
 body::after {
   content: "";
   position: fixed;
@@ -205,7 +205,7 @@ body::after {
   background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.55 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
 }
 
-/* Display typography — modern tight sans for titles, h2s, hero copy.
+/* Display typography - modern tight sans for titles, h2s, hero copy.
    We don't ship a serif anymore; "this is a page" comes from layout (paper
    card, max-width column, line-height), not from typeface contrast. */
 .font-display {
@@ -608,7 +608,7 @@ img.brigata-wordmark {
   text-transform: uppercase;
 }
 /* On the light theme the outline+text style reads too quiet against warm
-   linen — flip to a solid fill so "Pro" punches with proper hierarchy. */
+   linen - flip to a solid fill so "Pro" punches with proper hierarchy. */
 :root[data-theme="atelier"] .agent-head .tier-badge {
   background: var(--accent-chat);
   color: var(--bg);
@@ -667,7 +667,7 @@ img.brigata-wordmark {
   letter-spacing: 0.04em;
 }
 
-/* SOUL — code editor */
+/* SOUL - code editor */
 .soul-editor {
   background: var(--color-surface);
   border: 1px solid var(--color-border);
@@ -723,7 +723,7 @@ img.brigata-wordmark {
   max-height: 480px;
   overflow: hidden;
 }
-/* Instructions editor has no line-number gutter — single full-width column so the
+/* Instructions editor has no line-number gutter - single full-width column so the
    textarea fills instead of squishing into the 38px gutter slot. */
 .soul-body--nogutter { grid-template-columns: 1fr; }
 .soul-gutter {
@@ -752,7 +752,7 @@ img.brigata-wordmark {
   width: 100%;
   caret-color: var(--accent-chat);
   /* Wrap long lines so editing has no horizontal scroll. The gutter still
-     shows logical line numbers; visual wrap is the trade — same behavior
+     shows logical line numbers; visual wrap is the trade - same behavior
      as VS Code with word wrap on. */
   white-space: pre-wrap;
   word-break: break-word;
@@ -829,7 +829,7 @@ img.brigata-wordmark {
   box-shadow: 0 0 6px rgba(var(--pulse-color), 0.6);
 }
 
-/* Versions — git log */
+/* Versions - git log */
 .version {
   display: grid;
   grid-template-columns: 14px 1fr auto;
@@ -990,7 +990,7 @@ img.brigata-wordmark {
    paper-style .ob-chip never collides with the Settings mono .chip. */
 .ob-root {
   /* #root is locked to 100dvh / overflow:hidden for the chat shell, so the
-     onboarding must be its own scroll container — otherwise tall scenes (the
+     onboarding must be its own scroll container - otherwise tall scenes (the
      30-chip cloud + footer on a phone) get clipped with no way to reach them. */
   height: 100dvh;
   overflow-y: auto;
@@ -1088,7 +1088,7 @@ img.brigata-wordmark {
 /* Split question scene */
 .ob-question { display: flex; gap: 32px; max-width: 1280px; width: 100%; margin: 0 auto; }
 /* Child selector (0,2,0) so this beats the base `.ob-workbench{display:flex}`
-   that's defined later in the file — otherwise source order keeps the side
+   that's defined later in the file - otherwise source order keeps the side
    preview visible on mobile, doubling the scroll length. */
 @media (max-width: 900px) { .ob-question { flex-direction: column; } .ob-question > .ob-workbench { display: none; } }
 /* Phones: don't vertically-center tall scenes (it pushes the top off-screen and
@@ -1161,7 +1161,7 @@ img.brigata-wordmark {
 .ob-chip.selected { color: var(--paper-text); border-color: var(--accent-doc); background: var(--accent-doc-soft); }
 .ob-chip .glyph { font-family: var(--font-mono); font-size: 11px; color: var(--paper-text-dim); opacity: 0.6; }
 .ob-chip.selected .glyph { color: var(--accent-doc); opacity: 1; }
-/* The Q2/Q3 "fridge magnet" cloud holds ~30 chips — keep it dense and let it
+/* The Q2/Q3 "fridge magnet" cloud holds ~30 chips - keep it dense and let it
    scroll inside the paper so the footer (Back / Set up) stays in view. */
 .ob-chips-cloud { gap: 7px; margin-bottom: 18px; max-height: 44vh; overflow-y: auto; padding-right: 4px; }
 .ob-chips-cloud .ob-chip { padding: 7px 12px; font-size: 12.5px; }
@@ -1242,7 +1242,7 @@ img.brigata-wordmark {
 .ob-role-card .role-name { font-size: 14px; font-weight: 600; color: var(--paper-text); }
 .ob-role-card .role-blurb { font-size: 11px; line-height: 1.35; color: var(--paper-text-dim); }
 
-/* Idea engine — free-text + idea cards */
+/* Idea engine - free-text + idea cards */
 .ob-idea-input {
   width: 100%; background: var(--surface); border: 1px solid var(--paper-edge);
   border-radius: 10px; padding: 14px 16px; font-size: 16px; color: var(--paper-text);
@@ -1303,7 +1303,7 @@ img.brigata-wordmark {
 .ob-setup-footer { font-family: var(--font-mono); font-size: 10.5px; color: var(--text-dim); letter-spacing: 0.10em; text-transform: uppercase; }
 .ob-setup-footer .accent { color: var(--accent-chat); }
 
-/* "Crew assembles" — the special end-of-setup beat: each teammate fades up in
+/* "Crew assembles" - the special end-of-setup beat: each teammate fades up in
    turn and says hello in their own voice. */
 .ob-assemble { display: flex; flex-direction: column; align-items: center; gap: 22px; width: 100%; max-width: 540px; margin: 0 auto; text-align: center; }
 .ob-assemble-eyebrow { font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; letter-spacing: 0.14em; color: var(--text-dim); display: inline-flex; align-items: center; gap: 8px; }
@@ -1323,7 +1323,7 @@ img.brigata-wordmark {
 .ob-crew-member .who { display: flex; flex-direction: column; gap: 2px; min-width: 0; flex: 1; }
 .ob-crew-member .name { font-family: var(--font-mono); font-size: 14px; font-weight: 600; color: var(--text); }
 .ob-crew-member .hello { font-size: 14px; color: var(--text-dim); }
-/* Presence dot — each teammate "comes online" as they land: the dot pops in on
+/* Presence dot - each teammate "comes online" as they land: the dot pops in on
    the avatar with a soft outward pulse, and an "online" tag fades in. Reads as
    the crew going live (replaces the emoji wave, which didn't render cleanly). */
 .ob-crew-member .pres {
@@ -1359,7 +1359,7 @@ img.brigata-wordmark {
    (user info lives in the top app bar). Headers never look clickable;
    items always do. */
 
-/* Workspace pill — lives in the top app bar so it's reachable from any tab. */
+/* Workspace pill - lives in the top app bar so it's reachable from any tab. */
 /* z-index 35: above content/rails (<=30), below the modal layer (40) so
    full-screen overlays (Admin, /help, confirms) cover the pill instead of
    it bleeding through. The open switcher dropdown still clears content. */
@@ -1413,7 +1413,7 @@ img.brigata-wordmark {
 }
 .sb-ws[data-open="true"] .sb-ws-pill .chev { transform: rotate(180deg); }
 
-/* Top-bar variant — compact pill that fits in the 48px app bar */
+/* Top-bar variant - compact pill that fits in the 48px app bar */
 .sb-ws.in-topbar .sb-ws-pill {
   padding: 5px 8px 5px 6px;
   border-color: transparent;
@@ -1429,7 +1429,7 @@ img.brigata-wordmark {
 .sb-ws.in-topbar .sb-ws-pill .role { display: none; }
 
 /* On mobile the top bar is tight (Channels/Documents/Settings tabs), so the
-   switcher collapses to glyph + chevron only — still tappable, opens the same
+   switcher collapses to glyph + chevron only - still tappable, opens the same
    dropdown. Below Tailwind's md breakpoint (768px). */
 @media (max-width: 767px) {
   .sb-ws.in-topbar .sb-ws-pill { grid-template-columns: 22px auto; padding: 5px 6px; }
@@ -1523,7 +1523,7 @@ img.brigata-wordmark {
 }
 .sb-ws-dd-action:hover .plus { color: var(--accent-chat); }
 
-/* Inline forms inside the switcher dropdown — create + accept */
+/* Inline forms inside the switcher dropdown - create + accept */
 .sb-ws-dd-form {
   display: flex;
   flex-direction: column;
@@ -1783,7 +1783,7 @@ img.brigata-wordmark {
   font-weight: 500;
 }
 
-/* Agent rows in the sidebar — circular PNG avatar instead of a glyph slot */
+/* Agent rows in the sidebar - circular PNG avatar instead of a glyph slot */
 .sb-item.agent .av {
   width: 22px; height: 22px;
   border-radius: 50%;
@@ -1820,7 +1820,7 @@ img.brigata-wordmark {
   white-space: nowrap;
 }
 
-/* Sidebar header (the thin top control bar above the workspace pill — pin/close) */
+/* Sidebar header (the thin top control bar above the workspace pill - pin/close) */
 .sb-chrome {
   display: flex;
   align-items: center;
@@ -2096,7 +2096,7 @@ img.brigata-wordmark {
 .cc-shell::before { content:""; position:absolute; inset:0; pointer-events:none; z-index:0; opacity:.5;
   background-image: linear-gradient(var(--hair) 1px,transparent 1px), linear-gradient(90deg,var(--hair) 1px,transparent 1px);
   background-size: 46px 46px; mask-image: radial-gradient(120% 100% at 50% 0%,#000,transparent 75%); }
-/* lift the layout columns above the ::before texture — but NOT modals/overlays
+/* lift the layout columns above the ::before texture - but NOT modals/overlays
    rendered as shell children (they keep their own position:fixed) */
 .cc-rail, .cc-side, .cc-main, .cc-section, .cc-context { position: relative; z-index: 1; }
 .cc-label { font-family: var(--ccmono); font-size: 10.5px; letter-spacing:.16em; text-transform: uppercase; color: var(--ink-3); }
@@ -2108,7 +2108,7 @@ img.brigata-wordmark {
 .cc-shell-wide { grid-template-columns: 74px 1fr; }
 .cc-section { height: 100%; min-width: 0; overflow: auto; background: var(--bg); color: var(--text); }
 
-/* hamburger + drawer backdrop + mobile section bar — desktop-hidden */
+/* hamburger + drawer backdrop + mobile section bar - desktop-hidden */
 .cc-burger { display: none; background: none; border: 0; color: var(--ink-2); font-size: 20px; line-height: 1; padding: 0 4px 0 0; cursor: pointer; flex: 0 0 auto; }
 .cc-burger:hover { color: var(--ink); }
 .cc-backdrop { position: fixed; inset: 0; background: rgba(0,0,0,.5); z-index: 54; }
@@ -2120,7 +2120,7 @@ img.brigata-wordmark {
   .cc-shell, .cc-shell-wide { grid-template-columns: 1fr; }
   .cc-context { display: none; }
   /* .cc-shell prefix raises specificity above the base .cc-rail{position:relative}
-     rule (which is defined later in the file), so these actually win on mobile —
+     rule (which is defined later in the file), so these actually win on mobile -
      otherwise the rail stays in-flow and claims an empty grid row at the top. */
   .cc-shell .cc-rail {
     position: fixed; top: 0; bottom: 0; left: 0; width: 60px; z-index: 57;
@@ -2201,7 +2201,7 @@ img.brigata-wordmark {
 @media (max-width: 860px) {
   .cc-head-me { display: inline-flex; }
   .cc-me-scrim { z-index: 59; }
-  /* the account menu becomes a bottom sheet — easy to reach + tap */
+  /* the account menu becomes a bottom sheet - easy to reach + tap */
   .cc-me-menu {
     position: fixed; left: 12px; right: 12px; bottom: calc(12px + env(safe-area-inset-bottom)); top: auto;
     min-width: 0; width: auto; padding: 10px; border-radius: 16px; z-index: 60;
@@ -2230,7 +2230,7 @@ img.brigata-wordmark {
 .cc-room.on .cc-rg { color: var(--ember); }
 .cc-room .cc-rn { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .cc-room .cc-badge { font-family: var(--ccmono); font-size: 10px; background: var(--ember); color: #1a0c07; border-radius: 999px; padding: 1px 6px; font-weight: 600; }
-/* @mention badge on a room: stronger than plain unread — a direct address. */
+/* @mention badge on a room: stronger than plain unread - a direct address. */
 .cc-room .cc-badge--mention { background: var(--human); color: #06141c; }
 /* Rename affordance: pencil reveals on hover (always visible on touch), inline input on rename. */
 .cc-room-edit { margin-left: auto; flex: 0 0 auto; display: grid; place-items: center; width: 20px; height: 20px; border: 0; border-radius: 5px; background: transparent; color: var(--ink-4); cursor: pointer; opacity: 0; transition: opacity .12s; }
@@ -2246,7 +2246,7 @@ img.brigata-wordmark {
    in the stream, plus an inline "mentioned you" chip in the meta row. */
 .cc-msg--mentioned { box-shadow: inset 2px 0 0 var(--human); background: var(--human-soft); border-radius: 8px; }
 .cc-mention-chip { font-family: var(--ccmono); font-size: 9.5px; letter-spacing: .02em; color: var(--human); border: 1px solid var(--human-edge); border-radius: 999px; padding: 0 6px; line-height: 16px; }
-/* Inline @mention pill in a message body — real members/agents only. */
+/* Inline @mention pill in a message body - real members/agents only. */
 .cc-at { color: var(--human); background: var(--human-soft); border-radius: 4px; padding: 0 3px; font-weight: 600; }
 .cc-pres { padding: 6px 8px; }
 .cc-pcard { display: flex; align-items: center; gap: 10px; padding: 7px 8px; border-radius: 10px; width: 100%; background: transparent; border: 0; color: inherit; font: inherit; }

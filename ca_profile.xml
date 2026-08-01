@@ -2,7 +2,7 @@
 <Maintainer>
   <Icon>https://brigata.ai/favicon.png</Icon>
   <Profile>
-    Brigata — private AI agents you run on your own hardware. This repository publishes Brigata Studio-to-Go: a single-container, self-hosted AI Studio + agent for your homelab. No cloud dependency and no inbound connection — it runs entirely on your box and you reach it on your LAN.
+    Brigata - private AI agents you run on your own hardware. This repository publishes Brigata Studio-to-Go: a single-container, self-hosted AI Studio + agent for your homelab. No cloud dependency and no inbound connection - it runs entirely on your box and you reach it on your LAN.
   </Profile>
   <Language>en_US</Language>
 </Maintainer>

@@ -73,7 +73,7 @@ export async function loadUserFromSession(req: Request, _res: Response, next: Ne
     )
     if (rows[0]) req.user = rows[0]
   } catch {
-    // swallow — treat as unauthenticated
+    // swallow - treat as unauthenticated
   }
   next()
 }
@@ -159,7 +159,7 @@ auth.get('/me', async (req, res) => {
   res.json({ ok: true, user: { ...req.user, has_anthropic_token } })
 })
 
-// Save the user's own Anthropic credential — either an OAuth subscription
+// Save the user's own Anthropic credential - either an OAuth subscription
 // token (sk-ant-oat01-...) or an API key (sk-ant-api03-...). We do not return
 // the value back; the UI only ever sees a boolean. Before storing, we make a
 // real auth-only call to Anthropic so revoked/wrong-account tokens fail loud
@@ -177,7 +177,7 @@ async function verifyAnthropicToken(token: string): Promise<{ ok: true } | { ok:
     headers['x-api-key'] = token
   }
   // Bound the verify call: without a timeout a slow/hung Anthropic response
-  // leaves the user's only "Connect" button stuck on "Verifying…" forever with
+  // leaves the user's only "Connect" button stuck on "Verifying..." forever with
   // no way to recover. 12s is well past a normal 1-token round-trip.
   const ac = new AbortController()
   const timer = setTimeout(() => ac.abort(), 12_000)
@@ -211,7 +211,7 @@ auth.put('/me/anthropic-token', async (req, res) => {
   const token = typeof req.body?.token === 'string' ? req.body.token.trim() : ''
   if (!token) return res.status(400).json({ ok: false, error: 'token required' })
   if (!/^sk-ant-(oat|api)\d+-/.test(token)) {
-    return res.status(400).json({ ok: false, error: 'expected sk-ant-oat01-… (OAuth) or sk-ant-api03-… (API key)' })
+    return res.status(400).json({ ok: false, error: 'expected sk-ant-oat01-... (OAuth) or sk-ant-api03-... (API key)' })
   }
   const v = await verifyAnthropicToken(token)
   if (!v.ok) return res.status(400).json({ ok: false, error: v.error })
@@ -291,7 +291,7 @@ auth.delete('/me', async (req, res) => {
   )
 
   // Best-effort teardown of Pro-tier VPSs. We don't block account deletion on
-  // a single provider failure — the user has asked us to remove their data and
+  // a single provider failure - the user has asked us to remove their data and
   // we honor that even if an upstream API hiccups.
   const { rows: proAgents } = await db.query<{ id: string }>(
     `SELECT id FROM agents WHERE hosting = 'pro_droplet' AND workspace_id = ANY($1::uuid[])`,

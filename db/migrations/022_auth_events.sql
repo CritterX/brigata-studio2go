@@ -1,5 +1,5 @@
 -- Append-only authentication audit log: who signed in, who was denied, who
--- logged out — with IP + user-agent for a real access record. Becomes important
+-- logged out - with IP + user-agent for a real access record. Becomes important
 -- once the allowlist comes off and anyone with a Gmail can attempt sign-in.
 -- This is auth metadata only (never message/subscriber content).
 

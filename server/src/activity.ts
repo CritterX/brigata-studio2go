@@ -1,6 +1,6 @@
 // Agent coordination visibility: an append-only activity log ("commit history"
 // for the brigade) plus a live-presence snapshot ("traffic lights"). Both are
-// content-free — summaries and context are metadata only, never message bodies,
+// content-free - summaries and context are metadata only, never message bodies,
 // so this stays safe to surface to the workspace owner.
 //
 // Capture is best-effort and mirrors usage.ts: recording activity must never
@@ -27,7 +27,7 @@ const presence = new Map<string, Presence>()
 
 // High-water mark of simultaneous in-flight turns since process start. Standard
 // turns run in-process (each spawns an SDK subprocess holding the model context),
-// so peak concurrency — not agent count — is what drives memory/CPU pressure on
+// so peak concurrency - not agent count - is what drives memory/CPU pressure on
 // the shared backend. The health dashboard reads this to answer "how close are
 // we to needing a bigger box."
 let peakConcurrentTurns = 0

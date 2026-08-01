@@ -1,4 +1,4 @@
-// STANDALONE BUILD STUB — swapped in for src/external-agents.ts by
+// STANDALONE BUILD STUB - swapped in for src/external-agents.ts by
 // scripts/package-studio-to-go.sh. Self-host runs every agent in-process
 // (Standard tier); there is no external / Pro-VPS bridge dispatch. Agents are
 // always hosting='standard', so sendToExternalAgent is never reached at runtime.

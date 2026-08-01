@@ -16,7 +16,7 @@ async function userInWorkspace(userId: string, workspaceId: string): Promise<boo
   return rows.length > 0
 }
 
-// POST /api/workspaces/:workspaceId/tasks — hand a task to an agent, then dispatch.
+// POST /api/workspaces/:workspaceId/tasks - hand a task to an agent, then dispatch.
 tasksRouter.post('/:workspaceId/tasks', async (req, res) => {
   if (!req.user) return res.status(401).json({ ok: false })
   if (!(await userInWorkspace(req.user.id, req.params.workspaceId))) {
@@ -48,12 +48,12 @@ tasksRouter.post('/:workspaceId/tasks', async (req, res) => {
     title,
     bodyMd,
   })
-  // Fire dispatch in the background — the lifecycle + live events report progress.
+  // Fire dispatch in the background - the lifecycle + live events report progress.
   void dispatchTask(task.id).catch(e => console.error('[tasks] dispatch failed:', (e as Error)?.message))
   res.json({ ok: true, task })
 })
 
-// GET /api/workspaces/:workspaceId/tasks — ALL tasks in the workspace (human→agent
+// GET /api/workspaces/:workspaceId/tasks - ALL tasks in the workspace (human→agent
 // AND agent→agent). The observability surface: humans see all cross-agent work.
 tasksRouter.get('/:workspaceId/tasks', async (req, res) => {
   if (!req.user) return res.status(401).json({ ok: false })
@@ -63,7 +63,7 @@ tasksRouter.get('/:workspaceId/tasks', async (req, res) => {
   res.json({ ok: true, tasks: await listWorkspaceTasks(req.params.workspaceId) })
 })
 
-// GET /api/workspaces/:workspaceId/handoff-counts — per-agent handoff counts for
+// GET /api/workspaces/:workspaceId/handoff-counts - per-agent handoff counts for
 // the Brigade/Overview "Handoffs" numbers + mailbox unread badges.
 tasksRouter.get('/:workspaceId/handoff-counts', async (req, res) => {
   if (!req.user) return res.status(401).json({ ok: false })
@@ -73,7 +73,7 @@ tasksRouter.get('/:workspaceId/handoff-counts', async (req, res) => {
   res.json({ ok: true, counts: await handoffCountsByAgent(req.params.workspaceId) })
 })
 
-// GET /api/workspaces/:workspaceId/tasks/sent — what this user assigned out (+ live status).
+// GET /api/workspaces/:workspaceId/tasks/sent - what this user assigned out (+ live status).
 tasksRouter.get('/:workspaceId/tasks/sent', async (req, res) => {
   if (!req.user) return res.status(401).json({ ok: false })
   if (!(await userInWorkspace(req.user.id, req.params.workspaceId))) {
@@ -82,7 +82,7 @@ tasksRouter.get('/:workspaceId/tasks/sent', async (req, res) => {
   res.json({ ok: true, tasks: await listSentByUser(req.params.workspaceId, req.user.id) })
 })
 
-// GET /api/workspaces/:workspaceId/agents/:agentId/inbox — an agent's task inbox.
+// GET /api/workspaces/:workspaceId/agents/:agentId/inbox - an agent's task inbox.
 tasksRouter.get('/:workspaceId/agents/:agentId/inbox', async (req, res) => {
   if (!req.user) return res.status(401).json({ ok: false })
   if (!(await userInWorkspace(req.user.id, req.params.workspaceId))) {
@@ -91,7 +91,7 @@ tasksRouter.get('/:workspaceId/agents/:agentId/inbox', async (req, res) => {
   res.json({ ok: true, tasks: await listInbox(req.params.workspaceId, req.params.agentId) })
 })
 
-// GET /api/workspaces/:workspaceId/tasks/:taskId — one task.
+// GET /api/workspaces/:workspaceId/tasks/:taskId - one task.
 tasksRouter.get('/:workspaceId/tasks/:taskId', async (req, res) => {
   if (!req.user) return res.status(401).json({ ok: false })
   if (!(await userInWorkspace(req.user.id, req.params.workspaceId))) {

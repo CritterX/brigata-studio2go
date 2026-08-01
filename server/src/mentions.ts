@@ -5,7 +5,7 @@
 // row per (message, mentioned human) so we can surface it in-app and, if it stays
 // unseen, email a "what you missed" digest (mention-digest.ts).
 //
-// Matching: messages mention people by a single token — `@chris`. We match that
+// Matching: messages mention people by a single token - `@chris`. We match that
 // token against each member's display name, on the first word (lowercased) OR the
 // whole name with spaces stripped ("chrishager"). A bare first name that several
 // members share mentions all of them; that's the honest v1 behaviour until we add
@@ -103,7 +103,7 @@ export async function loadMentionsForMessages(messageIds: string[]): Promise<Map
   return out
 }
 
-// Mark a user's mentions in a channel as seen — called when they open the channel
+// Mark a user's mentions in a channel as seen - called when they open the channel
 // (the /seen endpoint). Only stamps the ones still unseen so created-once stays put.
 export async function markMentionsSeen(channelId: string, userId: string): Promise<void> {
   await db.query(

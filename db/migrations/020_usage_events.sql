@@ -1,7 +1,7 @@
 -- Per-turn token + cost capture, so subscribers can see what their agents are
 -- consuming (and so we can later enforce quotas / meter billing). One row per
 -- agent model-turn. Token counts are always real; total_cost_usd is the model's
--- API-priced estimate — for OAuth-subscription credentials it's notional (the
+-- API-priced estimate - for OAuth-subscription credentials it's notional (the
 -- turn draws from a flat subscription, not metered spend), but it's still the
 -- best per-turn cost signal we have. `source` records where the turn was metered
 -- so Pro/bridge usage (reported later) can be distinguished from in-backend

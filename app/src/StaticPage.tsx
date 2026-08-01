@@ -3,7 +3,7 @@ import type { ReactNode } from 'react'
 export function StaticPage({ title, children }: { title: string; children: ReactNode }) {
   // Static pages respect the user's chosen workspace theme (graphite / ember
   // / atelier). The legacy version forced 'dark' to match the old landing
-  // page's orange/black look — that's gone now; pages read consistently
+  // page's orange/black look - that's gone now; pages read consistently
   // across all three Brigata themes.
   return (
     <div className="h-full flex flex-col bg-[var(--color-bg)] text-[var(--color-text)]">

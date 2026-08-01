@@ -45,13 +45,13 @@ export function Contact({ defaultEmail, defaultName, onClose }: { defaultEmail?:
         <div className="max-w-xl w-full">
           <h1 className="text-3xl font-medium tracking-tight mb-2">Get in touch</h1>
           <p className="text-sm text-[var(--color-text-dim)] mb-8">
-            Questions, feedback, bug reports, or anything else — drop us a line and
+            Questions, feedback, bug reports, or anything else - drop us a line and
             we'll get back to you. We read every message.
           </p>
 
           {status === 'sent' ? (
             <div className="border border-[var(--color-border)] rounded-md p-6 bg-[var(--color-surface)]">
-              <div className="text-base font-medium mb-2">Thanks — message received.</div>
+              <div className="text-base font-medium mb-2">Thanks - message received.</div>
               <div className="text-sm text-[var(--color-text-dim)] mb-4">
                 We'll reply to <span className="font-mono">{email}</span> as soon as we
                 can. If you'd like to send another, refresh and try again.
@@ -102,7 +102,7 @@ export function Contact({ defaultEmail, defaultName, onClose }: { defaultEmail?:
                   disabled={!email.trim() || !message.trim() || submitting}
                   className="bg-[var(--color-accent)] text-white px-4 py-2 rounded text-sm hover:opacity-90 disabled:opacity-50"
                 >
-                  {submitting ? 'Sending…' : 'Send message'}
+                  {submitting ? 'Sending...' : 'Send message'}
                 </button>
                 {error && <div className="text-xs text-red-400">{error}</div>}
               </div>

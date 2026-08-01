@@ -18,7 +18,7 @@ function writeCache(p: Prefs) {
   try { localStorage.setItem(CACHE_KEY, JSON.stringify(p)) } catch {}
 }
 
-// In-memory current value + subscribers — module-level so all callers share.
+// In-memory current value + subscribers - module-level so all callers share.
 let current: Prefs = readCache()
 const subscribers = new Set<(p: Prefs) => void>()
 let pending: Prefs = {}
@@ -57,7 +57,7 @@ async function loadFromServer() {
     if (!res.ok) return
     const d = await res.json()
     if (d.ok && d.preferences) {
-      // Server wins on load — overwrite the cache.
+      // Server wins on load - overwrite the cache.
       current = d.preferences
       writeCache(current)
       serverLoaded = true

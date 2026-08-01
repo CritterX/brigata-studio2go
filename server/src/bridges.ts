@@ -1,4 +1,4 @@
-// STANDALONE BUILD STUB — swapped in for src/bridges.ts by
+// STANDALONE BUILD STUB - swapped in for src/bridges.ts by
 // scripts/package-studio-to-go.sh. Self-host mode has no channel connectors
 // (Discord / Matrix), so outbound mirroring is a no-op. The exported signatures
 // match the cloud module exactly so the core call sites (agents.ts, messages.ts)

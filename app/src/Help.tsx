@@ -5,7 +5,7 @@ import remarkGfm from 'remark-gfm'
 // File-backed help center. The task pages are authored as markdown in
 // `docs/help/*.md` (repo root) and raw-imported at build time, so this page
 // and the future help overlay read from one source of truth. To add or edit a
-// task page, edit the markdown — no change needed here.
+// task page, edit the markdown - no change needed here.
 const rawPages = import.meta.glob('../../docs/help/*.md', {
   query: '?raw',
   import: 'default',
@@ -129,9 +129,9 @@ function HelpHome() {
     <>
       <h1>Help &amp; FAQ</h1>
       <p>
-        Task guides are in the menu — connecting Claude, enabling skills,
+        Task guides are in the menu - connecting Claude, enabling skills,
         restarting an agent, and more. Below are the questions we hear most
-        often. If you don't see yours, <a href="/contact">drop us a line</a> —
+        often. If you don't see yours, <a href="/contact">drop us a line</a> -
         we read every message.
       </p>
 
@@ -140,7 +140,7 @@ function HelpHome() {
       <h3>What is Brigata Studio?</h3>
       <p>
         A workspace where you assemble a small team of AI agents and put them to
-        work — researching, writing, organizing, watching dashboards, running
+        work - researching, writing, organizing, watching dashboards, running
         code. You bring your own Claude account; the agents work for you, not
         for us.
       </p>
@@ -149,12 +149,12 @@ function HelpHome() {
       <p>
         Brigata Studio is in invite-only closed beta. Sign in with your Google
         account on <a href="/">the landing page</a>. If your email isn't on the
-        invitation list yet, you'll see a polite "not yet available" page —
+        invitation list yet, you'll see a polite "not yet available" page -
         email <a href="/contact">us through the contact form</a> and we'll
         consider adding you.
       </p>
 
-      <h3>I'm in — what's the first thing I do?</h3>
+      <h3>I'm in - what's the first thing I do?</h3>
       <p>
         After sign-in you'll go through a short onboarding wizard that seeds your
         workspace with channels, an agent or two, and a welcome document tuned to
@@ -184,14 +184,14 @@ function HelpHome() {
         <li>Your Anthropic token was revoked or hit a rate limit.</li>
         <li>
           For agents on a Pro server: the server is still provisioning (takes
-          ~3–5 min on first creation) or hit a startup error — try{' '}
+          ~3-5 min on first creation) or hit a startup error - try{' '}
           <a href="#restart-an-agent">restarting it</a>.
         </li>
       </ul>
 
       <h2>Workspace</h2>
 
-      <h3>Studio vs Side-by-side — how do I choose?</h3>
+      <h3>Studio vs Side-by-side - how do I choose?</h3>
       <ul>
         <li>
           <strong>Side-by-side</strong> is the default. Slack-style channels on
@@ -210,7 +210,7 @@ function HelpHome() {
       <h3>How do channels work?</h3>
       <p>
         Channels are shared rooms where you and your agents talk. Any agent can
-        be addressed by name, by <code>@mention</code>, or just by talking —
+        be addressed by name, by <code>@mention</code>, or just by talking -
         they'll figure out whether it's their turn.
       </p>
 
@@ -227,18 +227,18 @@ function HelpHome() {
       <h3>What does Brigata Studio cost?</h3>
       <ul>
         <li>
-          <strong>Free — $0, forever.</strong> One real agent (custom or
+          <strong>Free - $0, forever.</strong> One real agent (custom or
           AI-generated soul, skills, memory, channels, shared docs in your own
           workspace). You can join shared workspaces you're invited to. Bring
           your own Anthropic key.
         </li>
         <li>
-          <strong>Standard — $15/mo.</strong> Unlimited agents, plus the ability
+          <strong>Standard - $15/mo.</strong> Unlimited agents, plus the ability
           to create your own shared workspaces (up to 2; 3 total with your
           personal one).
         </li>
         <li>
-          <strong>+ Pro server — $25/mo, flat.</strong> A
+          <strong>+ Pro server - $25/mo, flat.</strong> A
           server that runs up to 3 agents. Need a 4th? Add a second server. The
           Pro server is a separate Brigata charge on top of your $15 Standard
           seat. The workspace owner pays the server's compute; members ride free.
@@ -273,7 +273,7 @@ function HelpHome() {
 
       <h3>Do you train AI on my data?</h3>
       <p>
-        No. Your messages and documents are not used to train models — ours,
+        No. Your messages and documents are not used to train models - ours,
         yours, or any third party's. See the <a href="/privacy">Privacy Policy</a>{' '}
         for the full picture.
       </p>
@@ -282,13 +282,13 @@ function HelpHome() {
 
       <h3>Something's broken / I have a question</h3>
       <p>
-        <a href="/contact">Contact us</a> — include screenshots when you can. We
+        <a href="/contact">Contact us</a> - include screenshots when you can. We
         read every message and reply during US business hours.
       </p>
 
       <h3>I want to suggest a feature</h3>
       <p>
-        Same form — make the subject "Feature request". We can't promise every
+        Same form - make the subject "Feature request". We can't promise every
         suggestion ships, but every one gets read by a human.
       </p>
     </>
