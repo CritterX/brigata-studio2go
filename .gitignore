@@ -16,3 +16,7 @@ npm-debug.log*
 
 # OS cruft
 .DS_Store
+
+# Claude Code local settings — stores approved shell commands VERBATIM,
+# including any secret embedded in them (Apiiro disclosure 2026-11-06). Never commit.
+**/.claude/settings.local.json
