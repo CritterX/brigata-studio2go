@@ -1,7 +1,7 @@
 name: Publish container image (GHCR)
 
 # Builds the single-container Unraid/self-host image and publishes it to
-# ghcr.io/0xc/brigata-studio2go on every change. The CA template pulls :latest.
+# ghcr.io/critterx/brigata-studio2go on every change. The CA template pulls :latest.
 on:
   push:
     branches: [unraid-docker, main]
@@ -34,7 +34,7 @@ jobs:
           context: .
           push: true
           tags: |
-            ghcr.io/0xc/brigata-studio2go:latest
-            ghcr.io/0xc/brigata-studio2go:${{ github.sha }}
+            ghcr.io/critterx/brigata-studio2go:latest
+            ghcr.io/critterx/brigata-studio2go:${{ github.sha }}
           cache-from: type=gha
           cache-to: type=gha,mode=max

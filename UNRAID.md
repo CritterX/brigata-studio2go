@@ -36,7 +36,7 @@ Add these to `docker run` — both are **opt-in and powerful**:
 
 ## Option B — one-click via GHCR + Community App template
 
-Once the image is published to `ghcr.io/0xc/brigata-studio2go` (needs a token with
+Once the image is published to `ghcr.io/critterx/brigata-studio2go` (needs a token with
 `write:packages`), add the `brigata-studio2go.xml` template to
 `/boot/config/plugins/dockerMan/templates-user/` and install from Unraid's Docker tab —
 just fill in the admin password, Anthropic key, and data path.
