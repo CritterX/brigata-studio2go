@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <Container version="2">
   <Name>brigata-studio2go</Name>
-  <Repository>ghcr.io/0xc/brigata-studio2go:latest</Repository>
-  <Registry>https://ghcr.io/0xc/brigata-studio2go</Registry>
+  <Repository>ghcr.io/critterx/brigata-studio2go:latest</Repository>
+  <Registry>https://ghcr.io/critterx/brigata-studio2go</Registry>
   <TemplateURL>https://raw.githubusercontent.com/0xC/brigata-studio2go/main/brigata-studio2go.xml</TemplateURL>
   <Network>bridge</Network>
   <Privileged>false</Privileged>
