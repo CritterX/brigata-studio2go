@@ -65,7 +65,7 @@ hand.
 ## Install
 
 ```bash
-git clone https://github.com/0xC/brigata-studio2go.git
+git clone https://github.com/CritterX/brigata-studio2go.git
 cd brigata-studio2go
 STANDALONE_ADMIN_PASSWORD='choose-a-long-password' \
 ANTHROPIC_API_KEY='sk-ant-...' \

@@ -12,7 +12,7 @@ On the Unraid terminal:
 ```sh
 mkdir -p /mnt/user/appdata/brigata-studio2go
 cd /tmp && rm -rf brigata-studio2go
-git clone -b unraid-docker https://github.com/0xC/brigata-studio2go.git
+git clone -b unraid-docker https://github.com/CritterX/brigata-studio2go.git
 cd brigata-studio2go
 docker build -t brigata-s2g:local .
 docker run -d --name brigata-studio2go --restart unless-stopped \
